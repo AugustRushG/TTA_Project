@@ -1,0 +1,8 @@
+{
+    "base_model" : "regnety_002",
+    "temporal_shift_mode": "gsm",
+    "num_frames_clip" : 100,
+    "num_classes" : 9,
+    "cbam": false,
+    "gru_layers": 1
+}
