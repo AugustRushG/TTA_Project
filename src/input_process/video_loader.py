@@ -11,6 +11,29 @@ from torchvision.io import read_image
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
 
+def extract_frames(video_path, resize_to=None):
+    frame_dir = os.path.splitext(video_path)[0] + "_frames"
+    if os.path.exists(frame_dir):
+        print(f"Frame directory {frame_dir} already exists, skipping extraction.")
+        return frame_dir
+    cap = cv2.VideoCapture(video_path)
+    idx = 0
+    while True:
+        success, frame = cap.read()
+        if not success:
+            break
+        if resize_to:
+            frame = cv2.resize(frame, resize_to)
+        out_path = os.path.join(frame_dir, f"{idx:05d}.jpg")
+        cv2.imwrite(out_path, frame)
+        idx += 1
+    cap.release()
+
+    print(f"Extracted {idx} frames to {frame_dir}")
+    return frame_dir
+
+
+
 class VideoLoader:
     def __init__(self, video_path, window_size=100, stride=50, rgb=True, pad_mode='zero', transform=None, frame_dir=None, resize_to=None):
         self.video_path = video_path
@@ -27,7 +50,10 @@ class VideoLoader:
 
         # Extract frames if not already extracted
         if len(os.listdir(self.frame_dir)) == 0:
+            print(f"Extracting frames from {video_path} to {self.frame_dir}...")
             self._extract_frames()
+        else:
+            print(f"Frames already extracted in {self.frame_dir}, skipping extraction.")
 
         # Load sorted frame paths
         self.frame_paths = sorted(glob(os.path.join(self.frame_dir, "*.jpg")))

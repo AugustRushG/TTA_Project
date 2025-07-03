@@ -9,6 +9,7 @@ from .common import step, BaseRGBModel
 from .shift import make_temporal_shift as own_make_temporal_shift
 from tqdm import tqdm
 from .modules import FCPrediction, GRUPrediction
+import numpy as np
 
 
 class OwnE2EModel(BaseRGBModel):
@@ -167,7 +168,64 @@ class OwnE2EModel(BaseRGBModel):
                 pred = pred[-1]
             pred = torch.softmax(pred, axis=2)
             pred_cls = torch.argmax(pred, axis=2)
-            return pred_cls.cpu().numpy(), pred.cpu().numpy()
+            
+            return pred_cls.cpu().numpy(), pred.cpu().float().numpy()  
+
+
+    def postprocess_predictions(
+        self,
+        pred,            # shape: [1, T, C] (numpy array or torch.Tensor.cpu().numpy())
+        nms_window=5,    # suppress predictions within +/- nms_window frames
+        conf_threshold=0.5
+    ):
+        """
+        Post-process predictions: apply temporal NMS and confidence threshold.
+
+        Args:
+            pred (np.ndarray): Predictions of shape (1, T, C), probabilities.
+            nms_window (int): Suppression range in frames.
+            conf_threshold (float): Minimum score to keep a prediction.
+
+        Returns:
+            List[dict]: List of detected events with frame, class, and score.
+        """
+        if not isinstance(pred, np.ndarray):
+            pred = pred.detach().cpu().numpy()
+        
+        T = pred.shape[1]
+        C = pred.shape[2]
+
+        # flatten batch dim
+        pred = pred[0]  # shape: [T, C]
+
+        # find per-frame max class + score
+        class_ids = np.argmax(pred, axis=1)        # [T]
+        scores = np.max(pred, axis=1)              # [T]
+
+        # list of candidate events: [(frame, class_id, score)]
+        candidates = [
+            (i, class_ids[i], scores[i])
+            for i in range(T) if scores[i] >= conf_threshold
+        ]
+
+        # sort by score (high → low)
+        candidates.sort(key=lambda x: x[2], reverse=True)
+
+        selected = []
+        suppressed = np.zeros(T, dtype=bool)
+
+        for frame, cls, score in candidates:
+            if suppressed[frame]:
+                continue
+            selected.append({"frame": frame, "class": int(cls), "score": float(score)})
+
+            # suppress neighboring frames within nms_window
+            start = max(0, frame - nms_window)
+            end = min(T, frame + nms_window + 1)
+            suppressed[start:end] = True
+
+        return selected
+
 
 
 

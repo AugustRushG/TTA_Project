@@ -1,4 +1,4 @@
-from input_process.video_loader import VideoLoader
+from input_process import FrameClipDataset, extract_frames
 from event_detection import EventDetectionModel, load_event_detection_model
 from ball_tracking import build_ball_tracking_model, load_ball_tracking_model
 import torch
@@ -20,8 +20,10 @@ def main(args):
         transforms.CenterCrop(size=(224, 224)),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
-    video_loader = VideoLoader(args.video_path, window_size=args.window_size, stride=args.stride, transform=transform)
-    print(f'Video loader initialized successfully with {video_loader.get_total_frames()} frames.')
+    frame_dir = extract_frames(args.video_path, resize_to=(398, 224))
+    dataset = FrameClipDataset(frame_dir, window_size=args.window_size, stride=args.stride, transform=transform)
+    video_loader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False, num_workers=4)
+    print(f'Video Loader initialized with {len(dataset)} clips')
 
     # Load event detection model configuration
     event_model_config = 'event_detection/model_configs/e2e_res18_hgsm.json'
@@ -41,14 +43,18 @@ def main(args):
     print(f'Ball Tracking Model initialized successfully')
 
 
-    # Process video frames
-    for frames, start_idx, end_idx in video_loader:
-        print(frames.shape, start_idx, end_idx)
-        event_predictions = event_model.predict(frames)
-        # Further processing can be done here
-        print(f"Processed frames from {start_idx} to {end_idx}")
-
-
+    for data in video_loader:
+        clips = data['frames']
+        start_idx = data['start_idx']
+        end_idx = data['end_idx']
+        clips = clips.to(args.device, dtype=torch.float32)
+        # Process clips with event detection model
+        pred_results, pred_scores = event_model.predict(clips)
+        print(f"Clip shape: {clips.shape}, Start index: {start_idx}, End index: {end_idx}")
+        pred_results = pred_results[0]
+        for i, pred in enumerate(pred_results):
+            if pred != 0:
+                print(f"Event detected at clip {i + start_idx} with score {pred_scores[i]:.4f}")
 if __name__ == "__main__":
     args = parse_args()
     main(args)
