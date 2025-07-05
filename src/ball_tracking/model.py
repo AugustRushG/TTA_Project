@@ -339,7 +339,32 @@ class TemporalConvNet(nn.Module):
         vertical_heatmap = self.softmax(vertical_heatmap)
         horizontal_heatmap = self.softmax(horizontal_heatmap) 
 
-        return (horizontal_heatmap, vertical_heatmap), None
+        return (horizontal_heatmap, vertical_heatmap), None  # Return heatmaps and None for the second output
+
+    def extract_coords(self, pred_heatmap):
+        """_summary_
+
+        Args:
+            pred_heatmap : tuple of tensors (pred_x_logits, pred_y_logits)
+            - pred_x_logits: Tensor of shape [B, W] with predicted logits for x-axis
+            - pred_y_logits: Tensor of shape [B, H] with predicted logits for y-axis
+        Return:
+            out (tensor) : Tensor in shape [B,2] which represents coords for each 
+        """
+        pred_x_logits, pred_y_logits = pred_heatmap
+
+        # Predicted coordinates are extracted by taking the argmax over logits
+        x_pred_indices = torch.argmax(pred_x_logits, dim=1)  # [B]
+        y_pred_indices = torch.argmax(pred_y_logits, dim=1)  # [B]
+
+        # Convert indices to float for calculations
+        x_pred = x_pred_indices.float()
+        y_pred = y_pred_indices.float()
+
+        # Stack the predicted x and y coordinates
+        pred_coords = torch.stack([x_pred, y_pred], dim=1)  # [B, 2]
+
+        return pred_coords
 
 
 

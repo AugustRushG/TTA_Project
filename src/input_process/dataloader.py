@@ -60,6 +60,48 @@ class FrameClipDataset(Dataset):
         return {'frames': clip_tensor, 'start_idx': start, 'end_idx': end - 1}
 
 
+    def get_surrounding_frames(self, center_idx, radius=2):
+        """
+        Given a center frame index, return frames in [center - radius, ..., center, ..., center + radius]
+        with padding at edges if needed.
+
+        Args:
+            center_idx (int): center frame index (0-based).
+            radius (int): number of frames before and after.
+
+        Returns:
+            torch.Tensor: (2*radius+1, C, H, W) stacked frames.
+        """
+        start = max(0, center_idx - radius)
+        end = min(len(self.frame_paths), center_idx + radius + 1)  # +1 because slice is exclusive
+
+        # actual frame indices covered
+        indices = list(range(start, end))
+
+        # pad if necessary
+        while len(indices) < 2*radius+1:
+            if indices[0] > 0:
+                indices.insert(0, indices[0]-1)
+            elif indices[-1] < len(self.frame_paths)-1:
+                indices.append(indices[-1]+1)
+            else:
+                # nowhere to pad (e.g., very short video)
+                break
+
+        frames = []
+        for idx in indices:
+            path = self.frame_paths[idx]
+            if os.path.exists(path):
+                frame = read_image(path).float() / 255.
+            else:
+                frame = torch.zeros(*self.dummy_shape)
+            if self.transform:
+                frame = self.transform(frame)
+            frames.append(frame)
+
+        return torch.stack(frames)  # shape: (2*radius+1, C, H, W)
+
+
 if __name__ == "__main__":
     from torchvision import transforms
 

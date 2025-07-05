@@ -16,6 +16,9 @@ def extract_frames(video_path, resize_to=None):
     if os.path.exists(frame_dir):
         print(f"Frame directory {frame_dir} already exists, skipping extraction.")
         return frame_dir
+    else:
+        print(f"Creating frame directory {frame_dir}...")
+        os.makedirs(frame_dir, exist_ok=True)
     cap = cv2.VideoCapture(video_path)
     idx = 0
     while True:

@@ -174,57 +174,58 @@ class OwnE2EModel(BaseRGBModel):
 
     def postprocess_predictions(
         self,
-        pred,            # shape: [1, T, C] (numpy array or torch.Tensor.cpu().numpy())
-        nms_window=5,    # suppress predictions within +/- nms_window frames
+        pred,             # shape: [1, T, C] (numpy or torch.Tensor.cpu().numpy())
+        nms_window=5,     # suppress predictions within +/- nms_window *for each class*
         conf_threshold=0.5
     ):
         """
         Post-process predictions: apply temporal NMS and confidence threshold.
 
-        Args:
-            pred (np.ndarray): Predictions of shape (1, T, C), probabilities.
-            nms_window (int): Suppression range in frames.
-            conf_threshold (float): Minimum score to keep a prediction.
+        Multi-label: For each class, keep all frames > conf_threshold,
+        then apply temporal NMS independently for each class.
 
         Returns:
             List[dict]: List of detected events with frame, class, and score.
         """
         if not isinstance(pred, np.ndarray):
             pred = pred.detach().cpu().numpy()
-        
-        T = pred.shape[1]
-        C = pred.shape[2]
 
-        # flatten batch dim
+        T, C = pred.shape[1], pred.shape[2]
+
         pred = pred[0]  # shape: [T, C]
 
-        # find per-frame max class + score
-        class_ids = np.argmax(pred, axis=1)        # [T]
-        scores = np.max(pred, axis=1)              # [T]
-
-        # list of candidate events: [(frame, class_id, score)]
-        candidates = [
-            (i, class_ids[i], scores[i])
-            for i in range(T) if scores[i] >= conf_threshold
-        ]
-
-        # sort by score (high → low)
-        candidates.sort(key=lambda x: x[2], reverse=True)
-
         selected = []
-        suppressed = np.zeros(T, dtype=bool)
 
-        for frame, cls, score in candidates:
-            if suppressed[frame]:
-                continue
-            selected.append({"frame": frame, "class": int(cls), "score": float(score)})
+        # iterate over classes
+        for cls in range(C):
+            scores = pred[:, cls]  # shape: [T]
+            # find frames above threshold
+            candidates = [
+                (i, cls, scores[i])
+                for i in range(T) if scores[i] >= conf_threshold
+            ]
 
-            # suppress neighboring frames within nms_window
-            start = max(0, frame - nms_window)
-            end = min(T, frame + nms_window + 1)
-            suppressed[start:end] = True
+            # sort candidates of this class by score (high → low)
+            candidates.sort(key=lambda x: x[2], reverse=True)
+
+            suppressed = np.zeros(T, dtype=bool)
+
+            for frame, cls_id, score in candidates:
+                if suppressed[frame]:
+                    continue
+
+                selected.append({"frame": frame, "class": int(cls_id), "score": float(score)})
+
+                # suppress neighboring frames for this class
+                start = max(0, frame - nms_window)
+                end = min(T, frame + nms_window + 1)
+                suppressed[start:end] = True
+
+        # optional: sort all selected events by frame
+        selected.sort(key=lambda x: x["frame"])
 
         return selected
+
 
 
 
