@@ -27,7 +27,7 @@ def extract_frames(video_path, resize_to=None):
             break
         if resize_to:
             frame = cv2.resize(frame, resize_to)
-        out_path = os.path.join(frame_dir, f"{idx:05d}.jpg")
+        out_path = os.path.join(frame_dir, f"{idx:06d}.jpg")
         cv2.imwrite(out_path, frame)
         idx += 1
     cap.release()

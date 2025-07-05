@@ -4,11 +4,15 @@ os.environ["TORCH_CPP_LOG_LEVEL"] = "ERROR"
 from input_process import FrameClipDataset, extract_frames
 from event_detection import EventDetectionModel, load_event_detection_model
 from ball_tracking import build_ball_tracking_model, load_ball_tracking_model
+from table_detector import TableDetector
 import torch
 import torchvision.transforms as transforms
 import json
 import argparse
 import numpy as np
+import random
+from PIL import Image
+import matplotlib.pyplot as plt
 
 CLASS_CONVERSION = {
     0: 'empty',
@@ -30,6 +34,43 @@ def parse_args():
     parser.add_argument('--device', type=str, default='cpu', choices=['cpu', 'cuda'], help='Device to run the models on.')
     return parser.parse_args()
 
+
+def draw_bounces_on_table(bounces, table_size=(1525, 2740), save_path=None):
+    """
+    Draw bounces on a table view.
+
+    Args:
+        bounces (dict): {frame_id: {"event_type": str, "mapped_ball_location": {"x":, "y":}}}
+        table_size (tuple): (width, height) of the table in pixels
+        save_path (str): optional path to save figure
+    """
+    W, H = table_size
+
+    fig, ax = plt.subplots(figsize=(6, 10))
+    ax.set_xlim(0, W)
+    ax.set_ylim(H, 0)  # origin at top-left
+    ax.set_aspect('equal')
+    ax.set_title("Bounce Events on Table")
+
+    # Draw table outline
+    ax.add_patch(plt.Rectangle((0, 0), W, H, fill=False, linewidth=2, edgecolor='black'))
+
+    # Draw bounces
+    for frame_id, info in bounces.items():
+        if "mapped_ball_location" not in info:
+            continue
+        x = info["mapped_ball_location"]["x"]
+        y = info["mapped_ball_location"]["y"]
+        event_type = info.get("event_type", "")
+
+        ax.plot(x, y, 'ro')
+        ax.text(x+5, y, f"{frame_id}", fontsize=6, color='blue')
+
+    if save_path:
+        plt.savefig(save_path, dpi=150, bbox_inches='tight')
+    plt.show()
+
+
 def main(args):
     # Initialize video loader
     transform = transforms.Compose([
@@ -48,7 +89,7 @@ def main(args):
 
     # Initialize event detection model
     event_model = EventDetectionModel(event_model_config, device=args.device)
-    load_event_detection_model(event_model, 'event_detection/checkpoints/E2E_RES18_TTA.pt')
+    load_event_detection_model(event_model, 'event_detection/checkpoints/E2E_RES18_HGSM_TTA.pt')
 
 
     print(f'Event Detection Model initialized successfully')
@@ -63,9 +104,9 @@ def main(args):
     
     # Generate predictions
     pred_events = {}
-    threshold = 0.3  # or whatever you choose
+    threshold = 0.1  # or whatever you choose
 
-
+    # generating event predictions
     for data in video_loader:
         clips = data['frames']
         start_idx = data['start_idx']
@@ -84,12 +125,13 @@ def main(args):
             # filter: set scores < threshold to 0
             filtered_scores = pred_score_classes * (pred_score_classes >= threshold)
 
+            filtered_scores[0] = -1
             # find the highest class & score after filtering
             best_class = filtered_scores.argmax()
             best_score = filtered_scores[best_class]
 
             # skip if the highest remaining class is 0 (empty) or score is 0
-            if best_class == 0 or best_score == 0:
+            if best_score == 0:
                 continue
 
             # add to dict
@@ -97,60 +139,95 @@ def main(args):
                 'event_type': CLASS_CONVERSION.get(best_class.item(), 'unknown'),
                 'score': float(best_score)
             }
-        
-        print(list(pred_events.items()))
+    
+    pred_events = event_model.nms_on_dict(pred_events, nms_window=3)  # Apply NMS to the predictions
+    
+    # # generate pred_events as json file 
+    # with open('predicted_events.json', 'w') as f:
+    #     json.dump(pred_events, f, indent=4)
+
+
+    
+    frame_indices = [
+        dataset.num_frames // 2 - random.randint(0, 100),
+        dataset.num_frames // 2 - random.randint(0, 100),
+        dataset.num_frames // 2 + random.randint(0, 100),
+        dataset.num_frames // 2 + random.randint(0, 100),
+    ]
+
+    cropped_img_paths = []
+
+    for i, idx in enumerate(frame_indices):
+        filename = f"{idx:06d}.jpg"
+        img_path = os.path.join(frame_dir, filename)
+
+        img = Image.open(img_path).convert("RGB")
+        center_crop = transforms.CenterCrop(size=(224, 224))
+        cropped_img = center_crop(img)
+
+        os.makedirs('./result', exist_ok=True)
+        cropped_img_path = os.path.join('./result', f'cropped_{i}.jpg')
+        cropped_img.save(cropped_img_path)
+        cropped_img_paths.append(cropped_img_path)
+    
+    table_detector = TableDetector(image_paths=cropped_img_paths, topdown_width=1525, topdown_height=2740)
+
+    table_corners = table_detector.detect_average_corners()
+    table_detector.warp_table(save_path=os.path.join('./result', 'warped_table.jpg'))
+
+    print(f"Detected table corners: {table_corners}")
+
                 
-        for frame_idx, event_info in pred_events.items():
-            event_type = event_info['event_type']
-            score = event_info['score']
-            print(f"Frame {frame_idx}: Detected event '{event_type}' with score {score:.2f}")
+    #generate ball locations for each event
+    for frame_idx, event_info in pred_events.items():
+        event_type = event_info['event_type']
+        score = event_info['score']
 
-            if event_type in ['far_table_bounce', 'close_table_bounce']:
-                ball_location_frames = dataset.get_surrounding_frames(frame_idx, radius=2)
-                print(f"Ball location frames shape: {ball_location_frames.shape}")
+        if event_type in ['far_table_bounce', 'close_table_bounce']:
+            ball_location_frames = dataset.get_surrounding_frames(frame_idx, radius=2)
 
-                ball_location_frames = ball_location_frames.to(args.device, dtype=torch.float32)
-                ball_location_frames = ball_location_frames.unsqueeze(0)
-                ball_location_result, _ = ball_tracking_model(ball_location_frames)
-                extracted_coord = ball_tracking_model.extract_coords(ball_location_result)[0]
-                x_pred, y_pred = extracted_coord[1], extracted_coord[0]
-                pred_events[current_id]['ball_location'] = {
-                    'x': float(x_pred),
-                    'y': float(y_pred)
-                }
+            ball_location_frames = ball_location_frames.to(args.device, dtype=torch.float32)
+            ball_location_frames = ball_location_frames.unsqueeze(0)
+            ball_location_result, _ = ball_tracking_model(ball_location_frames)
+            extracted_coord = ball_tracking_model.extract_coords(ball_location_result)[0]
+            x_pred, y_pred = extracted_coord[1], extracted_coord[0]
+            # to numpy 
+            x_pred = x_pred.cpu().numpy()
+            y_pred = y_pred.cpu().numpy()
+            pred_events[frame_idx]['ball_location'] = {
+                'x': float(x_pred),
+                'y': float(y_pred)
+            }
+
+            # map the coordinates to the top-down view
+            mapped_x, mapped_y = table_detector.transform_ball(x_pred, y_pred)
+            pred_events[frame_idx]['mapped_ball_location'] = {
+                'x': float(mapped_x),
+                'y': float(mapped_y)
+            }
+
+    # generate pred_events as json file 
+    with open('predicted_events.json', 'w') as f:
+        json.dump(pred_events, f, indent=4)
+
+
+
+
+    
+
+
+
+
             
-
-           
 
             
             
 if __name__ == "__main__":
     args = parse_args()
-    main(args)
+    # main(args)
+    # read json file
+    with open('predicted_events.json', 'r') as f:
+        pred_events = json.load(f)
+    draw_bounces_on_table(pred_events, save_path='bounces_on_table.jpg')
 
 
-
-#  if pred == 1:
-#                 print(f"Far table bounce detected at clip {i + start_idx}, event type: {pred}")
-#                 ball_location_frames = dataset.get_surrounding_frames(i + start_idx, radius=2)
-#                 print(f"Ball location frames shape: {ball_location_frames.shape}")
-
-#                 ball_location_frames = ball_location_frames.to(args.device, dtype=torch.float32)
-#                 ball_location_frames = ball_location_frames.unsqueeze(0)  # Add batch dimension
-#                 ball_tracking_result, _ = ball_tracking_model(ball_location_frames)# 
-#                 extracted_coord = ball_tracking_model.extract_coords(ball_tracking_result)[0]
-#                 x_pred, y_pred = extracted_coord[0], extracted_coord[1]
-#                 # for some reason x_pred represents the vertical coordinate and y_pred represents the horizontal coordinate
-#                 print(f"Ball location after tracking: x : {x_pred}, y : {y_pred}")
-
-#             elif pred == 5:
-#                 print(f"Near table bounce detected at clip {i + start_idx}, event type: {pred}")
-#                 ball_location_frames = dataset.get_surrounding_frames(i + start_idx, radius=2)
-#                 print(f"Ball location frames shape: {ball_location_frames.shape}")
-
-#                 ball_location_frames = ball_location_frames.to(args.device, dtype=torch.float32)
-#                 ball_location_frames = ball_location_frames.unsqueeze(0)  # Add batch dimension
-#                 ball_tracking_result, _ = ball_tracking_model(ball_location_frames)# 
-#                 extracted_coord = ball_tracking_model.extract_coords(ball_tracking_result)[0]
-#                 x_pred, y_pred = extracted_coord[0], extracted_coord[1]
-#                 print(f"Ball location after tracking: x : {x_pred}, y : {y_pred}")

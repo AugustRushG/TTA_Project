@@ -23,6 +23,7 @@ class FrameClipDataset(Dataset):
         self.dummy_shape = (224,224)
 
         self.num_clips = max(0, (len(self.frame_paths) - window_size) // stride + 1)
+        self.num_frames = len(self.frame_paths)
     
     def _extract_frames(self):
         cap = cv2.VideoCapture(self.video_path)
