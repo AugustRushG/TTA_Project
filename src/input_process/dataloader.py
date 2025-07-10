@@ -9,7 +9,7 @@ IMAGENET_STD = [0.229, 0.224, 0.225]
 
 
 class FrameClipDataset(Dataset):
-    def __init__(self, frame_dir, window_size=100, stride=50, transform=None):
+    def __init__(self, frame_dir, window_size=100, stride=50, event_transform=None, ball_transform=None):
 
 
         self.frame_paths = sorted([
@@ -19,7 +19,8 @@ class FrameClipDataset(Dataset):
         ])
         self.window_size = window_size
         self.stride = stride
-        self.transform = transform
+        self.event_transform = event_transform
+        self.ball_transform = ball_transform
         self.dummy_shape = (224,224)
 
         self.num_clips = max(0, (len(self.frame_paths) - window_size) // stride + 1)
@@ -53,8 +54,8 @@ class FrameClipDataset(Dataset):
                 frame = read_image(path).float() / 255.
             else:
                 frame = torch.zeros(*self.dummy_shape)
-            if self.transform:
-                frame = self.transform(frame)
+            if self.event_transform:
+                frame = self.event_transform(frame)
             frames.append(frame)
 
         clip_tensor = torch.stack(frames)  # (T, C, H, W)
@@ -96,8 +97,8 @@ class FrameClipDataset(Dataset):
                 frame = read_image(path).float() / 255.
             else:
                 frame = torch.zeros(*self.dummy_shape)
-            if self.transform:
-                frame = self.transform(frame)
+            if self.ball_transform:
+                frame = self.ball_transform(frame)
             frames.append(frame)
 
         return torch.stack(frames)  # shape: (2*radius+1, C, H, W)

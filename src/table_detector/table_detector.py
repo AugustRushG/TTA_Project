@@ -1,123 +1,117 @@
 import matplotlib.pyplot as plt
 import cv2
 import numpy as np
+import os
 
 class TableDetector:
-    def __init__(self, image_paths, topdown_width=334, topdown_height=600):
-        """
-        image_paths: list of image paths
-        """
-        self.image_paths = image_paths
+    def __init__(self, image_path, topdown_width=334, topdown_height=600):
+        self.image_path = image_path
         self.topdown_width = topdown_width
         self.topdown_height = topdown_height
-        self.pts_dst = np.array([
+
+        # destination points for each half
+        self.pts_dst_top = np.array([
             [0, 0],
             [topdown_width-1, 0],
-            [topdown_width-1, topdown_height-1],
-            [0, topdown_height-1]
+            [0, topdown_height//2-1],
+            [topdown_width-1, topdown_height//2-1]
         ], dtype=np.float32)
-        self.H = None
+
+        self.pts_dst_bottom = np.array([
+            [0, topdown_height//2],
+            [topdown_width-1, topdown_height//2],
+            [0, topdown_height-1],
+            [topdown_width-1, topdown_height-1]
+        ], dtype=np.float32)
+
+        self.H_top = None
+        self.H_bottom = None
 
     def onclick(self, event):
         if event.xdata is not None and event.ydata is not None:
             x, y = int(event.xdata), int(event.ydata)
-            self.corners.append((x, y))
+            self.points.append((x, y))
             print(f"Clicked: ({x}, {y})")
 
             self.ax.plot(x, y, 'ro')
             self.fig.canvas.draw()
 
-            if len(self.corners) == 4:
+            if len(self.points) == 4:
                 plt.close(self.fig)
 
-    def detect_average_corners(self):
-        all_corners = []
+    def annotate_half(self, title):
+        self.points = []
+        img_bgr = cv2.imread(self.image_path)
+        img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
 
-        for img_path in self.image_paths:
-            self.corners = []  # reset for each image
+        self.fig, self.ax = plt.subplots()
+        self.ax.imshow(img_rgb)
+        self.ax.set_title(title)
+        self.fig.canvas.mpl_connect('button_press_event', self.onclick)
+        plt.show()
 
-            img_bgr = cv2.imread(img_path)
-            if img_bgr is None:
-                raise FileNotFoundError(f"Image not found: {img_path}")
-            img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
-
-            self.fig, self.ax = plt.subplots()
-            self.ax.imshow(img_rgb)
-            self.ax.set_title("Click 4 table corners")
-            self.fig.canvas.mpl_connect('button_press_event', self.onclick)
-
-            plt.show()
-
-            if len(self.corners) != 4:
-                raise ValueError(f"Expected 4 corners, got {len(self.corners)} on {img_path}")
-
-            ordered = self.order_corners(self.corners)
-            all_corners.append(ordered)
-
-        # average corners
-        all_corners = np.array(all_corners)  # shape: (N,4,2)
-        avg_corners = np.mean(all_corners, axis=0)
-        avg_corners = self.expand_corners(avg_corners, scale=1.2)
-
-        # based on the average corners, expand the corners a bit to help with homography
-
-
-        self.pts_src = avg_corners.astype(np.float32)
-        self.compute_homography()
-        return avg_corners
+        if len(self.points) != 4:
+            raise ValueError(f"Expected 4 points, got {len(self.points)}")
+        return np.array(self.points, dtype=np.float32)
     
-    def expand_corners(self, corners, scale=1.05):
-        """
-        Expand the corners outward from the center by a given scale.
+    def expand_corners_anisotropic(self, corners, scale_x=1.0, scale_y=1.1):
+        center = corners.mean(axis=0, keepdims=True)
+        deltas = corners - center
+        deltas[:,0] *= scale_x
+        deltas[:,1] *= scale_y
+        return deltas + center
 
-        Args:
-            corners (np.ndarray): shape (4,2), ordered TL, TR, BR, BL
-            scale (float): scaling factor (>1 to expand, <1 to shrink)
+    def detect_corners_and_compute(self):
+        # top half
+        print("Annotate TOP half: TL, TR, mid-left, mid-right")
+        corners_top = self.annotate_half("Click 4 corners for TOP half (TL, TR, mid-left, mid-right)")
+        # corners_top = self.expand_corners_anisotropic(corners_top, scale_x=1.0, scale_y=1.4)
+        self.H_top, _ = cv2.findHomography(corners_top, self.pts_dst_top)
 
-        Returns:
-            np.ndarray: expanded corners, shape (4,2)
-        """
-        center = corners.mean(axis=0, keepdims=True)  # shape: (1,2)
-        expanded = (corners - center) * scale + center
-        return expanded
+        # bottom half
+        print("Annotate BOTTOM half: mid-left, mid-right, BL, BR")
+        corners_bottom = self.annotate_half("Click 4 corners for BOTTOM half (mid-left, mid-right, BL, BR)")
+        self.H_bottom, _ = cv2.findHomography(corners_bottom, self.pts_dst_bottom)
 
-    def compute_homography(self):
-        self.H, _ = cv2.findHomography(self.pts_src, self.pts_dst)
-        if self.H is None:
-            raise RuntimeError("Failed to compute homography.")
-        print("Homography matrix computed.")
+        if self.H_top is None or self.H_bottom is None:
+            raise RuntimeError("Failed to compute one or both homographies.")
+        print("Homographies computed for both halves.")
 
     def transform_ball(self, ball_x, ball_y):
-        if self.H is None:
-            raise RuntimeError("You must detect corners and compute homography first.")
+        """
+        Transform a ball point by choosing top or bottom H depending on y position.
+        """
+        if self.H_top is None or self.H_bottom is None:
+            raise RuntimeError("You must annotate and compute homographies first.")
+        
+        # simple heuristic: if closer to top half or bottom half
+        img_height = cv2.imread(self.image_path).shape[0]
+        if ball_y < img_height // 2:
+            H = self.H_top
+        else:
+            H = self.H_bottom
+        
         pt = np.array([[[ball_x, ball_y]]], dtype=np.float32)
-        top_down_pt = cv2.perspectiveTransform(pt, self.H)
-        return top_down_pt[0][0]  # (x, y)
+        top_down_pt = cv2.perspectiveTransform(pt, H)
+        return top_down_pt[0][0]
 
-    def warp_table(self, image_path=None, save_path=None):
-        if image_path is None:
-            image_path = self.image_paths[0]  # default to first image
+    def warp_table(self, save_path=None):
+        """
+        Warps both halves and stitches them together.
+        """
+        img_bgr = cv2.imread(self.image_path)
+        warped_top = cv2.warpPerspective(img_bgr, self.H_top,
+                                         (self.topdown_width, self.topdown_height))
+        warped_bottom = cv2.warpPerspective(img_bgr, self.H_bottom,
+                                            (self.topdown_width, self.topdown_height))
 
-        img_bgr = cv2.imread(image_path)
-        warped = cv2.warpPerspective(
-            img_bgr, self.H,
-            (self.topdown_width, self.topdown_height)
-        )
+        # blend both halves
+        mask = np.zeros_like(warped_top)
+        mask[:self.topdown_height//2, :, :] = warped_top[:self.topdown_height//2, :, :]
+        mask[self.topdown_height//2:, :, :] = warped_bottom[self.topdown_height//2:, :, :]
+
         if save_path:
-            cv2.imwrite(save_path, warped)
-        return warped
+            cv2.imwrite(save_path, mask)
+            print(f"Warped table saved to {save_path}")
 
-    @staticmethod
-    def order_corners(corners):
-        pts = np.array(corners, dtype=np.float32)
-
-        s = pts.sum(axis=1)        # x + y
-        diff = np.diff(pts, axis=1)[:, 0]  # x - y
-
-        ordered = np.zeros((4, 2), dtype=np.float32)
-        ordered[0] = pts[np.argmin(s)]     # TL
-        ordered[2] = pts[np.argmax(s)]     # BR
-        ordered[1] = pts[np.argmin(diff)]  # TR
-        ordered[3] = pts[np.argmax(diff)]  # BL
-
-        return ordered
+        return mask

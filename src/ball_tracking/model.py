@@ -377,11 +377,12 @@ def build_motion_model_light(args):
 
 if __name__ == '__main__':
     from .utils import load_pretrained_model
-    img_size = (224,224)
+    # img_size = (224, 224)
+    img_size = (288, 512)
 
     model = build_motion_model_light(args=type('', (), {'img_size': img_size, 'num_frames': 5, 'device': 'cpu'})())
-    load_pretrained_model(model, 'ball_tracking/checkpoints/TOTNet_TTA_(5)_(224,398)_best.pth', 'cpu')
-    x = torch.randn(2, 5, 3, 224, 224)  # [B, N, C, H, W]
+    load_pretrained_model(model, f'ball_tracking/checkpoints/TOTNet_TTA_(5)_(288,512)_best.pth', 'cpu')
+    x = torch.randn(2, 5, 3, img_size[0], img_size[1])  # [B, N, C, H, W]
     out = model(x)
     print(out[0][0].shape, out[0][1].shape)  # Should print shapes of the heatmaps
     print(out[1])  # Should be None

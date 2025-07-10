@@ -11,8 +11,11 @@ import json
 import argparse
 import numpy as np
 import random
+from tqdm import tqdm
 from PIL import Image
 import matplotlib.pyplot as plt
+import cv2
+import matplotlib.patches as patches
 
 CLASS_CONVERSION = {
     0: 'empty',
@@ -31,7 +34,7 @@ def parse_args():
     parser.add_argument('--video_path', type=str, required=True, help='Path to the input video file.')
     parser.add_argument('--window_size', type=int, default=100, help='Size of the sliding window for frame processing.')
     parser.add_argument('--stride', type=int, default=50, help='Stride for the sliding window.')
-    parser.add_argument('--device', type=str, default='cpu', choices=['cpu', 'cuda'], help='Device to run the models on.')
+    parser.add_argument('--device', type=str, default='cuda', choices=['cpu', 'cuda'], help='Device to run the models on.')
     return parser.parse_args()
 
 
@@ -40,45 +43,70 @@ def draw_bounces_on_table(bounces, table_size=(1525, 2740), save_path=None):
     Draw bounces on a table view.
 
     Args:
-        bounces (dict): {frame_id: {"event_type": str, "mapped_ball_location": {"x":, "y":}}}
+        bounces (dict): 
+            {frame_id: {"event_type": str, "mapped_ball_location": {"x":, "y":}}}
         table_size (tuple): (width, height) of the table in pixels
         save_path (str): optional path to save figure
     """
     W, H = table_size
 
-    fig, ax = plt.subplots(figsize=(6, 10))
+    fig, ax = plt.subplots(figsize=(8, 12))  # bigger figure for clarity
     ax.set_xlim(0, W)
     ax.set_ylim(H, 0)  # origin at top-left
     ax.set_aspect('equal')
     ax.set_title("Bounce Events on Table")
 
     # Draw table outline
-    ax.add_patch(plt.Rectangle((0, 0), W, H, fill=False, linewidth=2, edgecolor='black'))
+    table_rect = patches.Rectangle((0, 0), W, H, 
+                                   fill=False, linewidth=2, edgecolor='black')
+    ax.add_patch(table_rect)
+
+    # Define colors per event type
+    color_map = {
+        'far_table_bounce': 'blue',
+        'close_table_bounce': 'red',
+        'net_bounce': 'green',
+        'unknown': 'gray'
+    }
 
     # Draw bounces
     for frame_id, info in bounces.items():
         if "mapped_ball_location" not in info:
             continue
+
         x = info["mapped_ball_location"]["x"]
         y = info["mapped_ball_location"]["y"]
-        event_type = info.get("event_type", "")
+        event_type = info.get("event_type", "unknown")
 
-        ax.plot(x, y, 'ro')
-        ax.text(x+5, y, f"{frame_id}", fontsize=6, color='blue')
+        color = color_map.get(event_type, 'black')  # fallback color
 
+        ax.plot(x, y, marker='o', linestyle='', color=color, markersize=5)
+        ax.text(x + 5, y, f"{frame_id}", fontsize=6, color=color)
+
+    # Optional save
     if save_path:
-        plt.savefig(save_path, dpi=150, bbox_inches='tight')
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        print(f"Saved figure to {save_path}")
+
     plt.show()
 
 
 def main(args):
     # Initialize video loader
-    transform = transforms.Compose([
+    event_transform = transforms.Compose([
         transforms.CenterCrop(size=(224, 224)),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
+    ball_transform = transforms.Compose([
+        transforms.Resize((288, 512)),
+        # transforms.CenterCrop(size=(224, 224)),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
     frame_dir = extract_frames(args.video_path, resize_to=(398, 224))
-    dataset = FrameClipDataset(frame_dir, window_size=args.window_size, stride=args.stride, transform=transform)
+    game_name = os.path.basename(args.video_path).split('.')[0]
+    print(f'Extracted frames for {game_name} into {frame_dir}')
+
+    dataset = FrameClipDataset(frame_dir, window_size=args.window_size, stride=args.stride, event_transform=event_transform, ball_transform=ball_transform)
     video_loader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False, num_workers=4)
     print(f'Video Loader initialized with {len(dataset)} clips')
 
@@ -95,8 +123,8 @@ def main(args):
     print(f'Event Detection Model initialized successfully')
 
     # Initialize ball tracking model
-    ball_tracking_model = build_ball_tracking_model(args=type('', (), {'img_size': (224,224), 'num_frames': 5, 'device': args.device})())
-    ball_tracking_model = load_ball_tracking_model(ball_tracking_model, 'ball_tracking/checkpoints/TOTNet_TTA_(5)_(224,398)_best.pth', args.device)
+    ball_tracking_model = build_ball_tracking_model(args=type('', (), {'img_size': (288,512), 'num_frames': 5, 'device': args.device})())
+    ball_tracking_model = load_ball_tracking_model(ball_tracking_model, 'ball_tracking/checkpoints/TOTNet_TTA_(5)_(288,512)_best.pth', args.device)
     ball_tracking_model.to(args.device)
     ball_tracking_model.eval()
 
@@ -107,21 +135,21 @@ def main(args):
     threshold = 0.1  # or whatever you choose
 
     # generating event predictions
-    for data in video_loader:
+    for data in tqdm(video_loader, desc="Processing clips"):
         clips = data['frames']
         start_idx = data['start_idx']
         end_idx = data['end_idx']
         clips = clips.to(args.device, dtype=torch.float32)
         # Process clips with event detection model
         pred_results, pred_scores = event_model.predict(clips)
-   
-        print(f"Clip shape: {clips.shape}, Start index: {start_idx}, End index: {end_idx}")
+
+        # print(f"Clip shape: {clips.shape}, Start index: {start_idx}, End index: {end_idx}")
         pred_results = pred_results[0] # batch = 1, so we can take the first element
         pred_scores = pred_scores[0]  # batch = 1, so we can take the first element
 
         for i, (pred_event, pred_score_classes) in enumerate(zip(pred_results, pred_scores)):
             current_id = (i + start_idx).item()
-           
+        
             # filter: set scores < threshold to 0
             filtered_scores = pred_score_classes * (pred_score_classes >= threshold)
 
@@ -139,47 +167,43 @@ def main(args):
                 'event_type': CLASS_CONVERSION.get(best_class.item(), 'unknown'),
                 'score': float(best_score)
             }
+        
+        pred_events = event_model.nms_on_dict(pred_events, nms_window=3)  # Apply NMS to the predictions
     
-    pred_events = event_model.nms_on_dict(pred_events, nms_window=3)  # Apply NMS to the predictions
-    
-    # # generate pred_events as json file 
-    # with open('predicted_events.json', 'w') as f:
-    #     json.dump(pred_events, f, indent=4)
-
-
     
     frame_indices = [
         dataset.num_frames // 2 - random.randint(0, 100),
-        dataset.num_frames // 2 - random.randint(0, 100),
-        dataset.num_frames // 2 + random.randint(0, 100),
+        # dataset.num_frames // 2 - random.randint(0, 100),
+        # dataset.num_frames // 2 + random.randint(0, 100),
         dataset.num_frames // 2 + random.randint(0, 100),
     ]
 
-    cropped_img_paths = []
+    converted_img_paths = []
 
     for i, idx in enumerate(frame_indices):
         filename = f"{idx:06d}.jpg"
         img_path = os.path.join(frame_dir, filename)
 
         img = Image.open(img_path).convert("RGB")
-        center_crop = transforms.CenterCrop(size=(224, 224))
-        cropped_img = center_crop(img)
+        # img_trans = transforms.CenterCrop(size=(224,224))
+        img_trans = transforms.Resize((288, 512))
+        converted_img = img_trans(img)
 
         os.makedirs('./result', exist_ok=True)
-        cropped_img_path = os.path.join('./result', f'cropped_{i}.jpg')
-        cropped_img.save(cropped_img_path)
-        cropped_img_paths.append(cropped_img_path)
+        converted_img_path = os.path.join('./result', f'converted_{i}.jpg')
+        converted_img.save(converted_img_path)
+        converted_img_paths.append(converted_img_path)
     
-    table_detector = TableDetector(image_paths=cropped_img_paths, topdown_width=1525, topdown_height=2740)
+    table_detector = TableDetector(image_path=converted_img_paths[0], topdown_width=1525, topdown_height=2740)
 
-    table_corners = table_detector.detect_average_corners()
-    table_detector.warp_table(save_path=os.path.join('./result', 'warped_table.jpg'))
+    table_detector.detect_corners_and_compute()
 
-    print(f"Detected table corners: {table_corners}")
+    # plt.show(converted_img)
 
                 
     #generate ball locations for each event
-    for frame_idx, event_info in pred_events.items():
+    for frame_idx, event_info in tqdm(pred_events.items(), desc="Ball tracking"):
+
         event_type = event_info['event_type']
         score = event_info['score']
 
@@ -190,7 +214,7 @@ def main(args):
             ball_location_frames = ball_location_frames.unsqueeze(0)
             ball_location_result, _ = ball_tracking_model(ball_location_frames)
             extracted_coord = ball_tracking_model.extract_coords(ball_location_result)[0]
-            x_pred, y_pred = extracted_coord[1], extracted_coord[0]
+            x_pred, y_pred = extracted_coord[0], extracted_coord[1]
             # to numpy 
             x_pred = x_pred.cpu().numpy()
             y_pred = y_pred.cpu().numpy()
@@ -207,11 +231,11 @@ def main(args):
             }
 
     # generate pred_events as json file 
-    with open('predicted_events.json', 'w') as f:
+    with open(f'predicted_events_{game_name}.json', 'w') as f:
         json.dump(pred_events, f, indent=4)
 
 
-
+    return pred_events
 
     
 
@@ -224,10 +248,14 @@ def main(args):
             
 if __name__ == "__main__":
     args = parse_args()
-    # main(args)
+    pred_events = main(args)
     # read json file
-    with open('predicted_events.json', 'r') as f:
+    with open(f'predicted_events_{os.path.basename(args.video_path).split(".")[0]}.json', 'r') as f:
         pred_events = json.load(f)
     draw_bounces_on_table(pred_events, save_path='bounces_on_table.jpg')
+    # img = Image.open('/home/august/github/TTA_Project/src/result/converted_2.jpg').convert("RGB")
+    # plt.imshow(img)
+    # plt.show()
+
 
 
