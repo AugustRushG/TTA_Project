@@ -5,17 +5,15 @@ from input_process import FrameClipDataset, extract_frames
 from event_detection import EventDetectionModel, load_event_detection_model
 from ball_tracking import build_ball_tracking_model, load_ball_tracking_model
 from table_detector import TableDetector
+from utils.visualization import draw_bounces_on_split_table
 import torch
 import torchvision.transforms as transforms
 import json
 import argparse
-import numpy as np
 import random
 from tqdm import tqdm
 from PIL import Image
-import matplotlib.pyplot as plt
-import cv2
-import matplotlib.patches as patches
+
 
 CLASS_CONVERSION = {
     0: 'empty',
@@ -38,57 +36,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def draw_bounces_on_table(bounces, table_size=(1525, 2740), save_path=None):
-    """
-    Draw bounces on a table view.
 
-    Args:
-        bounces (dict): 
-            {frame_id: {"event_type": str, "mapped_ball_location": {"x":, "y":}}}
-        table_size (tuple): (width, height) of the table in pixels
-        save_path (str): optional path to save figure
-    """
-    W, H = table_size
-
-    fig, ax = plt.subplots(figsize=(8, 12))  # bigger figure for clarity
-    ax.set_xlim(0, W)
-    ax.set_ylim(H, 0)  # origin at top-left
-    ax.set_aspect('equal')
-    ax.set_title("Bounce Events on Table")
-
-    # Draw table outline
-    table_rect = patches.Rectangle((0, 0), W, H, 
-                                   fill=False, linewidth=2, edgecolor='black')
-    ax.add_patch(table_rect)
-
-    # Define colors per event type
-    color_map = {
-        'far_table_bounce': 'blue',
-        'close_table_bounce': 'red',
-        'net_bounce': 'green',
-        'unknown': 'gray'
-    }
-
-    # Draw bounces
-    for frame_id, info in bounces.items():
-        if "mapped_ball_location" not in info:
-            continue
-
-        x = info["mapped_ball_location"]["x"]
-        y = info["mapped_ball_location"]["y"]
-        event_type = info.get("event_type", "unknown")
-
-        color = color_map.get(event_type, 'black')  # fallback color
-
-        ax.plot(x, y, marker='o', linestyle='', color=color, markersize=5)
-        ax.text(x + 5, y, f"{frame_id}", fontsize=6, color=color)
-
-    # Optional save
-    if save_path:
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
-        print(f"Saved figure to {save_path}")
-
-    plt.show()
 
 
 def main(args):
@@ -252,7 +200,7 @@ if __name__ == "__main__":
     # read json file
     with open(f'predicted_events_{os.path.basename(args.video_path).split(".")[0]}.json', 'r') as f:
         pred_events = json.load(f)
-    draw_bounces_on_table(pred_events, save_path='bounces_on_table.jpg')
+    draw_bounces_on_split_table(pred_events, save_path='bounces_on_table_split.jpg')
     # img = Image.open('/home/august/github/TTA_Project/src/result/converted_2.jpg').convert("RGB")
     # plt.imshow(img)
     # plt.show()
