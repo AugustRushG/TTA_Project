@@ -32,7 +32,7 @@ def parse_args():
     parser.add_argument('--video_path', type=str, required=True, help='Path to the input video file.')
     parser.add_argument('--window_size', type=int, default=100, help='Size of the sliding window for frame processing.')
     parser.add_argument('--stride', type=int, default=50, help='Stride for the sliding window.')
-    parser.add_argument('--device', type=str, default='cuda', choices=['cpu', 'cuda'], help='Device to run the models on.')
+    parser.add_argument('--device', type=str, default='cuda', choices=['cpu', 'cuda', 'mps'], help='Device to run the models on.')
     return parser.parse_args()
 
 
