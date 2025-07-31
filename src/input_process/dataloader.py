@@ -62,33 +62,43 @@ class FrameClipDataset(Dataset):
         return {'frames': clip_tensor, 'start_idx': start, 'end_idx': end - 1}
 
 
-    def get_surrounding_frames(self, center_idx, radius=2):
+    def get_surrounding_frames(self, center_idx, radius=2, bidirectional=False):
         """
-        Given a center frame index, return frames in [center - radius, ..., center, ..., center + radius]
-        with padding at edges if needed.
+        Return a sequence of frames centered around a given frame index or ending at it.
 
         Args:
-            center_idx (int): center frame index (0-based).
-            radius (int): number of frames before and after.
+            center_idx (int): center or last frame index (0-based).
+            radius (int): number of frames before and after (if bidirectional), or number of past frames (if not).
+            bidirectional (bool): if True, center frame is in the middle;
+                                if False, center frame is the last one.
 
         Returns:
             torch.Tensor: (2*radius+1, C, H, W) stacked frames.
         """
-        start = max(0, center_idx - radius)
-        end = min(len(self.frame_paths), center_idx + radius + 1)  # +1 because slice is exclusive
+        if bidirectional:
+            start = max(0, center_idx - radius)
+            end = min(len(self.frame_paths), center_idx + radius + 1)  # +1 because slice is exclusive
+            indices = list(range(start, end))
 
-        # actual frame indices covered
-        indices = list(range(start, end))
+            # pad if necessary
+            while len(indices) < 2 * radius + 1:
+                if indices[0] > 0:
+                    indices.insert(0, indices[0] - 1)
+                elif indices[-1] < len(self.frame_paths) - 1:
+                    indices.append(indices[-1] + 1)
+                else:
+                    break
+        else:
+            start = max(0, center_idx - 2 * radius)
+            end = center_idx + 1  # inclusive of center_idx
+            indices = list(range(start, end))
 
-        # pad if necessary
-        while len(indices) < 2*radius+1:
-            if indices[0] > 0:
-                indices.insert(0, indices[0]-1)
-            elif indices[-1] < len(self.frame_paths)-1:
-                indices.append(indices[-1]+1)
-            else:
-                # nowhere to pad (e.g., very short video)
-                break
+            # pad if necessary
+            while len(indices) < 2 * radius + 1:
+                if indices[0] > 0:
+                    indices.insert(0, indices[0] - 1)
+                else:
+                    break
 
         frames = []
         for idx in indices:

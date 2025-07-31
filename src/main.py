@@ -5,7 +5,7 @@ from input_process import FrameClipDataset, extract_frames
 from event_detection import EventDetectionModel, load_event_detection_model
 from ball_tracking import build_ball_tracking_model, load_ball_tracking_model
 from table_detector import TableDetector
-from utils.visualization import draw_bounces_on_split_table
+from utils.visualization import draw_bounces_on_split_table, draw_bounces_on_table
 import torch
 import torchvision.transforms as transforms
 import json
@@ -46,8 +46,8 @@ def main(args):
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
     ball_transform = transforms.Compose([
-        transforms.Resize((288, 512)),
-        # transforms.CenterCrop(size=(224, 224)),
+        # transforms.Resize((288, 512)),
+        transforms.CenterCrop(size=(224, 224)),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
     frame_dir = extract_frames(args.video_path, resize_to=(398, 224))
@@ -71,8 +71,8 @@ def main(args):
     print(f'Event Detection Model initialized successfully')
 
     # Initialize ball tracking model
-    ball_tracking_model = build_ball_tracking_model(args=type('', (), {'img_size': (288,512), 'num_frames': 5, 'device': args.device})())
-    ball_tracking_model = load_ball_tracking_model(ball_tracking_model, 'ball_tracking/checkpoints/TOTNet_TTA_(5)_(288,512)_best.pth', args.device)
+    ball_tracking_model = build_ball_tracking_model(args=type('', (), {'img_size': (224, 224), 'num_frames': 5, 'device': args.device})())
+    ball_tracking_model = load_ball_tracking_model(ball_tracking_model, 'ball_tracking/checkpoints/TOTNet_TTA_(5)_(224,398)_newdata_best.pth', args.device)
     ball_tracking_model.to(args.device)
     ball_tracking_model.eval()
 
@@ -133,8 +133,8 @@ def main(args):
         img_path = os.path.join(frame_dir, filename)
 
         img = Image.open(img_path).convert("RGB")
-        # img_trans = transforms.CenterCrop(size=(224,224))
-        img_trans = transforms.Resize((288, 512))
+        img_trans = transforms.CenterCrop(size=(224,224))
+        # img_trans = transforms.Resize((288, 512))
         converted_img = img_trans(img)
 
         os.makedirs('./result', exist_ok=True)
@@ -200,6 +200,7 @@ if __name__ == "__main__":
     # read json file
     with open(f'predicted_events_{os.path.basename(args.video_path).split(".")[0]}.json', 'r') as f:
         pred_events = json.load(f)
+    # draw_bounces_on_table(pred_events, save_path='bounces_on_table.jpg')
     draw_bounces_on_split_table(pred_events, save_path='bounces_on_table_split.jpg')
     # img = Image.open('/home/august/github/TTA_Project/src/result/converted_2.jpg').convert("RGB")
     # plt.imshow(img)
