@@ -50,7 +50,7 @@ def main(args):
         transforms.CenterCrop(size=(224, 224)),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
-    frame_dir = extract_frames(args.video_path, resize_to=(398, 224))
+    frame_dir, fps_rate = extract_frames(args.video_path, resize_to=(398, 224))
     game_name = os.path.basename(args.video_path).split('.')[0]
     print(f'Extracted frames for {game_name} into {frame_dir}')
 
@@ -97,6 +97,7 @@ def main(args):
 
         for i, (pred_event, pred_score_classes) in enumerate(zip(pred_results, pred_scores)):
             current_id = (i + start_idx).item()
+            current_time = current_id / fps_rate
         
             # filter: set scores < threshold to 0
             filtered_scores = pred_score_classes * (pred_score_classes >= threshold)
@@ -112,13 +113,13 @@ def main(args):
 
             # add to dict
             pred_events[current_id] = {
+                'time': current_time,
                 'event_type': CLASS_CONVERSION.get(best_class.item(), 'unknown'),
                 'score': float(best_score)
             }
         
         pred_events = event_model.nms_on_dict(pred_events, nms_window=3)  # Apply NMS to the predictions
-    
-    
+
     frame_indices = [
         dataset.num_frames // 2 - random.randint(0, 100),
         # dataset.num_frames // 2 - random.randint(0, 100),

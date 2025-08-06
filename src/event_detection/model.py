@@ -184,22 +184,22 @@ class OwnE2EModel(BaseRGBModel):
         """
         # convert dict to list of (frame_id, event_type, score)
         events = [
-            (fid, v['event_type'], v['score'])
+            (fid, v['time'], v['event_type'], v['score'])
             for fid, v in pred_events.items()
         ]
 
         # sort by score descending
-        events.sort(key=lambda x: x[2], reverse=True)
+        events.sort(key=lambda x: x[3], reverse=True)
 
         selected = []
         suppressed = set()
 
-        for frame_id, event_type, score in events:
+        for frame_id, time, event_type, score in events:
             if frame_id in suppressed:
                 continue
 
             # keep this event
-            selected.append((frame_id, event_type, score))
+            selected.append((frame_id, time, event_type, score))
 
             # suppress neighboring frames of the same event_type
             for offset in range(-nms_window, nms_window + 1):
@@ -207,8 +207,8 @@ class OwnE2EModel(BaseRGBModel):
 
         # rebuild the filtered dict
         filtered = {
-            fid: {'event_type': etype, 'score': score}
-            for fid, etype, score in selected
+            fid: {'time':time, 'event_type': etype, 'score': score}
+            for fid, time, etype, score in selected
         }
 
         # sort by frame_id

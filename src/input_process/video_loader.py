@@ -13,13 +13,16 @@ IMAGENET_STD = [0.229, 0.224, 0.225]
 
 def extract_frames(video_path, resize_to=None):
     frame_dir = os.path.splitext(video_path)[0] + "_frames"
+    cap = cv2.VideoCapture(video_path)
+    fps = cap.get(cv2.CAP_PROP_FPS)
     if os.path.exists(frame_dir):
-        print(f"Frame directory {frame_dir} already exists, skipping extraction.")
-        return frame_dir
+        print(f"Frame directory {frame_dir} already exists, skipping extraction, fps: {fps}")
+        cap.release()
+        return frame_dir, fps
     else:
         print(f"Creating frame directory {frame_dir}...")
         os.makedirs(frame_dir, exist_ok=True)
-    cap = cv2.VideoCapture(video_path)
+
     idx = 0
     while True:
         success, frame = cap.read()
@@ -33,7 +36,7 @@ def extract_frames(video_path, resize_to=None):
     cap.release()
 
     print(f"Extracted {idx} frames to {frame_dir}")
-    return frame_dir
+    return frame_dir, fps
 
 
 

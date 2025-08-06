@@ -31,7 +31,10 @@ def draw_bounces_on_split_table(bounces, table_size=(1525, 2740), save_path=None
         ax.set_aspect('equal')
         ax.set_xlabel("X (pixels)")
         ax.set_ylabel("Y (pixels)")
-        ax.set_title(f"Table Half {idx+1} (0,0 at bottom-left)")
+        if idx == 0:
+            ax.set_title("Far Table Half (0,0 at bottom-left)")
+        else:
+            ax.set_title("Close Table Half (0,0 at bottom-left)")
 
         # Draw table half outline
         table_rect = patches.Rectangle((0, 0), W, half_H, 
@@ -58,6 +61,7 @@ def draw_bounces_on_split_table(bounces, table_size=(1525, 2740), save_path=None
             side = 0
             x_plot = W - x  # mirror X to match far table view
             y_plot = y_plot - half_H  # adjust Y for far table view
+            y_plot = half_H - y_plot  # flip Y for far table view
         else: # this means close table view
             side = 1
             x_plot = x
