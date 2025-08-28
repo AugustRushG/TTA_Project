@@ -3,9 +3,10 @@ os.environ["TORCH_CPP_LOG_LEVEL"] = "ERROR"
 
 from input_process import FrameClipDataset, extract_frames
 from event_detection import EventDetectionModel, load_event_detection_model
-from ball_tracking import build_ball_tracking_model, load_ball_tracking_model
+from ball_tracking import BallTrackingModel
 from table_detector import TableDetector
 from utils.visualization import draw_bounces_on_split_table, draw_bounces_on_table
+from analysis import AnalysisUtils
 import torch
 import torchvision.transforms as transforms
 import json
@@ -59,28 +60,34 @@ def main(args):
     print(f'Video Loader initialized with {len(dataset)} clips')
 
     # Load event detection model configuration
-    event_model_config = 'event_detection/model_configs/e2e_res18_hgsm.json'
+    event_model_config = 'event_detection/model_configs/e2e_res18_hagsm.json'
     with open(event_model_config, 'r') as f:
         event_model_config = json.load(f)
 
     # Initialize event detection model
     event_model = EventDetectionModel(event_model_config, device=args.device)
-    load_event_detection_model(event_model, 'event_detection/checkpoints/E2E_RES18_HGSM_TTA.pt')
+    load_event_detection_model(event_model, 'event_detection/checkpoints/E2E_RES18_HAGSM_TTA.pt')
 
 
     print(f'Event Detection Model initialized successfully')
 
     # Initialize ball tracking model
-    ball_tracking_model = build_ball_tracking_model(args=type('', (), {'img_size': (224, 224), 'num_frames': 5, 'device': args.device})())
-    ball_tracking_model = load_ball_tracking_model(ball_tracking_model, 'ball_tracking/checkpoints/TOTNet_TTA_(5)_(224,398)_newdata_best.pth', args.device)
-    ball_tracking_model.to(args.device)
-    ball_tracking_model.eval()
+    ball_tracking_model = BallTrackingModel(
+        model_choice='TOTNet',
+        model_args=type('', (), {'img_size': (224, 224), 'num_frames': 5, 'device': args.device})(),
+        checkpoint_path='ball_tracking/checkpoints/TOTNet_TTA_(5)_(224,398)_newdata_50epochs_best.pth'
+    )
+    TOTNet_OF = BallTrackingModel(
+        model_choice='TOTNet_OF',
+        model_args=type('', (), {'img_size': (224, 224), 'num_frames': 5, 'device': args.device})(),
+        checkpoint_path='ball_tracking/checkpoints/TOTNet_OF_TTA_(5)_(224,398)_newdata_50epochs_best.pth'
+    )
 
     print(f'Ball Tracking Model initialized successfully')
     
     # Generate predictions
     pred_events = {}
-    threshold = 0.1  # or whatever you choose
+    threshold = 0.05  # threshold for event detection scores, can be adjusted
 
     # generating event predictions
     for data in tqdm(video_loader, desc="Processing clips"):
@@ -161,9 +168,12 @@ def main(args):
 
             ball_location_frames = ball_location_frames.to(args.device, dtype=torch.float32)
             ball_location_frames = ball_location_frames.unsqueeze(0)
-            ball_location_result, _ = ball_tracking_model(ball_location_frames)
-            extracted_coord = ball_tracking_model.extract_coords(ball_location_result)[0]
+            # print(f"Processing ball location for frame {frame_idx} with event type {event_type} and score {score}")
+            # print(f"Ball location frames shape: {ball_location_frames.shape}")
+            ball_location_result, confidence = ball_tracking_model.predict(ball_location_frames)
+            extracted_coord = ball_tracking_model.extract_coordinates(ball_location_result)[0]
             x_pred, y_pred = extracted_coord[0], extracted_coord[1]
+
             # to numpy 
             x_pred = x_pred.cpu().numpy()
             y_pred = y_pred.cpu().numpy()
@@ -178,6 +188,48 @@ def main(args):
                 'x': float(mapped_x),
                 'y': float(mapped_y)
             }
+
+            pred_events[frame_idx]['ball_coord_confidence'] = float(confidence)
+
+            if confidence < 0.5:
+                print(f"Low confidence ({confidence}) for frame {frame_idx}, trying Optical Flow model")
+                ball_location_result_OF, confidence_OF = TOTNet_OF.predict(ball_location_frames)
+                extracted_coord_OF = TOTNet_OF.extract_coordinates(ball_location_result_OF)[0]
+                x_pred_OF, y_pred_OF = extracted_coord_OF[0], extracted_coord_OF[1]
+                # to numpy
+                x_pred_OF = x_pred_OF.cpu().numpy()
+                y_pred_OF = y_pred_OF.cpu().numpy()
+                print(f"Using Optical Flow model for frame {frame_idx} with confidence {confidence_OF}")
+                pred_events[frame_idx]['ball_coord_confidence_of'] = float(confidence_OF)
+                pred_events[frame_idx]['ball_location_of'] = {
+                    'x': float(x_pred_OF),
+                    'y': float(y_pred_OF)
+                }
+                mapped_x_OF, mapped_y_OF = table_detector.transform_ball(x_pred_OF, y_pred_OF)
+                pred_events[frame_idx]['mapped_ball_location_of'] = {
+                    'x': float(mapped_x_OF),
+                    'y': float(mapped_y_OF)
+                }
+                if mapped_x <0 or mapped_y < 0:
+                    if mapped_x_OF > 0 and mapped_y_OF > 0:
+                        pred_events[frame_idx]['draw_ball_location'] = {
+                            'x': float(mapped_x_OF),
+                            'y': float(mapped_y_OF)
+                        }
+                    else:
+                        pred_events[frame_idx]['draw_ball_location'] = {
+                            'x': float(mapped_x),
+                            'y': float(mapped_y)
+                        }
+                else:
+                    pred_events[frame_idx]['draw_ball_location'] = {
+                        'x': float(mapped_x),
+                        'y': float(mapped_y)
+                    }
+      
+
+
+            
 
     # generate pred_events as json file 
     with open(f'predicted_events_{game_name}.json', 'w') as f:
@@ -203,6 +255,10 @@ if __name__ == "__main__":
         pred_events = json.load(f)
     # draw_bounces_on_table(pred_events, save_path='bounces_on_table.jpg')
     draw_bounces_on_split_table(pred_events, save_path='bounces_on_table_split.jpg')
+    # visualize the result
+    AnalysisUtils.count_bounces(pred_events)
+    AnalysisUtils.count_serves(pred_events)
+    AnalysisUtils.calculate_points(pred_events)
     # img = Image.open('/home/august/github/TTA_Project/src/result/converted_2.jpg').convert("RGB")
     # plt.imshow(img)
     # plt.show()

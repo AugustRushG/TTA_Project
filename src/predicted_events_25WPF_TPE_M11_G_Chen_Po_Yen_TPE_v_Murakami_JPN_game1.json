@@ -1,0 +1,3095 @@
+{
+    "211": {
+        "time": 7.033333333333333,
+        "event_type": "close_table_serve",
+        "score": 0.98291015625
+    },
+    "217": {
+        "time": 7.233333333333333,
+        "event_type": "close_table_bounce",
+        "score": 0.98828125,
+        "ball_location": {
+            "x": 172.0,
+            "y": 95.0
+        },
+        "mapped_ball_location": {
+            "x": 1720.56396484375,
+            "y": 1351.6947021484375
+        },
+        "ball_coord_confidence": 0.19999638199806213,
+        "ball_coord_confidence_of": 0.08805105090141296,
+        "ball_location_of": {
+            "x": 172.0,
+            "y": 95.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1720.56396484375,
+            "y": 1351.6947021484375
+        },
+        "draw_ball_location": {
+            "x": 1720.56396484375,
+            "y": 1351.6947021484375
+        }
+    },
+    "229": {
+        "time": 7.633333333333334,
+        "event_type": "far_table_bounce",
+        "score": 0.9521484375,
+        "ball_location": {
+            "x": 104.0,
+            "y": 89.0
+        },
+        "mapped_ball_location": {
+            "x": 605.98583984375,
+            "y": 893.2081909179688
+        },
+        "ball_coord_confidence": 0.3485979735851288,
+        "ball_coord_confidence_of": 0.4327899217605591,
+        "ball_location_of": {
+            "x": 104.0,
+            "y": 89.0
+        },
+        "mapped_ball_location_of": {
+            "x": 605.98583984375,
+            "y": 893.2081909179688
+        },
+        "draw_ball_location": {
+            "x": 605.98583984375,
+            "y": 893.2081909179688
+        }
+    },
+    "235": {
+        "time": 7.833333333333333,
+        "event_type": "far_table_backhand",
+        "score": 0.6259765625
+    },
+    "247": {
+        "time": 8.233333333333333,
+        "event_type": "close_table_bounce",
+        "score": 0.99365234375,
+        "ball_location": {
+            "x": 94.0,
+            "y": 105.0
+        },
+        "mapped_ball_location": {
+            "x": 344.4384460449219,
+            "y": 1596.9119873046875
+        },
+        "ball_coord_confidence": 0.2037973701953888,
+        "ball_coord_confidence_of": 0.12255673855543137,
+        "ball_location_of": {
+            "x": 120.0,
+            "y": 60.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1146.8197021484375,
+            "y": -683.0231323242188
+        },
+        "draw_ball_location": {
+            "x": 344.4384460449219,
+            "y": 1596.9119873046875
+        }
+    },
+    "251": {
+        "time": 8.366666666666667,
+        "event_type": "close_table_bounce",
+        "score": 0.207763671875,
+        "ball_location": {
+            "x": 93.0,
+            "y": 101.0
+        },
+        "mapped_ball_location": {
+            "x": 348.4744873046875,
+            "y": 1421.230224609375
+        },
+        "ball_coord_confidence": 0.2637282907962799,
+        "ball_coord_confidence_of": 0.19422471523284912,
+        "ball_location_of": {
+            "x": 92.0,
+            "y": 101.0
+        },
+        "mapped_ball_location_of": {
+            "x": 331.8924865722656,
+            "y": 1418.744873046875
+        },
+        "draw_ball_location": {
+            "x": 348.4744873046875,
+            "y": 1421.230224609375
+        }
+    },
+    "255": {
+        "time": 8.5,
+        "event_type": "close_table_forehand",
+        "score": 0.787109375
+    },
+    "264": {
+        "time": 8.8,
+        "event_type": "far_table_backhand",
+        "score": 0.285400390625
+    },
+    "570": {
+        "time": 19.0,
+        "event_type": "close_table_serve",
+        "score": 0.85595703125
+    },
+    "574": {
+        "time": 19.133333333333333,
+        "event_type": "close_table_bounce",
+        "score": 0.8203125,
+        "ball_location": {
+            "x": 171.0,
+            "y": 97.0
+        },
+        "mapped_ball_location": {
+            "x": 1681.4468994140625,
+            "y": 1439.1392822265625
+        },
+        "ball_coord_confidence": 0.2183804214000702,
+        "ball_coord_confidence_of": 0.15264827013015747,
+        "ball_location_of": {
+            "x": 172.0,
+            "y": 96.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1709.34228515625,
+            "y": 1396.872314453125
+        },
+        "draw_ball_location": {
+            "x": 1681.4468994140625,
+            "y": 1439.1392822265625
+        }
+    },
+    "588": {
+        "time": 19.6,
+        "event_type": "far_table_bounce",
+        "score": 0.84912109375,
+        "ball_location": {
+            "x": 179.0,
+            "y": 106.0
+        },
+        "mapped_ball_location": {
+            "x": 1715.2523193359375,
+            "y": 1844.86572265625
+        },
+        "ball_coord_confidence": 0.21975621581077576,
+        "ball_coord_confidence_of": 0.21077078580856323,
+        "ball_location_of": {
+            "x": 112.0,
+            "y": 87.0
+        },
+        "mapped_ball_location_of": {
+            "x": 760.1860961914062,
+            "y": 816.1044311523438
+        },
+        "draw_ball_location": {
+            "x": 1715.2523193359375,
+            "y": 1844.86572265625
+        }
+    },
+    "595": {
+        "time": 19.833333333333332,
+        "event_type": "far_table_forehand",
+        "score": 0.9638671875
+    },
+    "609": {
+        "time": 20.3,
+        "event_type": "close_table_bounce",
+        "score": 0.986328125,
+        "ball_location": {
+            "x": 99.0,
+            "y": 113.0
+        },
+        "mapped_ball_location": {
+            "x": 366.4256896972656,
+            "y": 2073.91015625
+        },
+        "ball_coord_confidence": 0.41363081336021423,
+        "ball_coord_confidence_of": 0.4702126681804657,
+        "ball_location_of": {
+            "x": 99.0,
+            "y": 113.0
+        },
+        "mapped_ball_location_of": {
+            "x": 366.4256896972656,
+            "y": 2073.91015625
+        },
+        "draw_ball_location": {
+            "x": 366.4256896972656,
+            "y": 2073.91015625
+        }
+    },
+    "618": {
+        "time": 20.6,
+        "event_type": "close_table_forehand",
+        "score": 0.66015625
+    },
+    "625": {
+        "time": 20.833333333333332,
+        "event_type": "far_table_bounce",
+        "score": 0.73486328125,
+        "ball_location": {
+            "x": 81.0,
+            "y": 83.0
+        },
+        "mapped_ball_location": {
+            "x": 233.74151611328125,
+            "y": 529.8070678710938
+        },
+        "ball_coord_confidence": 0.650667130947113
+    },
+    "631": {
+        "time": 21.033333333333335,
+        "event_type": "far_table_forehand",
+        "score": 0.321044921875
+    },
+    "636": {
+        "time": 21.2,
+        "event_type": "far_table_forehand",
+        "score": 0.58740234375
+    },
+    "644": {
+        "time": 21.466666666666665,
+        "event_type": "far_table_serve",
+        "score": 0.11370849609375
+    },
+    "651": {
+        "time": 21.7,
+        "event_type": "close_table_bounce",
+        "score": 0.48974609375,
+        "ball_location": {
+            "x": 114.0,
+            "y": 104.0
+        },
+        "mapped_ball_location": {
+            "x": 676.7254028320312,
+            "y": 1603.105224609375
+        },
+        "ball_coord_confidence": 0.05979752913117409,
+        "ball_coord_confidence_of": 0.047071486711502075,
+        "ball_location_of": {
+            "x": 117.0,
+            "y": 102.0
+        },
+        "mapped_ball_location_of": {
+            "x": 739.2521362304688,
+            "y": 1524.396240234375
+        },
+        "draw_ball_location": {
+            "x": 676.7254028320312,
+            "y": 1603.105224609375
+        }
+    },
+    "665": {
+        "time": 22.166666666666668,
+        "event_type": "far_table_bounce",
+        "score": 0.203369140625,
+        "ball_location": {
+            "x": 104.0,
+            "y": 71.0
+        },
+        "mapped_ball_location": {
+            "x": 735.2810668945312,
+            "y": -61.77410125732422
+        },
+        "ball_coord_confidence": 0.06225137040019035,
+        "ball_coord_confidence_of": 0.0036221141926944256,
+        "ball_location_of": {
+            "x": 137.0,
+            "y": 86.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1209.2418212890625,
+            "y": 833.2247314453125
+        },
+        "draw_ball_location": {
+            "x": 1209.2418212890625,
+            "y": 833.2247314453125
+        }
+    },
+    "710": {
+        "time": 23.666666666666668,
+        "event_type": "close_table_bounce",
+        "score": 0.345458984375,
+        "ball_location": {
+            "x": 165.0,
+            "y": 108.0
+        },
+        "mapped_ball_location": {
+            "x": 1469.7803955078125,
+            "y": 1893.2093505859375
+        },
+        "ball_coord_confidence": 0.13830821216106415,
+        "ball_coord_confidence_of": 0.07246414572000504,
+        "ball_location_of": {
+            "x": 166.0,
+            "y": 106.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1505.3629150390625,
+            "y": 1813.5076904296875
+        },
+        "draw_ball_location": {
+            "x": 1469.7803955078125,
+            "y": 1893.2093505859375
+        }
+    },
+    "722": {
+        "time": 24.066666666666666,
+        "event_type": "close_table_forehand",
+        "score": 0.350830078125
+    },
+    "729": {
+        "time": 24.3,
+        "event_type": "far_table_bounce",
+        "score": 0.86767578125,
+        "ball_location": {
+            "x": 59.0,
+            "y": 64.0
+        },
+        "mapped_ball_location": {
+            "x": -94.24954986572266,
+            "y": -616.705078125
+        },
+        "ball_coord_confidence": 0.27895042300224304,
+        "ball_coord_confidence_of": 0.03043593093752861,
+        "ball_location_of": {
+            "x": 107.0,
+            "y": 86.0
+        },
+        "mapped_ball_location_of": {
+            "x": 679.142822265625,
+            "y": 752.939697265625
+        },
+        "draw_ball_location": {
+            "x": 679.142822265625,
+            "y": 752.939697265625
+        }
+    },
+    "746": {
+        "time": 24.866666666666667,
+        "event_type": "far_table_backhand",
+        "score": 0.40673828125
+    },
+    "759": {
+        "time": 25.3,
+        "event_type": "close_table_bounce",
+        "score": 0.10943603515625,
+        "ball_location": {
+            "x": 204.0,
+            "y": 154.0
+        },
+        "mapped_ball_location": {
+            "x": 1771.609619140625,
+            "y": 4160.1279296875
+        },
+        "ball_coord_confidence": 0.10933700948953629,
+        "ball_coord_confidence_of": 0.043787263333797455,
+        "ball_location_of": {
+            "x": 204.0,
+            "y": 154.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1771.609619140625,
+            "y": 4160.1279296875
+        },
+        "draw_ball_location": {
+            "x": 1771.609619140625,
+            "y": 4160.1279296875
+        }
+    },
+    "1164": {
+        "time": 38.8,
+        "event_type": "far_table_serve",
+        "score": 0.94189453125
+    },
+    "1168": {
+        "time": 38.93333333333333,
+        "event_type": "far_table_bounce",
+        "score": 0.352783203125,
+        "ball_location": {
+            "x": 159.0,
+            "y": 74.0
+        },
+        "mapped_ball_location": {
+            "x": 1739.0439453125,
+            "y": 265.8529052734375
+        },
+        "ball_coord_confidence": 0.09828344732522964,
+        "ball_coord_confidence_of": 0.047268856316804886,
+        "ball_location_of": {
+            "x": 145.0,
+            "y": 63.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1608.8084716796875,
+            "y": -417.48309326171875
+        },
+        "draw_ball_location": {
+            "x": 1739.0439453125,
+            "y": 265.8529052734375
+        }
+    },
+    "1182": {
+        "time": 39.4,
+        "event_type": "close_table_bounce",
+        "score": 0.99755859375,
+        "ball_location": {
+            "x": 120.0,
+            "y": 107.0
+        },
+        "mapped_ball_location": {
+            "x": 754.3738403320312,
+            "y": 1744.0606689453125
+        },
+        "ball_coord_confidence": 0.36356040835380554,
+        "ball_coord_confidence_of": 0.23102255165576935,
+        "ball_location_of": {
+            "x": 120.0,
+            "y": 107.0
+        },
+        "mapped_ball_location_of": {
+            "x": 754.3738403320312,
+            "y": 1744.0606689453125
+        },
+        "draw_ball_location": {
+            "x": 754.3738403320312,
+            "y": 1744.0606689453125
+        }
+    },
+    "1188": {
+        "time": 39.6,
+        "event_type": "close_table_forehand",
+        "score": 0.802734375
+    },
+    "1201": {
+        "time": 40.03333333333333,
+        "event_type": "far_table_bounce",
+        "score": 0.982421875,
+        "ball_location": {
+            "x": 156.0,
+            "y": 114.0
+        },
+        "mapped_ball_location": {
+            "x": 1283.6719970703125,
+            "y": 2266.25439453125
+        },
+        "ball_coord_confidence": 0.33186009526252747,
+        "ball_coord_confidence_of": 0.016097648069262505,
+        "ball_location_of": {
+            "x": 133.0,
+            "y": 78.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1214.2196044921875,
+            "y": 409.927001953125
+        },
+        "draw_ball_location": {
+            "x": 1283.6719970703125,
+            "y": 2266.25439453125
+        }
+    },
+    "1206": {
+        "time": 40.2,
+        "event_type": "far_table_forehand",
+        "score": 0.2362060546875
+    },
+    "1216": {
+        "time": 40.53333333333333,
+        "event_type": "close_table_bounce",
+        "score": 0.978515625,
+        "ball_location": {
+            "x": 97.0,
+            "y": 120.0
+        },
+        "mapped_ball_location": {
+            "x": 306.4150390625,
+            "y": 2377.099853515625
+        },
+        "ball_coord_confidence": 0.12793181836605072,
+        "ball_coord_confidence_of": 0.10837667435407639,
+        "ball_location_of": {
+            "x": 97.0,
+            "y": 120.0
+        },
+        "mapped_ball_location_of": {
+            "x": 306.4150390625,
+            "y": 2377.099853515625
+        },
+        "draw_ball_location": {
+            "x": 306.4150390625,
+            "y": 2377.099853515625
+        }
+    },
+    "1220": {
+        "time": 40.666666666666664,
+        "event_type": "close_table_forehand",
+        "score": 0.892578125
+    },
+    "1225": {
+        "time": 40.833333333333336,
+        "event_type": "far_table_bounce",
+        "score": 0.41455078125,
+        "ball_location": {
+            "x": 101.0,
+            "y": 86.0
+        },
+        "mapped_ball_location": {
+            "x": 572.9752807617188,
+            "y": 736.8602905273438
+        },
+        "ball_coord_confidence": 0.31869858503341675,
+        "ball_coord_confidence_of": 0.377579927444458,
+        "ball_location_of": {
+            "x": 101.0,
+            "y": 86.0
+        },
+        "mapped_ball_location_of": {
+            "x": 572.9752807617188,
+            "y": 736.8602905273438
+        },
+        "draw_ball_location": {
+            "x": 572.9752807617188,
+            "y": 736.8602905273438
+        }
+    },
+    "1234": {
+        "time": 41.13333333333333,
+        "event_type": "far_table_forehand",
+        "score": 0.9970703125
+    },
+    "1246": {
+        "time": 41.53333333333333,
+        "event_type": "close_table_backhand",
+        "score": 0.96728515625
+    },
+    "1254": {
+        "time": 41.8,
+        "event_type": "far_table_bounce",
+        "score": 0.8662109375,
+        "ball_location": {
+            "x": 195.0,
+            "y": 139.0
+        },
+        "mapped_ball_location": {
+            "x": 1750.3175048828125,
+            "y": 3516.896728515625
+        },
+        "ball_coord_confidence": 0.27825507521629333,
+        "ball_coord_confidence_of": 0.14841678738594055,
+        "ball_location_of": {
+            "x": 126.0,
+            "y": 84.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1032.263427734375,
+            "y": 703.29541015625
+        },
+        "draw_ball_location": {
+            "x": 1750.3175048828125,
+            "y": 3516.896728515625
+        }
+    },
+    "1264": {
+        "time": 42.13333333333333,
+        "event_type": "far_table_backhand",
+        "score": 0.4521484375
+    },
+    "1645": {
+        "time": 54.833333333333336,
+        "event_type": "far_table_serve",
+        "score": 0.99609375
+    },
+    "1650": {
+        "time": 55.0,
+        "event_type": "far_table_bounce",
+        "score": 0.54833984375,
+        "ball_location": {
+            "x": 162.0,
+            "y": 80.0
+        },
+        "mapped_ball_location": {
+            "x": 1720.46044921875,
+            "y": 595.9443969726562
+        },
+        "ball_coord_confidence": 0.22762389481067657,
+        "ball_coord_confidence_of": 0.192156121134758,
+        "ball_location_of": {
+            "x": 125.0,
+            "y": 81.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1040.6632080078125,
+            "y": 546.2734375
+        },
+        "draw_ball_location": {
+            "x": 1720.46044921875,
+            "y": 595.9443969726562
+        }
+    },
+    "1660": {
+        "time": 55.333333333333336,
+        "event_type": "close_table_bounce",
+        "score": 0.94580078125,
+        "ball_location": {
+            "x": 122.0,
+            "y": 58.0
+        },
+        "mapped_ball_location": {
+            "x": 1208.2525634765625,
+            "y": -806.3798217773438
+        },
+        "ball_coord_confidence": 0.18303823471069336,
+        "ball_coord_confidence_of": 0.09200306981801987,
+        "ball_location_of": {
+            "x": 122.0,
+            "y": 59.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1197.5091552734375,
+            "y": -741.2664794921875
+        },
+        "draw_ball_location": {
+            "x": 1208.2525634765625,
+            "y": -806.3798217773438
+        }
+    },
+    "1670": {
+        "time": 55.666666666666664,
+        "event_type": "close_table_forehand",
+        "score": 0.9833984375
+    },
+    "1675": {
+        "time": 55.833333333333336,
+        "event_type": "far_table_bounce",
+        "score": 0.1337890625,
+        "ball_location": {
+            "x": 83.0,
+            "y": 84.0
+        },
+        "mapped_ball_location": {
+            "x": 264.4650573730469,
+            "y": 586.8367919921875
+        },
+        "ball_coord_confidence": 0.15967193245887756,
+        "ball_coord_confidence_of": 0.0644812062382698,
+        "ball_location_of": {
+            "x": 83.0,
+            "y": 85.0
+        },
+        "mapped_ball_location_of": {
+            "x": 259.2972412109375,
+            "y": 637.9395751953125
+        },
+        "draw_ball_location": {
+            "x": 264.4650573730469,
+            "y": 586.8367919921875
+        }
+    },
+    "1683": {
+        "time": 56.1,
+        "event_type": "far_table_bounce",
+        "score": 0.54541015625,
+        "ball_location": {
+            "x": 108.0,
+            "y": 75.0
+        },
+        "mapped_ball_location": {
+            "x": 779.103515625,
+            "y": 176.04254150390625
+        },
+        "ball_coord_confidence": 0.32780855894088745,
+        "ball_coord_confidence_of": 0.24955596029758453,
+        "ball_location_of": {
+            "x": 108.0,
+            "y": 76.0
+        },
+        "mapped_ball_location_of": {
+            "x": 771.26806640625,
+            "y": 231.24095153808594
+        },
+        "draw_ball_location": {
+            "x": 779.103515625,
+            "y": 176.04254150390625
+        }
+    },
+    "1688": {
+        "time": 56.266666666666666,
+        "event_type": "far_table_forehand",
+        "score": 0.218505859375
+    },
+    "1693": {
+        "time": 56.43333333333333,
+        "event_type": "far_table_forehand",
+        "score": 0.2218017578125
+    },
+    "2055": {
+        "time": 68.5,
+        "event_type": "close_table_serve",
+        "score": 0.89208984375
+    },
+    "2060": {
+        "time": 68.66666666666667,
+        "event_type": "close_table_bounce",
+        "score": 0.9931640625,
+        "ball_location": {
+            "x": 169.0,
+            "y": 97.0
+        },
+        "mapped_ball_location": {
+            "x": 1647.9017333984375,
+            "y": 1434.09814453125
+        },
+        "ball_coord_confidence": 0.1892048418521881,
+        "ball_coord_confidence_of": 0.13855987787246704,
+        "ball_location_of": {
+            "x": 169.0,
+            "y": 97.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1647.9017333984375,
+            "y": 1434.09814453125
+        },
+        "draw_ball_location": {
+            "x": 1647.9017333984375,
+            "y": 1434.09814453125
+        }
+    },
+    "2073": {
+        "time": 69.1,
+        "event_type": "far_table_bounce",
+        "score": 0.9775390625,
+        "ball_location": {
+            "x": 109.0,
+            "y": 86.0
+        },
+        "mapped_ball_location": {
+            "x": 714.5210571289062,
+            "y": 758.2977905273438
+        },
+        "ball_coord_confidence": 0.18938833475112915,
+        "ball_coord_confidence_of": 0.21067804098129272,
+        "ball_location_of": {
+            "x": 109.0,
+            "y": 85.0
+        },
+        "mapped_ball_location_of": {
+            "x": 721.7391357421875,
+            "y": 708.0297241210938
+        },
+        "draw_ball_location": {
+            "x": 714.5210571289062,
+            "y": 758.2977905273438
+        }
+    },
+    "2080": {
+        "time": 69.33333333333333,
+        "event_type": "far_table_backhand",
+        "score": 0.84375
+    },
+    "2089": {
+        "time": 69.63333333333334,
+        "event_type": "close_table_bounce",
+        "score": 0.9970703125,
+        "ball_location": {
+            "x": 128.0,
+            "y": 113.0
+        },
+        "mapped_ball_location": {
+            "x": 821.4527587890625,
+            "y": 2145.1552734375
+        },
+        "ball_coord_confidence": 0.2776485085487366,
+        "ball_coord_confidence_of": 0.23706209659576416,
+        "ball_location_of": {
+            "x": 129.0,
+            "y": 113.0
+        },
+        "mapped_ball_location_of": {
+            "x": 837.7001953125,
+            "y": 2147.69921875
+        },
+        "draw_ball_location": {
+            "x": 821.4527587890625,
+            "y": 2145.1552734375
+        }
+    },
+    "2095": {
+        "time": 69.83333333333333,
+        "event_type": "close_table_forehand",
+        "score": 0.99658203125
+    },
+    "2390": {
+        "time": 79.66666666666667,
+        "event_type": "close_table_serve",
+        "score": 0.55419921875
+    },
+    "2394": {
+        "time": 79.8,
+        "event_type": "close_table_bounce",
+        "score": 0.92529296875,
+        "ball_location": {
+            "x": 175.0,
+            "y": 99.0
+        },
+        "mapped_ball_location": {
+            "x": 1726.1304931640625,
+            "y": 1537.5687255859375
+        },
+        "ball_coord_confidence": 0.31453853845596313,
+        "ball_coord_confidence_of": 0.2936410903930664,
+        "ball_location_of": {
+            "x": 175.0,
+            "y": 99.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1726.1304931640625,
+            "y": 1537.5687255859375
+        },
+        "draw_ball_location": {
+            "x": 1726.1304931640625,
+            "y": 1537.5687255859375
+        }
+    },
+    "2406": {
+        "time": 80.2,
+        "event_type": "far_table_bounce",
+        "score": 0.9833984375,
+        "ball_location": {
+            "x": 185.0,
+            "y": 106.0
+        },
+        "mapped_ball_location": {
+            "x": 1812.0592041015625,
+            "y": 1859.3289794921875
+        },
+        "ball_coord_confidence": 0.17482490837574005,
+        "ball_coord_confidence_of": 0.12959474325180054,
+        "ball_location_of": {
+            "x": 100.0,
+            "y": 84.0
+        },
+        "mapped_ball_location_of": {
+            "x": 568.3215942382812,
+            "y": 632.9253540039062
+        },
+        "draw_ball_location": {
+            "x": 1812.0592041015625,
+            "y": 1859.3289794921875
+        }
+    },
+    "2410": {
+        "time": 80.33333333333333,
+        "event_type": "far_table_backhand",
+        "score": 0.8955078125
+    },
+    "2418": {
+        "time": 80.6,
+        "event_type": "close_table_bounce",
+        "score": 0.994140625,
+        "ball_location": {
+            "x": 104.0,
+            "y": 115.0
+        },
+        "mapped_ball_location": {
+            "x": 433.3778991699219,
+            "y": 2175.767578125
+        },
+        "ball_coord_confidence": 0.2380422204732895,
+        "ball_coord_confidence_of": 0.1949787586927414,
+        "ball_location_of": {
+            "x": 104.0,
+            "y": 115.0
+        },
+        "mapped_ball_location_of": {
+            "x": 433.3778991699219,
+            "y": 2175.767578125
+        },
+        "draw_ball_location": {
+            "x": 433.3778991699219,
+            "y": 2175.767578125
+        }
+    },
+    "2424": {
+        "time": 80.8,
+        "event_type": "close_table_forehand",
+        "score": 0.9775390625
+    },
+    "2991": {
+        "time": 99.7,
+        "event_type": "far_table_serve",
+        "score": 0.935546875
+    },
+    "2996": {
+        "time": 99.86666666666666,
+        "event_type": "far_table_bounce",
+        "score": 0.95263671875,
+        "ball_location": {
+            "x": 134.0,
+            "y": 79.0
+        },
+        "mapped_ball_location": {
+            "x": 1222.6923828125,
+            "y": 465.9721374511719
+        },
+        "ball_coord_confidence": 0.13367195427417755,
+        "ball_coord_confidence_of": 0.13122719526290894,
+        "ball_location_of": {
+            "x": 165.0,
+            "y": 71.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1890.4599609375,
+            "y": 115.26183319091797
+        },
+        "draw_ball_location": {
+            "x": 1222.6923828125,
+            "y": 465.9721374511719
+        }
+    },
+    "3006": {
+        "time": 100.2,
+        "event_type": "close_table_bounce",
+        "score": 0.97705078125,
+        "ball_location": {
+            "x": 154.0,
+            "y": 108.0
+        },
+        "mapped_ball_location": {
+            "x": 1293.477783203125,
+            "y": 1866.902099609375
+        },
+        "ball_coord_confidence": 0.412543922662735,
+        "ball_coord_confidence_of": 0.3515906035900116,
+        "ball_location_of": {
+            "x": 154.0,
+            "y": 108.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1293.477783203125,
+            "y": 1866.902099609375
+        },
+        "draw_ball_location": {
+            "x": 1293.477783203125,
+            "y": 1866.902099609375
+        }
+    },
+    "3016": {
+        "time": 100.53333333333333,
+        "event_type": "close_table_forehand",
+        "score": 0.87060546875
+    },
+    "3031": {
+        "time": 101.03333333333333,
+        "event_type": "far_table_bounce",
+        "score": 0.8095703125,
+        "ball_location": {
+            "x": 97.0,
+            "y": 76.0
+        },
+        "mapped_ball_location": {
+            "x": 567.3619384765625,
+            "y": 200.11976623535156
+        },
+        "ball_coord_confidence": 0.3799866735935211,
+        "ball_coord_confidence_of": 0.021220065653324127,
+        "ball_location_of": {
+            "x": 214.0,
+            "y": 138.0
+        },
+        "mapped_ball_location_of": {
+            "x": 2096.52490234375,
+            "y": 3554.819091796875
+        },
+        "draw_ball_location": {
+            "x": 567.3619384765625,
+            "y": 200.11976623535156
+        }
+    },
+    "3037": {
+        "time": 101.23333333333333,
+        "event_type": "far_table_forehand",
+        "score": 0.94580078125
+    },
+    "3051": {
+        "time": 101.7,
+        "event_type": "close_table_bounce",
+        "score": 0.9453125,
+        "ball_location": {
+            "x": 85.0,
+            "y": 77.0
+        },
+        "mapped_ball_location": {
+            "x": 338.9668884277344,
+            "y": 221.17245483398438
+        },
+        "ball_coord_confidence": 0.1637982279062271,
+        "ball_coord_confidence_of": 0.0963549092411995,
+        "ball_location_of": {
+            "x": 132.0,
+            "y": 118.0
+        },
+        "mapped_ball_location_of": {
+            "x": 855.9130859375,
+            "y": 2384.341552734375
+        },
+        "draw_ball_location": {
+            "x": 338.9668884277344,
+            "y": 221.17245483398438
+        }
+    },
+    "3063": {
+        "time": 102.1,
+        "event_type": "close_table_forehand",
+        "score": 0.82177734375
+    },
+    "3072": {
+        "time": 102.4,
+        "event_type": "far_table_bounce",
+        "score": 0.99609375,
+        "ball_location": {
+            "x": 103.0,
+            "y": 87.0
+        },
+        "mapped_ball_location": {
+            "x": 601.696044921875,
+            "y": 792.1182861328125
+        },
+        "ball_coord_confidence": 0.18812547624111176,
+        "ball_coord_confidence_of": 0.22209861874580383,
+        "ball_location_of": {
+            "x": 103.0,
+            "y": 87.0
+        },
+        "mapped_ball_location_of": {
+            "x": 601.696044921875,
+            "y": 792.1182861328125
+        },
+        "draw_ball_location": {
+            "x": 601.696044921875,
+            "y": 792.1182861328125
+        }
+    },
+    "3081": {
+        "time": 102.7,
+        "event_type": "far_table_backhand",
+        "score": 0.85546875
+    },
+    "3092": {
+        "time": 103.06666666666666,
+        "event_type": "close_table_bounce",
+        "score": 0.98876953125,
+        "ball_location": {
+            "x": 116.0,
+            "y": 117.0
+        },
+        "mapped_ball_location": {
+            "x": 608.3417358398438,
+            "y": 2295.946533203125
+        },
+        "ball_coord_confidence": 0.23126260936260223,
+        "ball_coord_confidence_of": 0.20495399832725525,
+        "ball_location_of": {
+            "x": 116.0,
+            "y": 117.0
+        },
+        "mapped_ball_location_of": {
+            "x": 608.3417358398438,
+            "y": 2295.946533203125
+        },
+        "draw_ball_location": {
+            "x": 608.3417358398438,
+            "y": 2295.946533203125
+        }
+    },
+    "3102": {
+        "time": 103.4,
+        "event_type": "close_table_forehand",
+        "score": 0.9091796875
+    },
+    "3111": {
+        "time": 103.7,
+        "event_type": "far_table_bounce",
+        "score": 0.8857421875,
+        "ball_location": {
+            "x": 121.0,
+            "y": 84.0
+        },
+        "mapped_ball_location": {
+            "x": 943.116943359375,
+            "y": 689.7738037109375
+        },
+        "ball_coord_confidence": 0.419046014547348,
+        "ball_coord_confidence_of": 0.3860609233379364,
+        "ball_location_of": {
+            "x": 121.0,
+            "y": 85.0
+        },
+        "mapped_ball_location_of": {
+            "x": 934.8587036132812,
+            "y": 740.3312377929688
+        },
+        "draw_ball_location": {
+            "x": 943.116943359375,
+            "y": 689.7738037109375
+        }
+    },
+    "3115": {
+        "time": 103.83333333333333,
+        "event_type": "far_table_backhand",
+        "score": 0.6865234375
+    },
+    "3121": {
+        "time": 104.03333333333333,
+        "event_type": "far_table_forehand",
+        "score": 0.82470703125
+    },
+    "3128": {
+        "time": 104.26666666666667,
+        "event_type": "close_table_bounce",
+        "score": 0.58837890625,
+        "ball_location": {
+            "x": 113.0,
+            "y": 108.0
+        },
+        "mapped_ball_location": {
+            "x": 635.1475830078125,
+            "y": 1768.66845703125
+        },
+        "ball_coord_confidence": 0.22169797122478485,
+        "ball_coord_confidence_of": 0.20991411805152893,
+        "ball_location_of": {
+            "x": 113.0,
+            "y": 108.0
+        },
+        "mapped_ball_location_of": {
+            "x": 635.1475830078125,
+            "y": 1768.66845703125
+        },
+        "draw_ball_location": {
+            "x": 635.1475830078125,
+            "y": 1768.66845703125
+        }
+    },
+    "3141": {
+        "time": 104.7,
+        "event_type": "close_table_forehand",
+        "score": 0.71826171875
+    },
+    "3177": {
+        "time": 105.9,
+        "event_type": "close_table_bounce",
+        "score": 0.1495361328125,
+        "ball_location": {
+            "x": 104.0,
+            "y": 68.0
+        },
+        "mapped_ball_location": {
+            "x": 759.0714721679688,
+            "y": -237.4918212890625
+        },
+        "ball_coord_confidence": 0.23780269920825958,
+        "ball_coord_confidence_of": 0.17758317291736603,
+        "ball_location_of": {
+            "x": 31.0,
+            "y": 119.0
+        },
+        "mapped_ball_location_of": {
+            "x": -599.2821655273438,
+            "y": 2172.9423828125
+        },
+        "draw_ball_location": {
+            "x": 759.0714721679688,
+            "y": -237.4918212890625
+        }
+    },
+    "3668": {
+        "time": 122.26666666666667,
+        "event_type": "far_table_serve",
+        "score": 0.9365234375
+    },
+    "3675": {
+        "time": 122.5,
+        "event_type": "far_table_bounce",
+        "score": 0.8740234375,
+        "ball_location": {
+            "x": 165.0,
+            "y": 70.0
+        },
+        "mapped_ball_location": {
+            "x": 1903.9429931640625,
+            "y": 58.27705764770508
+        },
+        "ball_coord_confidence": 0.1920161098241806,
+        "ball_coord_confidence_of": 0.08532073348760605,
+        "ball_location_of": {
+            "x": 124.0,
+            "y": 86.0
+        },
+        "mapped_ball_location_of": {
+            "x": 979.683349609375,
+            "y": 798.4573974609375
+        },
+        "draw_ball_location": {
+            "x": 1903.9429931640625,
+            "y": 58.27705764770508
+        }
+    },
+    "3687": {
+        "time": 122.9,
+        "event_type": "close_table_bounce",
+        "score": 0.99609375,
+        "ball_location": {
+            "x": 105.0,
+            "y": 106.0
+        },
+        "mapped_ball_location": {
+            "x": 517.9117431640625,
+            "y": 1665.979736328125
+        },
+        "ball_coord_confidence": 0.187770813703537,
+        "ball_coord_confidence_of": 0.29082849621772766,
+        "ball_location_of": {
+            "x": 105.0,
+            "y": 106.0
+        },
+        "mapped_ball_location_of": {
+            "x": 517.9117431640625,
+            "y": 1665.979736328125
+        },
+        "draw_ball_location": {
+            "x": 517.9117431640625,
+            "y": 1665.979736328125
+        }
+    },
+    "3693": {
+        "time": 123.1,
+        "event_type": "close_table_forehand",
+        "score": 0.99560546875
+    },
+    "3706": {
+        "time": 123.53333333333333,
+        "event_type": "far_table_bounce",
+        "score": 0.99462890625,
+        "ball_location": {
+            "x": 132.0,
+            "y": 82.0
+        },
+        "mapped_ball_location": {
+            "x": 1157.74609375,
+            "y": 617.3150634765625
+        },
+        "ball_coord_confidence": 0.2720062732696533,
+        "ball_coord_confidence_of": 0.24005432426929474,
+        "ball_location_of": {
+            "x": 132.0,
+            "y": 82.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1157.74609375,
+            "y": 617.3150634765625
+        },
+        "draw_ball_location": {
+            "x": 1157.74609375,
+            "y": 617.3150634765625
+        }
+    },
+    "3714": {
+        "time": 123.8,
+        "event_type": "far_table_backhand",
+        "score": 0.99755859375
+    },
+    "3724": {
+        "time": 124.13333333333334,
+        "event_type": "close_table_bounce",
+        "score": 0.9892578125,
+        "ball_location": {
+            "x": 104.0,
+            "y": 114.0
+        },
+        "mapped_ball_location": {
+            "x": 438.032470703125,
+            "y": 2130.94775390625
+        },
+        "ball_coord_confidence": 0.17672234773635864,
+        "ball_coord_confidence_of": 0.13814641535282135,
+        "ball_location_of": {
+            "x": 104.0,
+            "y": 114.0
+        },
+        "mapped_ball_location_of": {
+            "x": 438.032470703125,
+            "y": 2130.94775390625
+        },
+        "draw_ball_location": {
+            "x": 438.032470703125,
+            "y": 2130.94775390625
+        }
+    },
+    "3730": {
+        "time": 124.33333333333333,
+        "event_type": "close_table_forehand",
+        "score": 0.89111328125
+    },
+    "4155": {
+        "time": 138.5,
+        "event_type": "close_table_serve",
+        "score": 0.98193359375
+    },
+    "4159": {
+        "time": 138.63333333333333,
+        "event_type": "close_table_bounce",
+        "score": 0.83251953125,
+        "ball_location": {
+            "x": 186.0,
+            "y": 98.0
+        },
+        "mapped_ball_location": {
+            "x": 1920.84619140625,
+            "y": 1521.15234375
+        },
+        "ball_coord_confidence": 0.16234759986400604,
+        "ball_coord_confidence_of": 0.09336552768945694,
+        "ball_location_of": {
+            "x": 186.0,
+            "y": 98.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1920.84619140625,
+            "y": 1521.15234375
+        },
+        "draw_ball_location": {
+            "x": 1920.84619140625,
+            "y": 1521.15234375
+        }
+    },
+    "4172": {
+        "time": 139.06666666666666,
+        "event_type": "far_table_bounce",
+        "score": 0.89697265625,
+        "ball_location": {
+            "x": 117.0,
+            "y": 87.0
+        },
+        "mapped_ball_location": {
+            "x": 848.1886596679688,
+            "y": 829.4228515625
+        },
+        "ball_coord_confidence": 0.22709617018699646,
+        "ball_coord_confidence_of": 0.3137940764427185,
+        "ball_location_of": {
+            "x": 116.0,
+            "y": 88.0
+        },
+        "mapped_ball_location_of": {
+            "x": 822.949462890625,
+            "y": 876.0265502929688
+        },
+        "draw_ball_location": {
+            "x": 848.1886596679688,
+            "y": 829.4228515625
+        }
+    },
+    "4180": {
+        "time": 139.33333333333334,
+        "event_type": "far_table_backhand",
+        "score": 0.6708984375
+    },
+    "4185": {
+        "time": 139.5,
+        "event_type": "far_table_bounce",
+        "score": 0.12078857421875,
+        "ball_location": {
+            "x": 172.0,
+            "y": 114.0
+        },
+        "mapped_ball_location": {
+            "x": 1565.84716796875,
+            "y": 2311.404052734375
+        },
+        "ball_coord_confidence": 0.18755793571472168,
+        "ball_coord_confidence_of": 0.22452738881111145,
+        "ball_location_of": {
+            "x": 172.0,
+            "y": 114.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1565.84716796875,
+            "y": 2311.404052734375
+        },
+        "draw_ball_location": {
+            "x": 1565.84716796875,
+            "y": 2311.404052734375
+        }
+    },
+    "4197": {
+        "time": 139.9,
+        "event_type": "close_table_bounce",
+        "score": 0.344482421875,
+        "ball_location": {
+            "x": 127.0,
+            "y": 70.0
+        },
+        "mapped_ball_location": {
+            "x": 1181.5093994140625,
+            "y": -52.532474517822266
+        },
+        "ball_coord_confidence": 0.04920106381177902,
+        "ball_coord_confidence_of": 0.15388646721839905,
+        "ball_location_of": {
+            "x": 170.0,
+            "y": 118.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1495.8775634765625,
+            "y": 2495.408447265625
+        },
+        "draw_ball_location": {
+            "x": 1495.8775634765625,
+            "y": 2495.408447265625
+        }
+    },
+    "4654": {
+        "time": 155.13333333333333,
+        "event_type": "close_table_serve",
+        "score": 0.93896484375
+    },
+    "4659": {
+        "time": 155.3,
+        "event_type": "close_table_bounce",
+        "score": 0.9267578125,
+        "ball_location": {
+            "x": 141.0,
+            "y": 107.0
+        },
+        "mapped_ball_location": {
+            "x": 1093.031494140625,
+            "y": 1794.6253662109375
+        },
+        "ball_coord_confidence": 0.09864085912704468,
+        "ball_coord_confidence_of": 0.1222328394651413,
+        "ball_location_of": {
+            "x": 172.0,
+            "y": 96.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1709.34228515625,
+            "y": 1396.872314453125
+        },
+        "draw_ball_location": {
+            "x": 1093.031494140625,
+            "y": 1794.6253662109375
+        }
+    },
+    "4671": {
+        "time": 155.7,
+        "event_type": "far_table_bounce",
+        "score": 0.66357421875,
+        "ball_location": {
+            "x": 186.0,
+            "y": 102.0
+        },
+        "mapped_ball_location": {
+            "x": 1873.7347412109375,
+            "y": 1694.324462890625
+        },
+        "ball_coord_confidence": 0.11603273451328278,
+        "ball_coord_confidence_of": 0.1518244445323944,
+        "ball_location_of": {
+            "x": 186.0,
+            "y": 103.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1862.2047119140625,
+            "y": 1736.70654296875
+        },
+        "draw_ball_location": {
+            "x": 1873.7347412109375,
+            "y": 1694.324462890625
+        }
+    },
+    "4678": {
+        "time": 155.93333333333334,
+        "event_type": "far_table_backhand",
+        "score": 0.392822265625
+    },
+    "4683": {
+        "time": 156.1,
+        "event_type": "far_table_backhand",
+        "score": 0.400634765625
+    },
+    "4692": {
+        "time": 156.4,
+        "event_type": "close_table_bounce",
+        "score": 0.8173828125,
+        "ball_location": {
+            "x": 201.0,
+            "y": 112.0
+        },
+        "mapped_ball_location": {
+            "x": 2128.99072265625,
+            "y": 2297.97265625
+        },
+        "ball_coord_confidence": 0.12543460726737976,
+        "ball_coord_confidence_of": 0.17964337766170502,
+        "ball_location_of": {
+            "x": 204.0,
+            "y": 118.0
+        },
+        "mapped_ball_location_of": {
+            "x": 2121.087890625,
+            "y": 2603.91455078125
+        },
+        "draw_ball_location": {
+            "x": 2128.99072265625,
+            "y": 2297.97265625
+        }
+    },
+    "4698": {
+        "time": 156.6,
+        "event_type": "close_table_backhand",
+        "score": 0.5205078125
+    },
+    "5122": {
+        "time": 170.73333333333332,
+        "event_type": "far_table_serve",
+        "score": 0.9453125
+    },
+    "5129": {
+        "time": 170.96666666666667,
+        "event_type": "far_table_bounce",
+        "score": 0.86376953125,
+        "ball_location": {
+            "x": 148.0,
+            "y": 64.0
+        },
+        "mapped_ball_location": {
+            "x": 1655.0745849609375,
+            "y": -346.97943115234375
+        },
+        "ball_coord_confidence": 0.11390762031078339,
+        "ball_coord_confidence_of": 0.248112753033638,
+        "ball_location_of": {
+            "x": 130.0,
+            "y": 82.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1121.780029296875,
+            "y": 611.8515014648438
+        },
+        "draw_ball_location": {
+            "x": 1121.780029296875,
+            "y": 611.8515014648438
+        }
+    },
+    "5139": {
+        "time": 171.3,
+        "event_type": "close_table_bounce",
+        "score": 0.970703125,
+        "ball_location": {
+            "x": 119.0,
+            "y": 107.0
+        },
+        "mapped_ball_location": {
+            "x": 738.2347412109375,
+            "y": 1741.6510009765625
+        },
+        "ball_coord_confidence": 0.24999436736106873,
+        "ball_coord_confidence_of": 0.23280814290046692,
+        "ball_location_of": {
+            "x": 119.0,
+            "y": 106.0
+        },
+        "mapped_ball_location_of": {
+            "x": 744.9176025390625,
+            "y": 1699.8951416015625
+        },
+        "draw_ball_location": {
+            "x": 738.2347412109375,
+            "y": 1741.6510009765625
+        }
+    },
+    "5146": {
+        "time": 171.53333333333333,
+        "event_type": "close_table_forehand",
+        "score": 0.99951171875
+    },
+    "5158": {
+        "time": 171.93333333333334,
+        "event_type": "far_table_bounce",
+        "score": 0.994140625,
+        "ball_location": {
+            "x": 134.0,
+            "y": 78.0
+        },
+        "mapped_ball_location": {
+            "x": 1232.5364990234375,
+            "y": 412.7181396484375
+        },
+        "ball_coord_confidence": 0.378557413816452,
+        "ball_coord_confidence_of": 0.13804969191551208,
+        "ball_location_of": {
+            "x": 134.0,
+            "y": 78.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1232.5364990234375,
+            "y": 412.7181396484375
+        },
+        "draw_ball_location": {
+            "x": 1232.5364990234375,
+            "y": 412.7181396484375
+        }
+    },
+    "5164": {
+        "time": 172.13333333333333,
+        "event_type": "far_table_backhand",
+        "score": 0.9990234375
+    },
+    "5174": {
+        "time": 172.46666666666667,
+        "event_type": "close_table_bounce",
+        "score": 0.9990234375,
+        "ball_location": {
+            "x": 124.0,
+            "y": 111.0
+        },
+        "mapped_ball_location": {
+            "x": 791.4205932617188,
+            "y": 1917.088134765625
+        },
+        "ball_coord_confidence": 0.3958930969238281,
+        "ball_coord_confidence_of": 0.17599524557590485,
+        "ball_location_of": {
+            "x": 124.0,
+            "y": 111.0
+        },
+        "mapped_ball_location_of": {
+            "x": 791.4205932617188,
+            "y": 1917.088134765625
+        },
+        "draw_ball_location": {
+            "x": 791.4205932617188,
+            "y": 1917.088134765625
+        }
+    },
+    "5181": {
+        "time": 172.7,
+        "event_type": "close_table_forehand",
+        "score": 0.89013671875
+    },
+    "5190": {
+        "time": 173.0,
+        "event_type": "far_table_bounce",
+        "score": 0.228759765625,
+        "ball_location": {
+            "x": 86.0,
+            "y": 73.0
+        },
+        "mapped_ball_location": {
+            "x": 381.1087646484375,
+            "y": 0.7202627062797546
+        },
+        "ball_coord_confidence": 0.06068908050656319,
+        "ball_coord_confidence_of": 0.022028878331184387,
+        "ball_location_of": {
+            "x": 191.0,
+            "y": 143.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1647.330078125,
+            "y": 3665.50439453125
+        },
+        "draw_ball_location": {
+            "x": 381.1087646484375,
+            "y": 0.7202627062797546
+        }
+    },
+    "5590": {
+        "time": 186.33333333333334,
+        "event_type": "far_table_serve",
+        "score": 0.96630859375
+    },
+    "5595": {
+        "time": 186.5,
+        "event_type": "far_table_bounce",
+        "score": 0.9287109375,
+        "ball_location": {
+            "x": 120.0,
+            "y": 83.0
+        },
+        "mapped_ball_location": {
+            "x": 933.5360107421875,
+            "y": 636.0310668945312
+        },
+        "ball_coord_confidence": 0.4559953808784485,
+        "ball_coord_confidence_of": 0.3573964536190033,
+        "ball_location_of": {
+            "x": 120.0,
+            "y": 83.0
+        },
+        "mapped_ball_location_of": {
+            "x": 933.5360107421875,
+            "y": 636.0310668945312
+        },
+        "draw_ball_location": {
+            "x": 933.5360107421875,
+            "y": 636.0310668945312
+        }
+    },
+    "5606": {
+        "time": 186.86666666666667,
+        "event_type": "close_table_bounce",
+        "score": 0.966796875,
+        "ball_location": {
+            "x": 114.0,
+            "y": 106.0
+        },
+        "mapped_ball_location": {
+            "x": 663.8699340820312,
+            "y": 1687.786376953125
+        },
+        "ball_coord_confidence": 0.25405773520469666,
+        "ball_coord_confidence_of": 0.16059045493602753,
+        "ball_location_of": {
+            "x": 114.0,
+            "y": 106.0
+        },
+        "mapped_ball_location_of": {
+            "x": 663.8699340820312,
+            "y": 1687.786376953125
+        },
+        "draw_ball_location": {
+            "x": 663.8699340820312,
+            "y": 1687.786376953125
+        }
+    },
+    "5614": {
+        "time": 187.13333333333333,
+        "event_type": "close_table_forehand",
+        "score": 0.95947265625
+    },
+    "5630": {
+        "time": 187.66666666666666,
+        "event_type": "far_table_bounce",
+        "score": 0.9921875,
+        "ball_location": {
+            "x": 120.0,
+            "y": 80.0
+        },
+        "mapped_ball_location": {
+            "x": 958.7562255859375,
+            "y": 480.0564880371094
+        },
+        "ball_coord_confidence": 0.39929118752479553,
+        "ball_coord_confidence_of": 0.3755485713481903,
+        "ball_location_of": {
+            "x": 119.0,
+            "y": 80.0
+        },
+        "mapped_ball_location_of": {
+            "x": 940.5894165039062,
+            "y": 477.2925109863281
+        },
+        "draw_ball_location": {
+            "x": 958.7562255859375,
+            "y": 480.0564880371094
+        }
+    },
+    "5637": {
+        "time": 187.9,
+        "event_type": "far_table_backhand",
+        "score": 0.9296875
+    },
+    "5645": {
+        "time": 188.16666666666666,
+        "event_type": "close_table_bounce",
+        "score": 0.9501953125,
+        "ball_location": {
+            "x": 72.0,
+            "y": 12.0
+        },
+        "mapped_ball_location": {
+            "x": 529.1549072265625,
+            "y": -4983.81298828125
+        },
+        "ball_coord_confidence": 0.3426915109157562,
+        "ball_coord_confidence_of": 0.09479226917028427,
+        "ball_location_of": {
+            "x": 72.0,
+            "y": 12.0
+        },
+        "mapped_ball_location_of": {
+            "x": 529.1549072265625,
+            "y": -4983.81298828125
+        },
+        "draw_ball_location": {
+            "x": 529.1549072265625,
+            "y": -4983.81298828125
+        }
+    },
+    "5650": {
+        "time": 188.33333333333334,
+        "event_type": "close_table_forehand",
+        "score": 0.320556640625
+    },
+    "5664": {
+        "time": 188.8,
+        "event_type": "far_table_bounce",
+        "score": 0.9638671875,
+        "ball_location": {
+            "x": 90.0,
+            "y": 60.0
+        },
+        "mapped_ball_location": {
+            "x": 545.1220703125,
+            "y": -776.1375122070312
+        },
+        "ball_coord_confidence": 0.14795628190040588,
+        "ball_coord_confidence_of": 0.01888507418334484,
+        "ball_location_of": {
+            "x": 90.0,
+            "y": 61.0
+        },
+        "mapped_ball_location_of": {
+            "x": 537.8782958984375,
+            "y": -711.7569580078125
+        },
+        "draw_ball_location": {
+            "x": 545.1220703125,
+            "y": -776.1375122070312
+        }
+    },
+    "5673": {
+        "time": 189.1,
+        "event_type": "far_table_backhand",
+        "score": 0.88671875
+    },
+    "6076": {
+        "time": 202.53333333333333,
+        "event_type": "close_table_serve",
+        "score": 0.9697265625
+    },
+    "6081": {
+        "time": 202.7,
+        "event_type": "close_table_bounce",
+        "score": 0.77587890625,
+        "ball_location": {
+            "x": 175.0,
+            "y": 99.0
+        },
+        "mapped_ball_location": {
+            "x": 1726.1304931640625,
+            "y": 1537.5687255859375
+        },
+        "ball_coord_confidence": 0.2165565937757492,
+        "ball_coord_confidence_of": 0.17646817862987518,
+        "ball_location_of": {
+            "x": 176.0,
+            "y": 99.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1742.7535400390625,
+            "y": 1540.0635986328125
+        },
+        "draw_ball_location": {
+            "x": 1726.1304931640625,
+            "y": 1537.5687255859375
+        }
+    },
+    "6093": {
+        "time": 203.1,
+        "event_type": "far_table_bounce",
+        "score": 0.96728515625,
+        "ball_location": {
+            "x": 116.0,
+            "y": 90.0
+        },
+        "mapped_ball_location": {
+            "x": 807.8712768554688,
+            "y": 973.2409057617188
+        },
+        "ball_coord_confidence": 0.25660744309425354,
+        "ball_coord_confidence_of": 0.17405684292316437,
+        "ball_location_of": {
+            "x": 117.0,
+            "y": 89.0
+        },
+        "mapped_ball_location_of": {
+            "x": 832.817138671875,
+            "y": 927.4873657226562
+        },
+        "draw_ball_location": {
+            "x": 807.8712768554688,
+            "y": 973.2409057617188
+        }
+    },
+    "6100": {
+        "time": 203.33333333333334,
+        "event_type": "far_table_backhand",
+        "score": 0.1953125
+    },
+    "6113": {
+        "time": 203.76666666666668,
+        "event_type": "close_table_bounce",
+        "score": 0.994140625,
+        "ball_location": {
+            "x": 103.0,
+            "y": 106.0
+        },
+        "mapped_ball_location": {
+            "x": 485.4638977050781,
+            "y": 1661.1319580078125
+        },
+        "ball_coord_confidence": 0.22440890967845917,
+        "ball_coord_confidence_of": 0.11725601553916931,
+        "ball_location_of": {
+            "x": 125.0,
+            "y": 67.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1173.399658203125,
+            "y": -234.7589111328125
+        },
+        "draw_ball_location": {
+            "x": 485.4638977050781,
+            "y": 1661.1319580078125
+        }
+    },
+    "6119": {
+        "time": 203.96666666666667,
+        "event_type": "close_table_forehand",
+        "score": 0.425537109375
+    },
+    "6135": {
+        "time": 204.5,
+        "event_type": "far_table_bounce",
+        "score": 0.13623046875,
+        "ball_location": {
+            "x": 132.0,
+            "y": 76.0
+        },
+        "mapped_ball_location": {
+            "x": 1215.5235595703125,
+            "y": 299.0454406738281
+        },
+        "ball_coord_confidence": 0.21919168531894684,
+        "ball_coord_confidence_of": 0.07991994917392731,
+        "ball_location_of": {
+            "x": 140.0,
+            "y": 73.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1395.69189453125,
+            "y": 155.95030212402344
+        },
+        "draw_ball_location": {
+            "x": 1215.5235595703125,
+            "y": 299.0454406738281
+        }
+    },
+    "6296": {
+        "time": 209.86666666666667,
+        "event_type": "close_table_bounce",
+        "score": 0.1634521484375,
+        "ball_location": {
+            "x": 137.0,
+            "y": 106.0
+        },
+        "mapped_ball_location": {
+            "x": 1036.4512939453125,
+            "y": 1743.4510498046875
+        },
+        "ball_coord_confidence": 0.3049766421318054,
+        "ball_coord_confidence_of": 0.14499108493328094,
+        "ball_location_of": {
+            "x": 136.0,
+            "y": 106.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1020.2647094726562,
+            "y": 1741.03271484375
+        },
+        "draw_ball_location": {
+            "x": 1036.4512939453125,
+            "y": 1743.4510498046875
+        }
+    },
+    "6566": {
+        "time": 218.86666666666667,
+        "event_type": "close_table_serve",
+        "score": 0.587890625
+    },
+    "6579": {
+        "time": 219.3,
+        "event_type": "far_table_bounce",
+        "score": 0.9619140625,
+        "ball_location": {
+            "x": 132.0,
+            "y": 57.0
+        },
+        "mapped_ball_location": {
+            "x": 1422.4146728515625,
+            "y": -840.623291015625
+        },
+        "ball_coord_confidence": 0.09168709814548492,
+        "ball_coord_confidence_of": 0.09043341875076294,
+        "ball_location_of": {
+            "x": 133.0,
+            "y": 75.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1244.0552978515625,
+            "y": 247.06321716308594
+        },
+        "draw_ball_location": {
+            "x": 1244.0552978515625,
+            "y": 247.06321716308594
+        }
+    },
+    "6584": {
+        "time": 219.46666666666667,
+        "event_type": "far_table_backhand",
+        "score": 0.84912109375
+    },
+    "6599": {
+        "time": 219.96666666666667,
+        "event_type": "close_table_bounce",
+        "score": 0.5029296875,
+        "ball_location": {
+            "x": 198.0,
+            "y": 154.0
+        },
+        "mapped_ball_location": {
+            "x": 1672.0419921875,
+            "y": 4131.88525390625
+        },
+        "ball_coord_confidence": 0.04204871878027916,
+        "ball_coord_confidence_of": 0.004459883086383343,
+        "ball_location_of": {
+            "x": 188.0,
+            "y": 124.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1763.3319091796875,
+            "y": 2832.26611328125
+        },
+        "draw_ball_location": {
+            "x": 1672.0419921875,
+            "y": 4131.88525390625
+        }
+    },
+    "6956": {
+        "time": 231.86666666666667,
+        "event_type": "far_table_serve",
+        "score": 0.98486328125
+    },
+    "6962": {
+        "time": 232.06666666666666,
+        "event_type": "far_table_bounce",
+        "score": 0.9619140625,
+        "ball_location": {
+            "x": 135.0,
+            "y": 82.0
+        },
+        "mapped_ball_location": {
+            "x": 1211.6845703125,
+            "y": 625.5087890625
+        },
+        "ball_coord_confidence": 0.15647383034229279,
+        "ball_coord_confidence_of": 0.15607012808322906,
+        "ball_location_of": {
+            "x": 135.0,
+            "y": 82.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1211.6845703125,
+            "y": 625.5087890625
+        },
+        "draw_ball_location": {
+            "x": 1211.6845703125,
+            "y": 625.5087890625
+        }
+    },
+    "6973": {
+        "time": 232.43333333333334,
+        "event_type": "close_table_bounce",
+        "score": 0.9599609375,
+        "ball_location": {
+            "x": 135.0,
+            "y": 105.0
+        },
+        "mapped_ball_location": {
+            "x": 1011.8955078125,
+            "y": 1696.69482421875
+        },
+        "ball_coord_confidence": 0.440792053937912,
+        "ball_coord_confidence_of": 0.45212891697883606,
+        "ball_location_of": {
+            "x": 135.0,
+            "y": 105.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1011.8955078125,
+            "y": 1696.69482421875
+        },
+        "draw_ball_location": {
+            "x": 1011.8955078125,
+            "y": 1696.69482421875
+        }
+    },
+    "6979": {
+        "time": 232.63333333333333,
+        "event_type": "close_table_bounce",
+        "score": 0.15869140625,
+        "ball_location": {
+            "x": 128.0,
+            "y": 109.0
+        },
+        "mapped_ball_location": {
+            "x": 869.0543823242188,
+            "y": 1845.6087646484375
+        },
+        "ball_coord_confidence": 0.3545469641685486,
+        "ball_coord_confidence_of": 0.35637685656547546,
+        "ball_location_of": {
+            "x": 128.0,
+            "y": 109.0
+        },
+        "mapped_ball_location_of": {
+            "x": 869.0543823242188,
+            "y": 1845.6087646484375
+        },
+        "draw_ball_location": {
+            "x": 869.0543823242188,
+            "y": 1845.6087646484375
+        }
+    },
+    "6992": {
+        "time": 233.06666666666666,
+        "event_type": "far_table_bounce",
+        "score": 0.92626953125,
+        "ball_location": {
+            "x": 118.0,
+            "y": 89.0
+        },
+        "mapped_ball_location": {
+            "x": 850.2564086914062,
+            "y": 930.122802734375
+        },
+        "ball_coord_confidence": 0.3849787414073944,
+        "ball_coord_confidence_of": 0.465858519077301,
+        "ball_location_of": {
+            "x": 118.0,
+            "y": 89.0
+        },
+        "mapped_ball_location_of": {
+            "x": 850.2564086914062,
+            "y": 930.122802734375
+        },
+        "draw_ball_location": {
+            "x": 850.2564086914062,
+            "y": 930.122802734375
+        }
+    },
+    "6998": {
+        "time": 233.26666666666668,
+        "event_type": "far_table_forehand",
+        "score": 0.2115478515625
+    },
+    "7010": {
+        "time": 233.66666666666666,
+        "event_type": "close_table_bounce",
+        "score": 0.96533203125,
+        "ball_location": {
+            "x": 144.0,
+            "y": 108.0
+        },
+        "mapped_ball_location": {
+            "x": 1133.0843505859375,
+            "y": 1842.96875
+        },
+        "ball_coord_confidence": 0.25609534978866577,
+        "ball_coord_confidence_of": 0.20733654499053955,
+        "ball_location_of": {
+            "x": 144.0,
+            "y": 108.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1133.0843505859375,
+            "y": 1842.96875
+        },
+        "draw_ball_location": {
+            "x": 1133.0843505859375,
+            "y": 1842.96875
+        }
+    },
+    "7015": {
+        "time": 233.83333333333334,
+        "event_type": "close_table_backhand",
+        "score": 0.96240234375
+    },
+    "7028": {
+        "time": 234.26666666666668,
+        "event_type": "far_table_bounce",
+        "score": 0.591796875,
+        "ball_location": {
+            "x": 75.0,
+            "y": 95.0
+        },
+        "mapped_ball_location": {
+            "x": 73.84242248535156,
+            "y": 1103.886474609375
+        },
+        "ball_coord_confidence": 0.3330739736557007,
+        "ball_coord_confidence_of": 0.051808733493089676,
+        "ball_location_of": {
+            "x": 182.0,
+            "y": 113.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1757.4954833984375,
+            "y": 2291.71435546875
+        },
+        "draw_ball_location": {
+            "x": 73.84242248535156,
+            "y": 1103.886474609375
+        }
+    },
+    "7040": {
+        "time": 234.66666666666666,
+        "event_type": "far_table_forehand",
+        "score": 0.65283203125
+    },
+    "7052": {
+        "time": 235.06666666666666,
+        "event_type": "close_table_bounce",
+        "score": 0.80419921875,
+        "ball_location": {
+            "x": 135.0,
+            "y": 107.0
+        },
+        "mapped_ball_location": {
+            "x": 996.3234252929688,
+            "y": 1780.1859130859375
+        },
+        "ball_coord_confidence": 0.06964907050132751,
+        "ball_coord_confidence_of": 0.10015563666820526,
+        "ball_location_of": {
+            "x": 205.0,
+            "y": 147.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1850.65869140625,
+            "y": 3889.063720703125
+        },
+        "draw_ball_location": {
+            "x": 996.3234252929688,
+            "y": 1780.1859130859375
+        }
+    },
+    "7060": {
+        "time": 235.33333333333334,
+        "event_type": "close_table_forehand",
+        "score": 0.9921875
+    },
+    "7451": {
+        "time": 248.36666666666667,
+        "event_type": "far_table_backhand",
+        "score": 0.48974609375
+    },
+    "7455": {
+        "time": 248.5,
+        "event_type": "far_table_bounce",
+        "score": 0.67626953125,
+        "ball_location": {
+            "x": 123.0,
+            "y": 83.0
+        },
+        "mapped_ball_location": {
+            "x": 987.2777099609375,
+            "y": 644.188720703125
+        },
+        "ball_coord_confidence": 0.2626194655895233,
+        "ball_coord_confidence_of": 0.25303518772125244,
+        "ball_location_of": {
+            "x": 123.0,
+            "y": 83.0
+        },
+        "mapped_ball_location_of": {
+            "x": 987.2777099609375,
+            "y": 644.188720703125
+        },
+        "draw_ball_location": {
+            "x": 987.2777099609375,
+            "y": 644.188720703125
+        }
+    },
+    "7467": {
+        "time": 248.9,
+        "event_type": "close_table_bounce",
+        "score": 0.9462890625,
+        "ball_location": {
+            "x": 119.0,
+            "y": 106.0
+        },
+        "mapped_ball_location": {
+            "x": 744.9176025390625,
+            "y": 1699.8951416015625
+        },
+        "ball_coord_confidence": 0.4669032096862793,
+        "ball_coord_confidence_of": 0.19478903710842133,
+        "ball_location_of": {
+            "x": 119.0,
+            "y": 106.0
+        },
+        "mapped_ball_location_of": {
+            "x": 744.9176025390625,
+            "y": 1699.8951416015625
+        },
+        "draw_ball_location": {
+            "x": 744.9176025390625,
+            "y": 1699.8951416015625
+        }
+    },
+    "7473": {
+        "time": 249.1,
+        "event_type": "close_table_forehand",
+        "score": 0.93896484375
+    },
+    "7486": {
+        "time": 249.53333333333333,
+        "event_type": "far_table_bounce",
+        "score": 0.921875,
+        "ball_location": {
+            "x": 81.0,
+            "y": 84.0
+        },
+        "mapped_ball_location": {
+            "x": 228.690673828125,
+            "y": 581.4105834960938
+        },
+        "ball_coord_confidence": 0.12694257497787476,
+        "ball_coord_confidence_of": 0.053004439920186996,
+        "ball_location_of": {
+            "x": 184.0,
+            "y": 116.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1765.80419921875,
+            "y": 2443.357177734375
+        },
+        "draw_ball_location": {
+            "x": 228.690673828125,
+            "y": 581.4105834960938
+        }
+    },
+    "7497": {
+        "time": 249.9,
+        "event_type": "far_table_forehand",
+        "score": 0.92431640625
+    },
+    "7508": {
+        "time": 250.26666666666668,
+        "event_type": "close_table_bounce",
+        "score": 0.9951171875,
+        "ball_location": {
+            "x": 47.0,
+            "y": 94.0
+        },
+        "mapped_ball_location": {
+            "x": -401.6817626953125,
+            "y": 984.8291015625
+        },
+        "ball_coord_confidence": 0.09331244230270386,
+        "ball_coord_confidence_of": 0.05497691407799721,
+        "ball_location_of": {
+            "x": 141.0,
+            "y": 114.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1028.94189453125,
+            "y": 2225.496337890625
+        },
+        "draw_ball_location": {
+            "x": 1028.94189453125,
+            "y": 2225.496337890625
+        }
+    },
+    "7512": {
+        "time": 250.4,
+        "event_type": "close_table_forehand",
+        "score": 0.250732421875
+    },
+    "7521": {
+        "time": 250.7,
+        "event_type": "far_table_bounce",
+        "score": 0.66943359375,
+        "ball_location": {
+            "x": 130.0,
+            "y": 80.0
+        },
+        "mapped_ball_location": {
+            "x": 1140.3450927734375,
+            "y": 507.6839294433594
+        },
+        "ball_coord_confidence": 0.1814947873353958,
+        "ball_coord_confidence_of": 0.08470705896615982,
+        "ball_location_of": {
+            "x": 129.0,
+            "y": 76.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1160.038818359375,
+            "y": 290.57708740234375
+        },
+        "draw_ball_location": {
+            "x": 1140.3450927734375,
+            "y": 507.6839294433594
+        }
+    },
+    "7529": {
+        "time": 250.96666666666667,
+        "event_type": "far_table_backhand",
+        "score": 0.1199951171875
+    },
+    "7533": {
+        "time": 251.1,
+        "event_type": "far_table_backhand",
+        "score": 0.583984375
+    },
+    "7550": {
+        "time": 251.66666666666666,
+        "event_type": "close_table_bounce",
+        "score": 0.6884765625,
+        "ball_location": {
+            "x": 115.0,
+            "y": 118.0
+        },
+        "mapped_ball_location": {
+            "x": 587.6580810546875,
+            "y": 2337.785400390625
+        },
+        "ball_coord_confidence": 0.4222470819950104,
+        "ball_coord_confidence_of": 0.336246520280838,
+        "ball_location_of": {
+            "x": 115.0,
+            "y": 118.0
+        },
+        "mapped_ball_location_of": {
+            "x": 587.6580810546875,
+            "y": 2337.785400390625
+        },
+        "draw_ball_location": {
+            "x": 587.6580810546875,
+            "y": 2337.785400390625
+        }
+    },
+    "7555": {
+        "time": 251.83333333333334,
+        "event_type": "close_table_forehand",
+        "score": 0.962890625
+    },
+    "7983": {
+        "time": 266.1,
+        "event_type": "close_table_serve",
+        "score": 0.80908203125
+    },
+    "7988": {
+        "time": 266.26666666666665,
+        "event_type": "close_table_bounce",
+        "score": 0.7490234375,
+        "ball_location": {
+            "x": 177.0,
+            "y": 98.0
+        },
+        "mapped_ball_location": {
+            "x": 1770.665283203125,
+            "y": 1498.59814453125
+        },
+        "ball_coord_confidence": 0.09153510630130768,
+        "ball_coord_confidence_of": 0.07252079248428345,
+        "ball_location_of": {
+            "x": 146.0,
+            "y": 106.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1182.0787353515625,
+            "y": 1765.2081298828125
+        },
+        "draw_ball_location": {
+            "x": 1770.665283203125,
+            "y": 1498.59814453125
+        }
+    },
+    "7999": {
+        "time": 266.6333333333333,
+        "event_type": "far_table_bounce",
+        "score": 0.9716796875,
+        "ball_location": {
+            "x": 111.0,
+            "y": 89.0
+        },
+        "mapped_ball_location": {
+            "x": 728.1537475585938,
+            "y": 911.67041015625
+        },
+        "ball_coord_confidence": 0.15831434726715088,
+        "ball_coord_confidence_of": 0.20608703792095184,
+        "ball_location_of": {
+            "x": 111.0,
+            "y": 89.0
+        },
+        "mapped_ball_location_of": {
+            "x": 728.1537475585938,
+            "y": 911.67041015625
+        },
+        "draw_ball_location": {
+            "x": 728.1537475585938,
+            "y": 911.67041015625
+        }
+    },
+    "8006": {
+        "time": 266.8666666666667,
+        "event_type": "far_table_forehand",
+        "score": 0.99755859375
+    },
+    "8020": {
+        "time": 267.3333333333333,
+        "event_type": "close_table_bounce",
+        "score": 0.8466796875,
+        "ball_location": {
+            "x": 167.0,
+            "y": 111.0
+        },
+        "mapped_ball_location": {
+            "x": 1472.881103515625,
+            "y": 2018.586669921875
+        },
+        "ball_coord_confidence": 0.2538091242313385,
+        "ball_coord_confidence_of": 0.23887693881988525,
+        "ball_location_of": {
+            "x": 168.0,
+            "y": 110.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1498.3369140625,
+            "y": 1981.0845947265625
+        },
+        "draw_ball_location": {
+            "x": 1472.881103515625,
+            "y": 2018.586669921875
+        }
+    },
+    "8025": {
+        "time": 267.5,
+        "event_type": "close_table_backhand",
+        "score": 0.95068359375
+    },
+    "8042": {
+        "time": 268.06666666666666,
+        "event_type": "far_table_bounce",
+        "score": 0.9765625,
+        "ball_location": {
+            "x": 79.0,
+            "y": 68.0
+        },
+        "mapped_ball_location": {
+            "x": 276.90264892578125,
+            "y": -311.575439453125
+        },
+        "ball_coord_confidence": 0.1435467004776001,
+        "ball_coord_confidence_of": 0.07992610335350037,
+        "ball_location_of": {
+            "x": 83.0,
+            "y": 68.0
+        },
+        "mapped_ball_location_of": {
+            "x": 354.1180114746094,
+            "y": -299.7115478515625
+        },
+        "draw_ball_location": {
+            "x": 276.90264892578125,
+            "y": -311.575439453125
+        }
+    },
+    "8050": {
+        "time": 268.3333333333333,
+        "event_type": "far_table_forehand",
+        "score": 0.83837890625
+    },
+    "8055": {
+        "time": 268.5,
+        "event_type": "close_table_bounce",
+        "score": 0.95166015625,
+        "ball_location": {
+            "x": 133.0,
+            "y": 67.0
+        },
+        "mapped_ball_location": {
+            "x": 1327.9678955078125,
+            "y": -210.98941040039062
+        },
+        "ball_coord_confidence": 0.2579338550567627,
+        "ball_coord_confidence_of": 0.2159329652786255,
+        "ball_location_of": {
+            "x": 133.0,
+            "y": 67.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1327.9678955078125,
+            "y": -210.98941040039062
+        },
+        "draw_ball_location": {
+            "x": 1327.9678955078125,
+            "y": -210.98941040039062
+        }
+    },
+    "8059": {
+        "time": 268.6333333333333,
+        "event_type": "close_table_backhand",
+        "score": 0.39453125
+    },
+    "8578": {
+        "time": 285.93333333333334,
+        "event_type": "close_table_serve",
+        "score": 0.31689453125
+    },
+    "8582": {
+        "time": 286.06666666666666,
+        "event_type": "close_table_serve",
+        "score": 0.254638671875
+    },
+    "8586": {
+        "time": 286.2,
+        "event_type": "close_table_bounce",
+        "score": 0.339599609375,
+        "ball_location": {
+            "x": 171.0,
+            "y": 96.0
+        },
+        "mapped_ball_location": {
+            "x": 1692.499267578125,
+            "y": 1394.3394775390625
+        },
+        "ball_coord_confidence": 0.2663505971431732,
+        "ball_coord_confidence_of": 0.03053041733801365,
+        "ball_location_of": {
+            "x": 171.0,
+            "y": 95.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1703.6478271484375,
+            "y": 1349.149169921875
+        },
+        "draw_ball_location": {
+            "x": 1692.499267578125,
+            "y": 1394.3394775390625
+        }
+    },
+    "8597": {
+        "time": 286.56666666666666,
+        "event_type": "far_table_bounce",
+        "score": 0.96826171875,
+        "ball_location": {
+            "x": 106.0,
+            "y": 86.0
+        },
+        "mapped_ball_location": {
+            "x": 661.45166015625,
+            "y": 750.2603149414062
+        },
+        "ball_coord_confidence": 0.192770853638649,
+        "ball_coord_confidence_of": 0.23533646762371063,
+        "ball_location_of": {
+            "x": 106.0,
+            "y": 86.0
+        },
+        "mapped_ball_location_of": {
+            "x": 661.45166015625,
+            "y": 750.2603149414062
+        },
+        "draw_ball_location": {
+            "x": 661.45166015625,
+            "y": 750.2603149414062
+        }
+    },
+    "8602": {
+        "time": 286.73333333333335,
+        "event_type": "far_table_forehand",
+        "score": 0.70703125
+    },
+    "8959": {
+        "time": 298.6333333333333,
+        "event_type": "far_table_serve",
+        "score": 0.9775390625
+    },
+    "8965": {
+        "time": 298.8333333333333,
+        "event_type": "far_table_bounce",
+        "score": 0.841796875,
+        "ball_location": {
+            "x": 163.0,
+            "y": 72.0
+        },
+        "mapped_ball_location": {
+            "x": 1839.5072021484375,
+            "y": 165.93695068359375
+        },
+        "ball_coord_confidence": 0.1934332400560379,
+        "ball_coord_confidence_of": 0.10131789743900299,
+        "ball_location_of": {
+            "x": 148.0,
+            "y": 63.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1667.8529052734375,
+            "y": -408.37091064453125
+        },
+        "draw_ball_location": {
+            "x": 1839.5072021484375,
+            "y": 165.93695068359375
+        }
+    },
+    "8977": {
+        "time": 299.23333333333335,
+        "event_type": "close_table_bounce",
+        "score": 0.99755859375,
+        "ball_location": {
+            "x": 114.0,
+            "y": 109.0
+        },
+        "mapped_ball_location": {
+            "x": 644.9835205078125,
+            "y": 1812.1943359375
+        },
+        "ball_coord_confidence": 0.14180763065814972,
+        "ball_coord_confidence_of": 0.2407667636871338,
+        "ball_location_of": {
+            "x": 141.0,
+            "y": 66.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1494.159912109375,
+            "y": -246.92808532714844
+        },
+        "draw_ball_location": {
+            "x": 644.9835205078125,
+            "y": 1812.1943359375
+        }
+    },
+    "8984": {
+        "time": 299.46666666666664,
+        "event_type": "close_table_forehand",
+        "score": 0.93896484375
+    },
+    "8997": {
+        "time": 299.9,
+        "event_type": "far_table_bounce",
+        "score": 0.9052734375,
+        "ball_location": {
+            "x": 97.0,
+            "y": 68.0
+        },
+        "mapped_ball_location": {
+            "x": 624.1666870117188,
+            "y": -258.219482421875
+        },
+        "ball_coord_confidence": 0.1293175369501114,
+        "ball_coord_confidence_of": 0.09697439521551132,
+        "ball_location_of": {
+            "x": 96.0,
+            "y": 68.0
+        },
+        "mapped_ball_location_of": {
+            "x": 604.8880615234375,
+            "y": -261.18157958984375
+        },
+        "draw_ball_location": {
+            "x": 624.1666870117188,
+            "y": -258.219482421875
+        }
+    },
+    "9004": {
+        "time": 300.1333333333333,
+        "event_type": "far_table_forehand",
+        "score": 0.7705078125
+    },
+    "9016": {
+        "time": 300.53333333333336,
+        "event_type": "close_table_bounce",
+        "score": 0.425048828125,
+        "ball_location": {
+            "x": 179.0,
+            "y": 121.0
+        },
+        "mapped_ball_location": {
+            "x": 1629.4317626953125,
+            "y": 2663.619384765625
+        },
+        "ball_coord_confidence": 0.06929197907447815,
+        "ball_coord_confidence_of": 0.04122078791260719,
+        "ball_location_of": {
+            "x": 174.0,
+            "y": 119.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1558.0648193359375,
+            "y": 2554.562744140625
+        },
+        "draw_ball_location": {
+            "x": 1629.4317626953125,
+            "y": 2663.619384765625
+        }
+    },
+    "9501": {
+        "time": 316.7,
+        "event_type": "far_table_serve",
+        "score": 0.689453125
+    },
+    "9505": {
+        "time": 316.8333333333333,
+        "event_type": "far_table_bounce",
+        "score": 0.93017578125,
+        "ball_location": {
+            "x": 166.0,
+            "y": 94.0
+        },
+        "mapped_ball_location": {
+            "x": 1629.9267578125,
+            "y": 1290.76806640625
+        },
+        "ball_coord_confidence": 0.28491267561912537,
+        "ball_coord_confidence_of": 0.29479125142097473,
+        "ball_location_of": {
+            "x": 166.0,
+            "y": 94.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1629.9267578125,
+            "y": 1290.76806640625
+        },
+        "draw_ball_location": {
+            "x": 1629.9267578125,
+            "y": 1290.76806640625
+        }
+    },
+    "9515": {
+        "time": 317.1666666666667,
+        "event_type": "close_table_bounce",
+        "score": 0.95166015625,
+        "ball_location": {
+            "x": 130.0,
+            "y": 105.0
+        },
+        "mapped_ball_location": {
+            "x": 930.6026000976562,
+            "y": 1684.541748046875
+        },
+        "ball_coord_confidence": 0.3119121491909027,
+        "ball_coord_confidence_of": 0.2730402946472168,
+        "ball_location_of": {
+            "x": 130.0,
+            "y": 105.0
+        },
+        "mapped_ball_location_of": {
+            "x": 930.6026000976562,
+            "y": 1684.541748046875
+        },
+        "draw_ball_location": {
+            "x": 930.6026000976562,
+            "y": 1684.541748046875
+        }
+    },
+    "9521": {
+        "time": 317.3666666666667,
+        "event_type": "close_table_forehand",
+        "score": 0.5908203125
+    },
+    "9536": {
+        "time": 317.8666666666667,
+        "event_type": "far_table_bounce",
+        "score": 0.9794921875,
+        "ball_location": {
+            "x": 181.0,
+            "y": 122.0
+        },
+        "mapped_ball_location": {
+            "x": 1656.176025390625,
+            "y": 2716.45166015625
+        },
+        "ball_coord_confidence": 0.22571544349193573,
+        "ball_coord_confidence_of": 0.10475266724824905,
+        "ball_location_of": {
+            "x": 182.0,
+            "y": 122.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1674.026611328125,
+            "y": 2719.786376953125
+        },
+        "draw_ball_location": {
+            "x": 1656.176025390625,
+            "y": 2716.45166015625
+        }
+    },
+    "9551": {
+        "time": 318.3666666666667,
+        "event_type": "close_table_bounce",
+        "score": 0.88525390625,
+        "ball_location": {
+            "x": 148.0,
+            "y": 108.0
+        },
+        "mapped_ball_location": {
+            "x": 1197.2552490234375,
+            "y": 1852.5440673828125
+        },
+        "ball_coord_confidence": 0.1906537115573883,
+        "ball_coord_confidence_of": 0.05746077746152878,
+        "ball_location_of": {
+            "x": 149.0,
+            "y": 108.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1213.2950439453125,
+            "y": 1854.9375
+        },
+        "draw_ball_location": {
+            "x": 1197.2552490234375,
+            "y": 1852.5440673828125
+        }
+    },
+    "9563": {
+        "time": 318.76666666666665,
+        "event_type": "close_table_forehand",
+        "score": 0.7294921875
+    },
+    "9575": {
+        "time": 319.1666666666667,
+        "event_type": "far_table_bounce",
+        "score": 0.99365234375,
+        "ball_location": {
+            "x": 137.0,
+            "y": 85.0
+        },
+        "mapped_ball_location": {
+            "x": 1218.7091064453125,
+            "y": 783.3531494140625
+        },
+        "ball_coord_confidence": 0.31251221895217896,
+        "ball_coord_confidence_of": 0.24216622114181519,
+        "ball_location_of": {
+            "x": 138.0,
+            "y": 85.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1236.4381103515625,
+            "y": 786.0402221679688
+        },
+        "draw_ball_location": {
+            "x": 1218.7091064453125,
+            "y": 783.3531494140625
+        }
+    },
+    "9580": {
+        "time": 319.3333333333333,
+        "event_type": "far_table_backhand",
+        "score": 0.49365234375
+    },
+    "9589": {
+        "time": 319.6333333333333,
+        "event_type": "close_table_bounce",
+        "score": 0.96435546875,
+        "ball_location": {
+            "x": 122.0,
+            "y": 107.0
+        },
+        "mapped_ball_location": {
+            "x": 786.6485595703125,
+            "y": 1748.8795166015625
+        },
+        "ball_coord_confidence": 0.04545291140675545,
+        "ball_coord_confidence_of": 0.03189205750823021,
+        "ball_location_of": {
+            "x": 122.0,
+            "y": 107.0
+        },
+        "mapped_ball_location_of": {
+            "x": 786.6485595703125,
+            "y": 1748.8795166015625
+        },
+        "draw_ball_location": {
+            "x": 786.6485595703125,
+            "y": 1748.8795166015625
+        }
+    },
+    "9601": {
+        "time": 320.03333333333336,
+        "event_type": "close_table_forehand",
+        "score": 0.6982421875
+    },
+    "9609": {
+        "time": 320.3,
+        "event_type": "far_table_bounce",
+        "score": 0.98095703125,
+        "ball_location": {
+            "x": 94.0,
+            "y": 82.0
+        },
+        "mapped_ball_location": {
+            "x": 473.42138671875,
+            "y": 513.3602294921875
+        },
+        "ball_coord_confidence": 0.19398808479309082,
+        "ball_coord_confidence_of": 0.17982497811317444,
+        "ball_location_of": {
+            "x": 94.0,
+            "y": 84.0
+        },
+        "mapped_ball_location_of": {
+            "x": 461.12420654296875,
+            "y": 616.665771484375
+        },
+        "draw_ball_location": {
+            "x": 473.42138671875,
+            "y": 513.3602294921875
+        }
+    },
+    "9613": {
+        "time": 320.43333333333334,
+        "event_type": "far_table_forehand",
+        "score": 0.88818359375
+    },
+    "9625": {
+        "time": 320.8333333333333,
+        "event_type": "close_table_bounce",
+        "score": 0.54052734375,
+        "ball_location": {
+            "x": 141.0,
+            "y": 116.0
+        },
+        "mapped_ball_location": {
+            "x": 1015.532958984375,
+            "y": 2318.200927734375
+        },
+        "ball_coord_confidence": 0.09336842596530914,
+        "ball_coord_confidence_of": 0.12807346880435944,
+        "ball_location_of": {
+            "x": 141.0,
+            "y": 116.0
+        },
+        "mapped_ball_location_of": {
+            "x": 1015.532958984375,
+            "y": 2318.200927734375
+        },
+        "draw_ball_location": {
+            "x": 1015.532958984375,
+            "y": 2318.200927734375
+        }
+    },
+    "9633": {
+        "time": 321.1,
+        "event_type": "close_table_backhand",
+        "score": 0.3671875
+    }
+}

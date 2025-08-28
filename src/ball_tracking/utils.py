@@ -67,7 +67,7 @@ def post_process(coords_logits):
 def load_pretrained_model(model, pretrained_path, device):
     """Load weights from the pretrained model"""
     assert os.path.isfile(pretrained_path), f"=> no checkpoint found at '{pretrained_path}'"
-    
+    print("=> Loading pretrained weights from '{}'".format(pretrained_path))
     try:
         checkpoint = torch.load(pretrained_path, map_location=device, weights_only=False)
         pretrained_dict = checkpoint['state_dict']
@@ -98,3 +98,27 @@ def load_pretrained_model(model, pretrained_path, device):
 
 
 
+def extract_coords(pred_heatmap):
+    """_summary_
+
+    Args:
+        pred_heatmap : tuple of tensors (pred_x_logits, pred_y_logits)
+        - pred_x_logits: Tensor of shape [B, W] with predicted logits for x-axis
+        - pred_y_logits: Tensor of shape [B, H] with predicted logits for y-axis
+    Return:
+        out (tensor) : Tensor in shape [B,2] which represents coords for each 
+    """
+    pred_x_logits, pred_y_logits = pred_heatmap
+
+    # Predicted coordinates are extracted by taking the argmax over logits
+    x_pred_indices = torch.argmax(pred_x_logits, dim=1)  # [B]
+    y_pred_indices = torch.argmax(pred_y_logits, dim=1)  # [B]
+
+    # Convert indices to float for calculations
+    x_pred = x_pred_indices.float()
+    y_pred = y_pred_indices.float()
+
+    # Stack the predicted x and y coordinates
+    pred_coords = torch.stack([x_pred, y_pred], dim=1)  # [B, 2]
+
+    return pred_coords

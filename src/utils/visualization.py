@@ -47,11 +47,11 @@ def draw_bounces_on_split_table(bounces, table_size=(1525, 2740), save_path=None
         ax.axhline(y=horizontal_middle_line, color='gray', linestyle='--', linewidth=1)
 
     for frame_id, info in bounces.items():
-        if "mapped_ball_location" not in info:
+        if "draw_ball_location" not in info:
             continue
 
-        x = info["mapped_ball_location"]["x"]
-        y = info["mapped_ball_location"]["y"]
+        x = info["draw_ball_location"]["x"]
+        y = info["draw_ball_location"]["y"]
         event_type = info.get("event_type", "unknown")
         color = color_map.get(event_type, 'black')
 
