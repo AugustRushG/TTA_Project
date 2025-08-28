@@ -1,6 +1,6 @@
 from .TOTNet import build_motion_model_light as build_ball_tracking_model
 from .TOTNet_OF import build_motion_model_light_opticalflow
-from .utils import load_pretrained_model as load_ball_tracking_model, extract_coords
+from .utils import load_pretrained_model as load_ball_tracking_model, extract_coords2d, extract_coords
 from .wasb import build_wasb
 import torch
 
@@ -30,3 +30,6 @@ class BallTrackingModel:
 
     def extract_coordinates(self, outputs):
         return extract_coords(outputs)
+    
+    def extract_coordinates_2d(self, outputs, H, W):
+        return extract_coords2d(outputs, H, W)

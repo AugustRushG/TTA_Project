@@ -367,19 +367,12 @@ class TemporalConvNet(nn.Module):
         x = self.temp_reduce(x) 
         out = x.squeeze(dim=1).squeeze(dim=1) #[B, H, W]
 
-        # Sum along the width to get a vertical heatmap (along H dimension)
-        vertical_heatmap = out.max(dim=2)[0]   # Shape: [B, H]
-        # Sum along the height to get a horizontal heatmap (along W dimension)
-        horizontal_heatmap = out.max(dim=1)[0]   # Shape: [B, W]
-        
-        vertical_heatmap = self.softmax(vertical_heatmap)
-        horizontal_heatmap = self.softmax(horizontal_heatmap) 
+        heatmap = out.view(B, H*W) # Reshape to [B, H*W] for softmax
+        heatmap = self.softmax(heatmap)  # Apply softmax to the heatmap
 
-        # 2) Joint 2D probability over all (y, x)
-        joint_probs = torch.softmax(out.view(B, -1), dim=1)     # [B, H*W]
-        conf, flat_idx = joint_probs.max(dim=1)                 # confidence in [0,1]
+        conf, _ = heatmap.max(dim=1)
 
-        return (horizontal_heatmap, vertical_heatmap), conf
+        return heatmap, conf
 
 
 

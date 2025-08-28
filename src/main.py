@@ -47,8 +47,8 @@ def main(args):
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
     ball_transform = transforms.Compose([
-        # transforms.Resize((288, 512)),
-        transforms.CenterCrop(size=(224, 224)),
+        transforms.Resize((288, 512)),
+        # transforms.CenterCrop(size=(224, 224)),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
     frame_dir, fps_rate = extract_frames(args.video_path, resize_to=(398, 224))
@@ -74,13 +74,13 @@ def main(args):
     # Initialize ball tracking model
     ball_tracking_model = BallTrackingModel(
         model_choice='TOTNet',
-        model_args=type('', (), {'img_size': (224, 224), 'num_frames': 5, 'device': args.device})(),
-        checkpoint_path='ball_tracking/checkpoints/TOTNet_TTA_(5)_(224,398)_newdata_50epochs_best.pth'
+        model_args=type('', (), {'img_size': (288, 512), 'num_frames': 5, 'device': args.device})(),
+        checkpoint_path='ball_tracking/checkpoints/TOTNet_TTA_(5)_(288,512)_30epochs_best.pth'
     )
     TOTNet_OF = BallTrackingModel(
         model_choice='TOTNet_OF',
-        model_args=type('', (), {'img_size': (224, 224), 'num_frames': 5, 'device': args.device})(),
-        checkpoint_path='ball_tracking/checkpoints/TOTNet_OF_TTA_(5)_(224,398)_newdata_50epochs_best.pth'
+        model_args=type('', (), {'img_size': (288, 512), 'num_frames': 5, 'device': args.device})(),
+        checkpoint_path='ball_tracking/checkpoints/TOTNet_OF_TTA_(5)_(288,512)_30epochs_best.pth'
     )
 
     print(f'Ball Tracking Model initialized successfully')
@@ -141,8 +141,8 @@ def main(args):
         img_path = os.path.join(frame_dir, filename)
 
         img = Image.open(img_path).convert("RGB")
-        img_trans = transforms.CenterCrop(size=(224,224))
-        # img_trans = transforms.Resize((288, 512))
+        # img_trans = transforms.CenterCrop(size=(224,224))
+        img_trans = transforms.Resize((288, 512))
         converted_img = img_trans(img)
 
         os.makedirs('./result', exist_ok=True)
@@ -171,7 +171,7 @@ def main(args):
             # print(f"Processing ball location for frame {frame_idx} with event type {event_type} and score {score}")
             # print(f"Ball location frames shape: {ball_location_frames.shape}")
             ball_location_result, confidence = ball_tracking_model.predict(ball_location_frames)
-            extracted_coord = ball_tracking_model.extract_coordinates(ball_location_result)[0]
+            extracted_coord = ball_tracking_model.extract_coordinates_2d(ball_location_result, H=288, W=512)[0]
             x_pred, y_pred = extracted_coord[0], extracted_coord[1]
 
             # to numpy 

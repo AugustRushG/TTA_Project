@@ -40,19 +40,21 @@ class TableDetector:
                 plt.close(self.fig)
 
     def annotate_half(self, title):
-        self.points = []
         img_bgr = cv2.imread(self.image_path)
         img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
 
-        self.fig, self.ax = plt.subplots()
-        self.ax.imshow(img_rgb)
-        self.ax.set_title(title)
-        self.fig.canvas.mpl_connect('button_press_event', self.onclick)
-        plt.show()
+        fig, ax = plt.subplots()
+        ax.imshow(img_rgb)
+        ax.set_title(title)
+        ax.axis('off')
 
-        if len(self.points) != 4:
-            raise ValueError(f"Expected 4 points, got {len(self.points)}")
-        return np.array(self.points, dtype=np.float32)
+        # Block until 4 clicks (no timeout)
+        pts = plt.ginput(4, timeout=0)   # list of (x, y)
+        plt.close(fig)
+
+        if len(pts) != 4:
+            raise ValueError(f"Expected 4 points, got {len(pts)}")
+        return np.array(pts, dtype=np.float32)
     
     def expand_corners_anisotropic(self, corners, scale_x=1.0, scale_y=1.1):
         center = corners.mean(axis=0, keepdims=True)

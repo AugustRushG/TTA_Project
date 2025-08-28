@@ -122,3 +122,35 @@ def extract_coords(pred_heatmap):
     pred_coords = torch.stack([x_pred, y_pred], dim=1)  # [B, 2]
 
     return pred_coords
+
+
+def extract_coords2d(pred_heatmap, H, W):
+    """
+    Extracts (x, y) coordinates from a predicted flattened 2D heatmap.
+
+    Args:
+        pred_heatmap (Tensor):
+            Predicted heatmap of shape [B, H*W].
+            Can be probabilities or logits.
+        H (int): height of the heatmap.
+        W (int): width of the heatmap.
+
+    Returns:
+        Tensor: [B, 2] with (x, y) coordinates for each batch item.
+    """
+    if pred_heatmap.dim() != 2 or pred_heatmap.size(1) != H * W:
+        raise ValueError(f"Expected shape [B, {H*W}], got {list(pred_heatmap.shape)}")
+
+    B = pred_heatmap.size(0)
+
+    # Argmax to get the flat index of the highest-probability pixel
+    flat_idx = pred_heatmap.argmax(dim=1)  # [B]
+
+    # Convert flat index to (x, y)
+    x_pred = (flat_idx % W).float()        # [B]
+    y_pred = (flat_idx // W).float()       # [B]
+
+    # Stack into [B, 2]
+    pred_coords = torch.stack([x_pred, y_pred], dim=1)
+
+    return pred_coords
