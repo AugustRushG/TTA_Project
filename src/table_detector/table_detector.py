@@ -63,16 +63,18 @@ class TableDetector:
         deltas[:,1] *= scale_y
         return deltas + center
 
-    def detect_corners_and_compute(self):
+    def detect_corners_and_compute(self, corners_top=None, corners_bottom=None):
         # top half
         print("Annotate TOP half: TL, TR, mid-left, mid-right")
-        corners_top = self.annotate_half("Click 4 corners for TOP half (TL, TR, mid-left, mid-right)")
+        if corners_top is None:
+            corners_top = self.annotate_half("Click 4 corners for TOP half (TL, TR, mid-left, mid-right)")
         # corners_top = self.expand_corners_anisotropic(corners_top, scale_x=1.0, scale_y=1.4)
         self.H_top, _ = cv2.findHomography(corners_top, self.pts_dst_top)
 
         # bottom half
         print("Annotate BOTTOM half: mid-left, mid-right, BL, BR")
-        corners_bottom = self.annotate_half("Click 4 corners for BOTTOM half (mid-left, mid-right, BL, BR)")
+        if corners_bottom is None:
+            corners_bottom = self.annotate_half("Click 4 corners for BOTTOM half (mid-left, mid-right, BL, BR)")
         self.H_bottom, _ = cv2.findHomography(corners_bottom, self.pts_dst_bottom)
 
         if self.H_top is None or self.H_bottom is None:

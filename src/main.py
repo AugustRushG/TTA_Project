@@ -14,6 +14,7 @@ import argparse
 import random
 from tqdm import tqdm
 from PIL import Image
+import numpy as np
 
 
 CLASS_CONVERSION = {
@@ -87,7 +88,7 @@ def main(args):
     
     # Generate predictions
     pred_events = {}
-    threshold = 0.05  # threshold for event detection scores, can be adjusted
+    threshold = 0.2  # threshold for event detection scores, can be adjusted
 
     # generating event predictions
     for data in tqdm(video_loader, desc="Processing clips"):
@@ -105,7 +106,8 @@ def main(args):
         for i, (pred_event, pred_score_classes) in enumerate(zip(pred_results, pred_scores)):
             current_id = (i + start_idx).item()
             current_time = current_id / fps_rate
-        
+            current_time_in_mins = f"{int(current_time // 60):02d}:{int(current_time % 60):02d}"
+
             # filter: set scores < threshold to 0
             filtered_scores = pred_score_classes * (pred_score_classes >= threshold)
 
@@ -121,11 +123,17 @@ def main(args):
             # add to dict
             pred_events[current_id] = {
                 'time': current_time,
+                'time_in_mins': current_time_in_mins,
                 'event_type': CLASS_CONVERSION.get(best_class.item(), 'unknown'),
                 'score': float(best_score)
             }
-        
-        pred_events = event_model.nms_on_dict(pred_events, nms_window=3)  # Apply NMS to the predictions
+
+    event_windows = {'close_table_serve': 20, 'far_table_serve': 20}
+    pred_events = event_model.nms_on_dict(pred_events, event_windows=event_windows)  # Apply NMS to the predictions
+
+    # generate pred_events as json file 
+    with open(f'predicted_events_{game_name}.json', 'w') as f:
+        json.dump(pred_events, f, indent=4)
 
     frame_indices = [
         dataset.num_frames // 2 - random.randint(0, 100),
@@ -149,10 +157,11 @@ def main(args):
         converted_img_path = os.path.join('./result', f'converted_{i}.jpg')
         converted_img.save(converted_img_path)
         converted_img_paths.append(converted_img_path)
-    
-    table_detector = TableDetector(image_path=converted_img_paths[0], topdown_width=1525, topdown_height=2740)
 
-    table_detector.detect_corners_and_compute()
+    table_detector = TableDetector(image_path=converted_img_paths[0], topdown_width=1525, topdown_height=2740)
+    corners_top = np.array([(204, 96), (306, 96), (197, 129), (309, 126)], dtype=np.float32)
+    corners_bottom = np.array([(197, 129), (309, 126), (191, 173), (313, 172)], dtype=np.float32)
+    table_detector.detect_corners_and_compute(corners_top=corners_top, corners_bottom=corners_bottom)
 
     # plt.show(converted_img)
 
@@ -169,7 +178,7 @@ def main(args):
             ball_location_frames = ball_location_frames.to(args.device, dtype=torch.float32)
             ball_location_frames = ball_location_frames.unsqueeze(0)
             # print(f"Processing ball location for frame {frame_idx} with event type {event_type} and score {score}")
-            # print(f"Ball location frames shape: {ball_location_frames.shape}")
+            print(f"Ball location frames shape: {ball_location_frames.shape}")
             ball_location_result, confidence = ball_tracking_model.predict(ball_location_frames)
             extracted_coord = ball_tracking_model.extract_coordinates_2d(ball_location_result, H=288, W=512)[0]
             x_pred, y_pred = extracted_coord[0], extracted_coord[1]
@@ -194,7 +203,7 @@ def main(args):
             if confidence < 0.5:
                 print(f"Low confidence ({confidence}) for frame {frame_idx}, trying Optical Flow model")
                 ball_location_result_OF, confidence_OF = TOTNet_OF.predict(ball_location_frames)
-                extracted_coord_OF = TOTNet_OF.extract_coordinates(ball_location_result_OF)[0]
+                extracted_coord_OF = TOTNet_OF.extract_coordinates_2d(ball_location_result_OF, H=288, W=512)[0]
                 x_pred_OF, y_pred_OF = extracted_coord_OF[0], extracted_coord_OF[1]
                 # to numpy
                 x_pred_OF = x_pred_OF.cpu().numpy()
@@ -226,10 +235,6 @@ def main(args):
                         'x': float(mapped_x),
                         'y': float(mapped_y)
                     }
-      
-
-
-            
 
     # generate pred_events as json file 
     with open(f'predicted_events_{game_name}.json', 'w') as f:
@@ -259,9 +264,5 @@ if __name__ == "__main__":
     AnalysisUtils.count_bounces(pred_events)
     AnalysisUtils.count_serves(pred_events)
     AnalysisUtils.calculate_points(pred_events)
-    # img = Image.open('/home/august/github/TTA_Project/src/result/converted_2.jpg').convert("RGB")
-    # plt.imshow(img)
-    # plt.show()
-
-
-
+    # save again
+    AnalysisUtils.save_json(pred_events, f'predicted_events_{os.path.basename(args.video_path).split(".")[0]}.json')

@@ -171,20 +171,21 @@ class OwnE2EModel(BaseRGBModel):
             
             return pred_cls.cpu().numpy(), pred.cpu().float().numpy()  
 
-    def nms_on_dict(self, pred_events, nms_window=2):
+        def nms_on_dict(self, pred_events, event_windows=None, default_window=2):
         """
-        Apply temporal NMS to a dict of predictions.
+        Apply temporal NMS to a dict of predictions with event-type-dependent windows.
 
         Args:
             pred_events (dict): {frame_id: {'event_type': str, 'score': float}}
-            nms_window (int): Number of frames to suppress before & after a detection.
+            event_windows (dict): {event_type: window_length}
+            default_window (int): fallback window length if event_type not in event_windows.
 
         Returns:
             dict: filtered predictions.
         """
         # convert dict to list of (frame_id, event_type, score)
         events = [
-            (fid, v['time'], v['event_type'], v['score'])
+            (fid, v['time'], v['event_type'], v['score'], v['time_in_mins'])
             for fid, v in pred_events.items()
         ]
 
@@ -194,12 +195,15 @@ class OwnE2EModel(BaseRGBModel):
         selected = []
         suppressed = set()
 
-        for frame_id, time, event_type, score in events:
+        for frame_id, time, event_type, score, time_in_mins in events:
             if frame_id in suppressed:
                 continue
 
             # keep this event
-            selected.append((frame_id, time, event_type, score))
+            selected.append((frame_id, time, event_type, score, time_in_mins))
+
+            # get window length for this event type
+            nms_window = event_windows.get(event_type, default_window) if event_windows else default_window
 
             # suppress neighboring frames of the same event_type
             for offset in range(-nms_window, nms_window + 1):
@@ -207,8 +211,8 @@ class OwnE2EModel(BaseRGBModel):
 
         # rebuild the filtered dict
         filtered = {
-            fid: {'time':time, 'event_type': etype, 'score': score}
-            for fid, time, etype, score in selected
+            fid: {'time': time, 'time_in_mins': time_in_mins, 'event_type': etype, 'score': score}
+            for fid, time, etype, score, time_in_mins in selected
         }
 
         # sort by frame_id

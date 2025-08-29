@@ -89,16 +89,9 @@ class FrameClipDataset(Dataset):
                 else:
                     break
         else:
-            start = max(0, center_idx - 2 * radius)
+            start = center_idx - 2 * radius
             end = center_idx + 1  # inclusive of center_idx
             indices = list(range(start, end))
-
-            # pad if necessary
-            while len(indices) < 2 * radius + 1:
-                if indices[0] > 0:
-                    indices.insert(0, indices[0] - 1)
-                else:
-                    break
 
         frames = []
         for idx in indices:

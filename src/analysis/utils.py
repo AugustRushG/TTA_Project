@@ -110,9 +110,11 @@ class analysis_utils:
             if event_type == 'close_table_serve' or event_type == 'far_table_serve':
                 if previous_event == 'close_table_bounce':
                     far_table_points += 1
+                    input_data[j]['points'] = {'far': far_table_points, 'close': close_table_points}
                 elif previous_event == 'far_table_bounce':
                     close_table_points += 1
-                
+                    input_data[j]['points'] = {'far': far_table_points, 'close': close_table_points}
+
         print(f"Total close table points: {close_table_points}")
         print(f"Total far table points: {far_table_points}")
-        return close_table_points + far_table_points, close_table_points, far_table_points
+        return input_data
