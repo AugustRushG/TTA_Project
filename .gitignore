@@ -196,6 +196,7 @@ cython_debug/
 
 *.jpg
 *.mp4
+*.MP4
 *.pth
 *.pt
 *.json
