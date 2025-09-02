@@ -5,6 +5,7 @@ from input_process import FrameClipDataset, extract_frames
 from event_detection import EventDetectionModel, load_event_detection_model
 from ball_tracking import BallTrackingModel
 from table_detector import TableDetector
+from scoreboard_detector import ScoreboardChangeDetector
 from utils.visualization import draw_bounces_on_split_table, draw_bounces_on_table
 from analysis import AnalysisUtils
 import torch
@@ -44,15 +45,24 @@ def parse_args():
 def main(args):
     # Initialize video loader
     event_transform = transforms.Compose([
+        transforms.Resize((224, 398)),
         transforms.CenterCrop(size=(224, 224)),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
     ball_transform = transforms.Compose([
         transforms.Resize((288, 512)),
-        # transforms.CenterCrop(size=(224, 224)),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
-    frame_dir, fps_rate = extract_frames(args.video_path, resize_to=(398, 224))
+    frame_dir, fps_rate = extract_frames(args.video_path) # dont resize 
+
+    scoreboard_detector = ScoreboardChangeDetector(frames_folder=frame_dir, video_fps=fps_rate)
+    changes = scoreboard_detector.detect_changes()
+    print(f"In total {len(changes)} scoreboard changes detected at frames:")
+    left, right, timeline = scoreboard_detector.accumulate_points(changes, init_left=0, init_right=0)
+    with open("score_timeline.json", "w") as f:
+        json.dump(timeline, f, indent=4)
+    exit()
+
     game_name = os.path.basename(args.video_path).split('.')[0]
     print(f'Extracted frames for {game_name} into {frame_dir}')
 
@@ -61,13 +71,13 @@ def main(args):
     print(f'Video Loader initialized with {len(dataset)} clips')
 
     # Load event detection model configuration
-    event_model_config = 'event_detection/model_configs/e2e_res18_hagsm.json'
+    event_model_config = 'event_detection/model_configs/E2E_REG800_HAGSM_[1,2,3]_AT2.json'
     with open(event_model_config, 'r') as f:
         event_model_config = json.load(f)
 
     # Initialize event detection model
     event_model = EventDetectionModel(event_model_config, device=args.device)
-    load_event_detection_model(event_model, 'event_detection/checkpoints/E2E_RES18_HAGSM_TTA.pt')
+    load_event_detection_model(event_model, 'event_detection/checkpoints/E2E_REG800_HAGSM_[1,2,3]_AT2.pt')
 
 
     print(f'Event Detection Model initialized successfully')
@@ -78,6 +88,12 @@ def main(args):
         model_args=type('', (), {'img_size': (288, 512), 'num_frames': 5, 'device': args.device})(),
         checkpoint_path='ball_tracking/checkpoints/TOTNet_TTA_(5)_(288,512)_30epochs_best.pth'
     )
+
+    # ball_tracking_model = BallTrackingModel(
+    #     model_choice='TOTNet',
+    #     model_args=type('', (), {'img_size': (288, 512), 'num_frames': 5, 'device': args.device})(),
+    #     checkpoint_path='ball_tracking/checkpoints/TOTNet_TTA_(5)_(288,512)_bidirect_30epochs_best.pth'
+    # )
     TOTNet_OF = BallTrackingModel(
         model_choice='TOTNet_OF',
         model_args=type('', (), {'img_size': (288, 512), 'num_frames': 5, 'device': args.device})(),
@@ -88,7 +104,7 @@ def main(args):
     
     # Generate predictions
     pred_events = {}
-    threshold = 0.2  # threshold for event detection scores, can be adjusted
+    threshold = 0.1  # threshold for event detection scores, can be adjusted
 
     # generating event predictions
     for data in tqdm(video_loader, desc="Processing clips"):
@@ -159,9 +175,9 @@ def main(args):
         converted_img_paths.append(converted_img_path)
 
     table_detector = TableDetector(image_path=converted_img_paths[0], topdown_width=1525, topdown_height=2740)
-    corners_top = np.array([(204, 96), (306, 96), (197, 129), (309, 126)], dtype=np.float32)
-    corners_bottom = np.array([(197, 129), (309, 126), (191, 173), (313, 172)], dtype=np.float32)
-    table_detector.detect_corners_and_compute(corners_top=corners_top, corners_bottom=corners_bottom)
+    # corners_top = np.array([(204, 96), (306, 96), (197, 129), (309, 126)], dtype=np.float32)
+    # corners_bottom = np.array([(197, 129), (309, 126), (191, 173), (313, 172)], dtype=np.float32)
+    table_detector.detect_corners_and_compute()
 
     # plt.show(converted_img)
 
@@ -178,7 +194,7 @@ def main(args):
             ball_location_frames = ball_location_frames.to(args.device, dtype=torch.float32)
             ball_location_frames = ball_location_frames.unsqueeze(0)
             # print(f"Processing ball location for frame {frame_idx} with event type {event_type} and score {score}")
-            print(f"Ball location frames shape: {ball_location_frames.shape}")
+            # print(f"Ball location frames shape: {ball_location_frames.shape}")
             ball_location_result, confidence = ball_tracking_model.predict(ball_location_frames)
             extracted_coord = ball_tracking_model.extract_coordinates_2d(ball_location_result, H=288, W=512)[0]
             x_pred, y_pred = extracted_coord[0], extracted_coord[1]
@@ -199,6 +215,11 @@ def main(args):
             }
 
             pred_events[frame_idx]['ball_coord_confidence'] = float(confidence)
+
+            # pred_events[frame_idx]['draw_ball_location'] = {
+            #     'x': float(mapped_x),
+            #     'y': float(mapped_y)
+            # }
 
             if confidence < 0.5:
                 print(f"Low confidence ({confidence}) for frame {frame_idx}, trying Optical Flow model")

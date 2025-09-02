@@ -26,19 +26,7 @@ class TableDetector:
 
         self.H_top = None
         self.H_bottom = None
-
-    def onclick(self, event):
-        if event.xdata is not None and event.ydata is not None:
-            x, y = int(event.xdata), int(event.ydata)
-            self.points.append((x, y))
-            print(f"Clicked: ({x}, {y})")
-
-            self.ax.plot(x, y, 'ro')
-            self.fig.canvas.draw()
-
-            if len(self.points) == 4:
-                plt.close(self.fig)
-
+        
     def annotate_half(self, title):
         img_bgr = cv2.imread(self.image_path)
         img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)

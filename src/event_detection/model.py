@@ -171,7 +171,7 @@ class OwnE2EModel(BaseRGBModel):
             
             return pred_cls.cpu().numpy(), pred.cpu().float().numpy()  
 
-        def nms_on_dict(self, pred_events, event_windows=None, default_window=2):
+    def nms_on_dict(self, pred_events, event_windows=None, default_window=2):
         """
         Apply temporal NMS to a dict of predictions with event-type-dependent windows.
 
