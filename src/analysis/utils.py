@@ -81,40 +81,108 @@ class analysis_utils:
         
         return far_table_serve + close_table_serve, far_table_serve, close_table_serve
 
-    def calculate_points(input_data):
+    def calculate_points(input_data,
+                        serve_types=('close_table_serve', 'far_table_serve'),
+                        bounce_suffix='_bounce',
+                        serve_debounce=6,      # frames to suppress duplicate serves
+                        skip_first_serve=True, # <- NEW
+                        max_bounce_age=300     # <- NEW: max frames back a bounce can be paired (e.g., 10s @30fps)
+                        ):
         """
-        Calculate the points scored based on the input JSON data.
-        
-        Args:
-            input_json (str): Path to the input JSON file containing event data.
-            
-        Returns:
-            int: Total points scored in the video.
+        Calculate points from an event dict indexed by frame_id (or similar).
+        Guards against duplicate serves; consumes each bounce at most once.
+        Skips the very first non-debounced serve if skip_first_serve=True.
+        Returns a new dict with points annotations preserved on the serve event.
         """
-        input_data = list(input_data.values())
+
+        # --- 0) Normalize to list of (key, item) and sort chronologically ---
+        items = list(input_data.items())
+
+        def sort_key(kv):
+            k, v = kv
+            if isinstance(v, dict):
+                if 'frame' in v: return v['frame']
+                if 'frame_id' in v: return v['frame_id']
+                if 'time' in v: return v['time']
+                if 'time_in_mins' in v: return v['time_in_mins']
+            try:
+                return int(k)
+            except Exception:
+                return k
+
+        items.sort(key=sort_key)
+
+        # Build an editable copy
+        out = {k: dict(v) for k, v in items}
+
         close_table_points = 0
         far_table_points = 0
-        for i in range(len(input_data)):
-            if 'event_type' not in input_data[i]:
-                continue
-            event_type = input_data[i]['event_type']
-            
-            if i > 0:
-                j = i - 1
-                while j >= 0 and not input_data[j]['event_type'].endswith('_bounce'):
-                    j -= 1
-                previous_event = input_data[j]['event_type'] if j >= 0 else None
-            else:
-                previous_event = None
 
-            if event_type == 'close_table_serve' or event_type == 'far_table_serve':
-                if previous_event == 'close_table_bounce':
-                    far_table_points += 1
-                    input_data[j]['points'] = {'far': far_table_points, 'close': close_table_points}
-                elif previous_event == 'far_table_bounce':
-                    close_table_points += 1
-                    input_data[j]['points'] = {'far': far_table_points, 'close': close_table_points}
+        used_bounce_idx = set()
+        last_serve_idx = None
+        serve_seen = 0  # <- counts non-debounced serves seen
+
+        # Pre-index
+        events = []
+        for idx, (k, v) in enumerate(items):
+            et = v.get('event_type')
+            frame_like = v.get('frame', v.get('frame_id', None))
+            events.append({
+                'idx': idx,
+                'key': k,
+                'event_type': et,
+                'frame_like': frame_like,
+                'is_bounce': isinstance(et, str) and et.endswith(bounce_suffix),
+                'is_serve': et in serve_types
+            })
+
+        for i, e in enumerate(events):
+            if not e['is_serve']:
+                continue
+
+            # Debounce duplicate serves close in time
+            if last_serve_idx is not None and (e['idx'] - last_serve_idx) <= serve_debounce:
+                continue
+            last_serve_idx = e['idx']
+
+            # Skip the very first non-debounced serve
+            if skip_first_serve and serve_seen == 0:
+                serve_seen += 1
+                continue
+            serve_seen += 1
+
+            # Find nearest previous *unused* bounce (and not too old)
+            j = i - 1
+            prev_bounce_idx = None
+            prev_bounce_type = None
+
+            while j >= 0:
+                if events[j]['is_bounce'] and j not in used_bounce_idx:
+                    # optional age guard (if you have frame numbers)
+                    if (e['frame_like'] is not None) and (events[j]['frame_like'] is not None):
+                        if (e['frame_like'] - events[j]['frame_like']) > max_bounce_age:
+                            break  # too old; abort search
+                    prev_bounce_idx = j
+                    prev_bounce_type = events[j]['event_type']
+                    break
+                j -= 1
+
+            if prev_bounce_idx is None:
+                continue  # no suitable bounce found; abstain
+
+            # Award exactly once for this bounce, then consume it
+            if prev_bounce_type == 'close_table_bounce':
+                far_table_points += 1
+                out[events[i]['key']]['points'] = {'far': far_table_points, 'close': close_table_points}
+                used_bounce_idx.add(prev_bounce_idx)
+
+            elif prev_bounce_type == 'far_table_bounce':
+                close_table_points += 1
+                out[events[i]['key']]['points'] = {'far': far_table_points, 'close': close_table_points}
+                used_bounce_idx.add(prev_bounce_idx)
+
+            # else: other bounce type → ignore
 
         print(f"Total close table points: {close_table_points}")
         print(f"Total far table points: {far_table_points}")
-        return input_data
+        return out
