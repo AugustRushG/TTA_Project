@@ -58,10 +58,8 @@ def main(args):
     scoreboard_detector = ScoreboardChangeDetector(frames_folder=frame_dir, video_fps=fps_rate)
     changes = scoreboard_detector.detect_changes()
     print(f"In total {len(changes)} scoreboard changes detected at frames:")
-    left, right, timeline = scoreboard_detector.accumulate_points(changes, init_left=0, init_right=0)
     with open("score_timeline.json", "w") as f:
-        json.dump(timeline, f, indent=4)
-    exit()
+        json.dump(changes, f, indent=4)
 
     game_name = os.path.basename(args.video_path).split('.')[0]
     print(f'Extracted frames for {game_name} into {frame_dir}')
@@ -104,7 +102,7 @@ def main(args):
     
     # Generate predictions
     pred_events = {}
-    threshold = 0.1  # threshold for event detection scores, can be adjusted
+    threshold = 0.05  # threshold for event detection scores, can be adjusted
 
     # generating event predictions
     for data in tqdm(video_loader, desc="Processing clips"):
@@ -265,7 +263,34 @@ def main(args):
     return pred_events
 
     
+def calculate_points_score_pred(scoreboard_changes, pred_events):
+    if not pred_events:
+        return
 
+    # sort keys numerically (handles string keys like "188")
+    keys = sorted(pred_events.keys(), key=lambda x: int(x) if isinstance(x, str) else x)
+
+    for rec in scoreboard_changes.values():
+        frame_idx = rec['frame']
+        closest_event = None
+
+        for i, k in enumerate(keys):
+            cur = pred_events[k]
+            cur_frame = cur['frame_index']  # often == int(k)
+
+            next_k = keys[i+1] if i+1 < len(keys) else None
+            next_frame = pred_events[next_k]['frame_index'] if next_k is not None else None
+
+            if cur_frame <= frame_idx and (next_k is None or next_frame > frame_idx):
+                closest_event = k
+                event_type = cur['event_type']
+                print(f"Frame {frame_idx} matched to event at frame {cur_frame} (key={k}), type: {event_type}")
+                break
+
+
+        
+
+   
 
 
 
@@ -275,15 +300,18 @@ def main(args):
             
 if __name__ == "__main__":
     args = parse_args()
-    pred_events = main(args)
+    # pred_events = main(args)
     # read json file
     with open(f'predicted_events_{os.path.basename(args.video_path).split(".")[0]}.json', 'r') as f:
         pred_events = json.load(f)
+    with open('/home/august/github/TTA_Project/src/score_timeline.json', 'r') as f:
+        scoreboard_changes = json.load(f)
+    calculate_points_score_pred(scoreboard_changes, pred_events)
     # draw_bounces_on_table(pred_events, save_path='bounces_on_table.jpg')
-    draw_bounces_on_split_table(pred_events, save_path='bounces_on_table_split.jpg')
-    # visualize the result
-    AnalysisUtils.count_bounces(pred_events)
-    AnalysisUtils.count_serves(pred_events)
-    AnalysisUtils.calculate_points(pred_events)
-    # save again
-    AnalysisUtils.save_json(pred_events, f'predicted_events_{os.path.basename(args.video_path).split(".")[0]}.json')
+    # draw_bounces_on_split_table(pred_events, save_path='bounces_on_table_split.jpg')
+    # # visualize the result
+    # AnalysisUtils.count_bounces(pred_events)
+    # AnalysisUtils.count_serves(pred_events)
+    # AnalysisUtils.calculate_points(pred_events)
+    # # save again
+    # AnalysisUtils.save_json(pred_events, f'predicted_events_{os.path.basename(args.video_path).split(".")[0]}.json')

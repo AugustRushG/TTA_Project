@@ -211,7 +211,7 @@ class OwnE2EModel(BaseRGBModel):
 
         # rebuild the filtered dict
         filtered = {
-            fid: {'time': time, 'time_in_mins': time_in_mins, 'event_type': etype, 'score': score}
+            fid: {'frame_index': fid, 'time': time, 'time_in_mins': time_in_mins, 'event_type': etype, 'score': score}
             for fid, time, etype, score, time_in_mins in selected
         }
 

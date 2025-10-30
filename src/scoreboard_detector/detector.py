@@ -284,7 +284,7 @@ class ScoreboardChangeDetector:
 
         for f, s in change_times.items():
             t = self.calculate_time_from_frame(f)
-            change_times[f] = {'score': s, 'time': t}
+            change_times[f] = {'frame':f, 'score': s, 'time': t}
 
         return change_times
 
@@ -386,8 +386,8 @@ def calculate_pr_recall(pred, gt, tol=2.0):
 
 if __name__ == "__main__":
 
-    frames_folder = "/home/august/github/TTA_Project/data/25WPE_SLO_M11_SF_Creange_FRA_v_von_Einem_AUS_game1_frames"
-    # frames_folder = "/home/august/github/TTA_Project/data/25WPF_TPE_M11_G_Chen_Po_Yen_TPE_v_Murakami_JPN_game1_frames"
+    # frames_folder = "/home/august/github/TTA_Project/data/25WPE_SLO_M11_SF_Creange_FRA_v_von_Einem_AUS_game1_frames"
+    frames_folder = "/home/august/github/TTA_Project/data/25WPF_TPE_M11_G_Chen_Po_Yen_TPE_v_Murakami_JPN_game1_frames"
     video_fps = 30  # adjust as needed
     detector = ScoreboardChangeDetector(frames_folder, video_fps)
     changes = detector.detect_changes()
@@ -397,8 +397,8 @@ if __name__ == "__main__":
     with open("score_timeline.json", "w") as f:
         json.dump(changes, f, indent=2)
 
-    gts = read_txt('/home/august/github/TTA_Project/src/scoreboard_detector/gt_SF.TXT')
-    with open("score_timeline.json", "r") as f:
-        pred = json.load(f)
-    result = calculate_pr_recall(pred, gts, tol=5.0)
-    print(result)
+    # gts = read_txt('/home/august/github/TTA_Project/src/scoreboard_detector/gt_SF.TXT')
+    # with open("score_timeline.json", "r") as f:
+    #     pred = json.load(f)
+    # result = calculate_pr_recall(pred, gts, tol=5.0)
+    # print(result)
