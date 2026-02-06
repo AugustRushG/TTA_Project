@@ -3,9 +3,11 @@ import torchvision
 import torch.nn as nn
 import timm
 import math
-from .impl.tsm import TemporalShift
-from .impl.gsm import _GSM, HGSM, HAGSM
-from .impl.gsf import _GSF, HGSF
+from timm.models.vision_transformer import Block as TimmBlock
+from .shift_module.tsm import TemporalShift
+from .shift_module.gsm import _GSM, HGSM, HAGSM, AGSM
+from .shift_module.gsf import _GSF, HGSF
+from .shift_module.transformer_shift import TransformerGSM, AdpativeTransformerGSM, TransformerGSM_V2, MultiScaleTransformerGSM
 
 class GatedShift(nn.Module):
     def __init__(self, net, n_segment, n_div, mode):
@@ -62,6 +64,10 @@ class HGatedShift(nn.Module):
             self.gs = HGSM(self.fold_dim, n_segment, dilations=dilations)
             print('=> Using HGSM, fold dim: {} / {}, {}'.format(
                 self.fold_dim, channels, dilations), flush=True)
+        elif mode == 'agsm':
+            self.gs = AGSM(self.fold_dim, n_segment, num_heads=num_heads)
+            print('=> Using AGSM, fold dim: {} / {}, number of heads {}'.format(
+                self.fold_dim, channels, num_heads), flush=True)
         elif mode == 'hgsf':
             self.gs = HGSF(self.fold_dim, n_segment, dilations=dilations)
             print('=> Using HGSF, fold dim: {} / {}, {}'.format(
@@ -87,7 +93,7 @@ def make_temporal_shift(net, clip_len, mode, configs=None):
     def _build_shift(net):
         if mode == 'gsm' or mode == 'gsf':
             return GatedShift(net, n_segment=clip_len, n_div=4, mode=mode)
-        elif mode == 'hgsm' or mode == 'hgsf' or mode == 'hagsm':
+        elif mode == 'hgsm' or mode == 'hgsf' or mode == 'hagsm' or mode == 'agsm':
             dilations = configs['dilations']
             num_heads = configs['num_heads']
             return HGatedShift(net, n_segment=clip_len, n_div=4, mode=mode, dilations=dilations, num_heads=num_heads)
@@ -159,4 +165,46 @@ def make_temporal_shift(net, clip_len, mode, configs=None):
 
 
 
+def make_vit_shift(module: nn.Module, clip_len: int, shift_mode: str,
+                   feature_dim: int, shift_distances=None) -> nn.Module:
+    if shift_mode == 'transformer_gsm':
+        ShiftClass = TransformerGSM
+    elif shift_mode == 'adaptive_transformer_gsm':
+        ShiftClass = AdpativeTransformerGSM
+    elif shift_mode == 'transformer_gsm_v2':
+        ShiftClass = TransformerGSM_V2
+    elif shift_mode == 'multiscale_transformer_gsm':
+        ShiftClass = MultiScaleTransformerGSM
+    else:
+        raise NotImplementedError(f'Unsupported shift mode: {shift_mode}')
 
+    for name, child in module.named_children():
+
+        # match timm ViT blocks
+        if isinstance(child, TimmBlock):
+            print(f"[make_vit_shift] inserting {shift_mode} into Block '{name}' with feature_dim={feature_dim} and shift_distances={shift_distances}")
+
+            # Create shift module
+            if shift_distances is not None:
+                transGSM = ShiftClass(
+                    num_frames=clip_len,
+                    feature_dim=feature_dim,
+                    shift_distances=shift_distances
+                )
+            else:
+                transGSM = ShiftClass(
+                    num_frames=clip_len,
+                    feature_dim=feature_dim
+                )
+
+            # Replace module
+            setattr(module, name, nn.Sequential(child, transGSM))
+
+        else:
+            # RECURSE (must pass shift_distances!)
+            make_vit_shift(
+                child, clip_len, shift_mode,
+                feature_dim, shift_distances
+            )
+
+    return module

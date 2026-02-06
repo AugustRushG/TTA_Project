@@ -119,4 +119,6 @@ def evaluate_performance(pred_file, gold_file):
 if __name__ == "__main__":
     pred_file = '/home/august/github/TTA_Project/src/predicted_events_25WPF_TPE_M11_G_Chen_Po_Yen_TPE_v_Murakami_JPN_game1.json'
     gold_file = '/home/august/github/TTA_Project/data/labels/25WPF_TPE_M11_G_Chen_Po_Yen_TPE_v_Murakami_JPN_game1.json'
+    # pred_file = '/home/august/github/TTA_Project/src/predicted_events_25WPE_SLO_M11_SF_Creange_FRA_v_von_Einem_AUS_game1.json'
+    # gold_file = '/home/august/github/TTA_Project/data/labels/25WPE_SLO_M11_SF_Creange_FRA_v_von_Einem_AUS_game_1.json'
     evaluate_performance(pred_file, gold_file)

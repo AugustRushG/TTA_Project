@@ -2,7 +2,7 @@ import os
 os.environ["TORCH_CPP_LOG_LEVEL"] = "ERROR"
 
 from input_process import FrameClipDataset, extract_frames
-from event_detection import EventDetectionModel, load_event_detection_model
+from event_detection import create_model, nms_on_dict
 from ball_tracking import BallTrackingModel
 from table_detector import TableDetector
 from scoreboard_detector import ScoreboardChangeDetector
@@ -30,6 +30,9 @@ CLASS_CONVERSION = {
     8: 'close_table_serve',
 }
 
+MEAN = [0.485, 0.456, 0.406]
+STD = [0.229, 0.224, 0.225]
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Process video frames for event detection and ball tracking.")
     parser.add_argument('--video_path', type=str, required=True, help='Path to the input video file.')
@@ -47,11 +50,11 @@ def main(args):
     event_transform = transforms.Compose([
         transforms.Resize((224, 398)),
         transforms.CenterCrop(size=(224, 224)),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        transforms.Normalize(mean=MEAN, std=STD),
     ])
     ball_transform = transforms.Compose([
         transforms.Resize((288, 512)),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        transforms.Normalize(mean=MEAN, std=STD),
     ])
     frame_dir, fps_rate = extract_frames(args.video_path) # dont resize 
 
@@ -69,14 +72,8 @@ def main(args):
     print(f'Video Loader initialized with {len(dataset)} clips')
 
     # Load event detection model configuration
-    event_model_config = 'event_detection/model_configs/E2E_REG800_HAGSM_[1,2,3]_AT2.json'
-    with open(event_model_config, 'r') as f:
-        event_model_config = json.load(f)
-
-    # Initialize event detection model
-    event_model = EventDetectionModel(event_model_config, device=args.device)
-    load_event_detection_model(event_model, 'event_detection/checkpoints/E2E_REG800_HAGSM_[1,2,3]_AT2.pt')
-
+    event_model = create_model(model_type='astrm', model_config_path='event_detection/model_configs/ASTRM.json',
+                               device=args.device, model_checkpoint_path='event_detection/checkpoints/ASTRM_TTAV3.pth')
 
     print(f'Event Detection Model initialized successfully')
 
@@ -111,7 +108,7 @@ def main(args):
         end_idx = data['end_idx']
         clips = clips.to(args.device, dtype=torch.float32)
         # Process clips with event detection model
-        pred_results, pred_scores = event_model.predict(clips)
+        pred_results, pred_scores = event_model.predict(clips, device=args.device)  # pred_results: [B, T], pred_scores: [B, T, C]
 
         # print(f"Clip shape: {clips.shape}, Start index: {start_idx}, End index: {end_idx}")
         pred_results = pred_results[0] # batch = 1, so we can take the first element
@@ -143,7 +140,7 @@ def main(args):
             }
 
     event_windows = {'close_table_serve': 20, 'far_table_serve': 20}
-    pred_events = event_model.nms_on_dict(pred_events, event_windows=event_windows)  # Apply NMS to the predictions
+    pred_events = nms_on_dict(pred_events, event_windows=event_windows)  # Apply NMS to the predictions
 
     # generate pred_events as json file 
     with open(f'predicted_events_{game_name}.json', 'w') as f:
@@ -264,6 +261,9 @@ def main(args):
 
     
 def calculate_points_score_pred(scoreboard_changes, pred_events):
+    """ Calculate points based on predicted events and scoreboard changes """
+    close_points = 0
+    far_points = 0
     if not pred_events:
         return
 
@@ -284,8 +284,16 @@ def calculate_points_score_pred(scoreboard_changes, pred_events):
             if cur_frame <= frame_idx and (next_k is None or next_frame > frame_idx):
                 closest_event = k
                 event_type = cur['event_type']
-                print(f"Frame {frame_idx} matched to event at frame {cur_frame} (key={k}), type: {event_type}")
+                print(f"Frame {frame_idx} scoreboard change matched to event at frame {cur_frame} (key={k}), type: {event_type}, time {cur['time_in_mins']}")
+                if event_type.startswith('close_table'):
+                    far_points += 1
+                    print("far table point")
+                elif event_type.startswith('far_table'):
+                    close_points += 1
+                    print("close table point")
                 break
+    
+    print(f"Predicted Score - Close Table: {close_points}, Far Table: {far_points}")
 
 
         
@@ -300,15 +308,15 @@ def calculate_points_score_pred(scoreboard_changes, pred_events):
             
 if __name__ == "__main__":
     args = parse_args()
-    # pred_events = main(args)
+    pred_events = main(args)
     # read json file
     with open(f'predicted_events_{os.path.basename(args.video_path).split(".")[0]}.json', 'r') as f:
         pred_events = json.load(f)
     with open('/home/august/github/TTA_Project/src/score_timeline.json', 'r') as f:
         scoreboard_changes = json.load(f)
     calculate_points_score_pred(scoreboard_changes, pred_events)
-    # draw_bounces_on_table(pred_events, save_path='bounces_on_table.jpg')
-    # draw_bounces_on_split_table(pred_events, save_path='bounces_on_table_split.jpg')
+    draw_bounces_on_table(pred_events, save_path='bounces_on_table.jpg')
+    draw_bounces_on_split_table(pred_events, save_path='bounces_on_table_split.jpg')
     # # visualize the result
     # AnalysisUtils.count_bounces(pred_events)
     # AnalysisUtils.count_serves(pred_events)

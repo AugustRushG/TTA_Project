@@ -2,7 +2,7 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+from torch.nn.utils import weight_norm
 from .common import SingleStageTCN
 from .impl.asformer import MyTransformer
 
@@ -610,3 +610,67 @@ def process_labels(label, labelD, num_classes = 18):
             label_aux[events[i, 0], events[i, 1] - int(labelD[events[i, 0], events[i, 1]]), 0] = 0
     
     return label_aux
+
+
+class DINOHead(nn.Module):
+    def __init__(self, in_dim, out_dim, use_bn=True, norm_last_layer=True, 
+                 nlayers=3, hidden_dim=2048, bottleneck_dim=256):
+        """
+        in_dim: Input feature dimension (from backbone)
+        out_dim: Number of prototypes/clusters (e.g., 65536 in DINO)
+        bottleneck_dim: Dimension of the L2 normalized bottleneck (e.g., 256)
+        """
+        super().__init__()
+        
+        # --- 1. Build the MLP ---
+        nlayers = max(nlayers, 1)
+        if nlayers == 1:
+            self.mlp = nn.Linear(in_dim, bottleneck_dim)
+        else:
+            layers = [nn.Linear(in_dim, hidden_dim)]
+            if use_bn:
+                layers.append(nn.BatchNorm1d(hidden_dim))
+            layers.append(nn.GELU())
+            
+            for _ in range(nlayers - 2):
+                layers.append(nn.Linear(hidden_dim, hidden_dim))
+                if use_bn:
+                    layers.append(nn.BatchNorm1d(hidden_dim))
+                layers.append(nn.GELU())
+                
+            layers.append(nn.Linear(hidden_dim, bottleneck_dim))
+            self.mlp = nn.Sequential(*layers)
+            
+        # --- 2. Build the Weight-Normalized Last Layer (Prototypes) ---
+        self.apply_norm_last_layer = norm_last_layer
+        self.last_layer = weight_norm(nn.Linear(bottleneck_dim, out_dim, bias=False))
+        
+        # Initialize magnitude to 1.0 (so it acts as pure Cosine Similarity)
+        self.last_layer.weight_g.data.fill_(1)
+        if norm_last_layer:
+            self.last_layer.weight_g.requires_grad = False
+
+    def forward(self, x):
+        # --- Handle 3D Inputs (Batch, Time, Dim) ---
+        is_3d = False
+        if x.dim() == 3:
+            is_3d = True
+            B, T, D = x.shape
+            # Flatten to (B*T, D) so BatchNorm1d works correctly
+            x = x.reshape(B * T, D)
+
+        # 1. MLP (Projects to bottleneck dim)
+        x = self.mlp(x)
+        
+        # 2. L2 Normalize (The "Bottleneck" on the hypersphere)
+        x = F.normalize(x, dim=-1, p=2)
+        
+        # 3. Prototype Matching (Cosine Similarity)
+        x = self.last_layer(x)
+        
+        # --- Restore Shape ---
+        if is_3d:
+            # Reshape back to (B, T, out_dim)
+            x = x.reshape(B, T, -1)
+            
+        return x
