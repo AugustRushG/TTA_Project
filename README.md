@@ -66,6 +66,11 @@ TTA_Project/
    conda install -c conda-forge ffmpeg
    ```
 
+4. **Download all pretrained models from the following link:**
+   Google Drive: https://drive.google.com/drive/folders/1pMVfLtjA1zKmJAYUPRszMQ2vKuRQNlf0?usp=sharing
+   After downloading put them in the corresponding folder
+   
+
 ### Verify Installation
 
 ```bash
