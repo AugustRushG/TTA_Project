@@ -51,22 +51,22 @@ TTA_Project/
    
    # Activate the environment
    conda activate TTA
-   ```
 
    If you perfer not to use conda:
-   ```
    # Create a virtual environment named venv
-  python -m venv venv
+   python -m venv venv
   
-  # Activate the environment (PowerShell)
-  .\venv\Scripts\Activate.ps1
+   # Activate the environment (PowerShell)
+   .\venv\Scripts\Activate.ps1
   
-  # OR activate (Command Prompt)
-  venv\Scripts\activate.bat
+   # OR activate (Command Prompt)
+   venv\Scripts\activate.bat
   
-  # OR activate (macOS/Linux)
-  source venv/bin/activate
-  ```
+   # OR activate (macOS/Linux)
+   source venv/bin/activate
+   
+   ```
+
 
 4. **Alternative installation using requirements.txt:**
    ```bash
