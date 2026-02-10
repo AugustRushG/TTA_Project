@@ -53,7 +53,22 @@ TTA_Project/
    conda activate TTA
    ```
 
-3. **Alternative installation using requirements.txt:**
+   If you perfer not to use conda:
+   ```
+   # Create a virtual environment named venv
+  python -m venv venv
+  
+  # Activate the environment (PowerShell)
+  .\venv\Scripts\Activate.ps1
+  
+  # OR activate (Command Prompt)
+  venv\Scripts\activate.bat
+  
+  # OR activate (macOS/Linux)
+  source venv/bin/activate
+  ```
+
+4. **Alternative installation using requirements.txt:**
    ```bash
    # Create a new conda environment with Python 3.11
    conda create -n TTA python=3.11
@@ -66,7 +81,7 @@ TTA_Project/
    conda install -c conda-forge ffmpeg
    ```
 
-4. **Download all pretrained models from the following link:**
+5. **Download all pretrained models from the following link:**
    Google Drive: https://drive.google.com/drive/folders/1pMVfLtjA1zKmJAYUPRszMQ2vKuRQNlf0?usp=sharing
    After downloading put them in the corresponding folder
    
