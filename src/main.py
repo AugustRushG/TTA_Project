@@ -57,6 +57,7 @@ def main(args):
         transforms.Normalize(mean=MEAN, std=STD),
     ])
     frame_dir, fps_rate = extract_frames(args.video_path) # dont resize 
+    exit()
 
     scoreboard_detector = ScoreboardChangeDetector(frames_folder=frame_dir, video_fps=fps_rate)
     changes = scoreboard_detector.detect_changes()

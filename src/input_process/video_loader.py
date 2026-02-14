@@ -13,6 +13,8 @@ IMAGENET_STD = [0.229, 0.224, 0.225]
 
 def extract_frames(video_path, resize_to=None):
     frame_dir = os.path.splitext(video_path)[0] + "_frames"
+    # convert space to underscore for easier handling
+    frame_dir = frame_dir.replace(" ", "_")
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
     if os.path.exists(frame_dir):
