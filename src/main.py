@@ -57,13 +57,12 @@ def main(args):
         transforms.Normalize(mean=MEAN, std=STD),
     ])
     frame_dir, fps_rate = extract_frames(args.video_path) # dont resize 
-    exit()
 
-    scoreboard_detector = ScoreboardChangeDetector(frames_folder=frame_dir, video_fps=fps_rate)
-    changes = scoreboard_detector.detect_changes()
-    print(f"In total {len(changes)} scoreboard changes detected at frames:")
-    with open("score_timeline.json", "w") as f:
-        json.dump(changes, f, indent=4)
+    # scoreboard_detector = ScoreboardChangeDetector(frames_folder=frame_dir, video_fps=fps_rate)
+    # changes = scoreboard_detector.detect_changes()
+    # print(f"In total {len(changes)} scoreboard changes detected at frames:")
+    # with open("score_timeline.json", "w") as f:
+    #     json.dump(changes, f, indent=4)
 
     game_name = os.path.basename(args.video_path).split('.')[0]
     print(f'Extracted frames for {game_name} into {frame_dir}')
@@ -173,7 +172,11 @@ def main(args):
     table_detector = TableDetector(image_path=converted_img_paths[0], topdown_width=1525, topdown_height=2740)
     # corners_top = np.array([(204, 96), (306, 96), (197, 129), (309, 126)], dtype=np.float32)
     # corners_bottom = np.array([(197, 129), (309, 126), (191, 173), (313, 172)], dtype=np.float32)
-    table_detector.detect_corners_and_compute()
+    # table_detector.detect_corners_and_compute()
+    table_detector.set_corners_manual(
+        corners_top=np.array([(204, 96), (306, 96), (197, 129), (309, 126)], dtype=np.float32),
+        corners_bottom=np.array([(197, 129), (309, 126), (191, 173), (313, 172)], dtype=np.float32)
+    )
 
     # plt.show(converted_img)
 

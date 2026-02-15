@@ -51,6 +51,17 @@ class TableDetector:
         deltas[:,1] *= scale_y
         return deltas + center
 
+    # write a method that can manually enter table corners as an alternative to clicking, for testing purposes
+    def set_corners_manual(self, corners_top, corners_bottom):
+        """
+        corners_top and corners_bottom should be 4x2 numpy arrays of (x, y) coordinates.
+        """
+        self.H_top, _ = cv2.findHomography(corners_top, self.pts_dst_top)
+        self.H_bottom, _ = cv2.findHomography(corners_bottom, self.pts_dst_bottom)
+        if self.H_top is None or self.H_bottom is None:
+            raise RuntimeError("Failed to compute one or both homographies.")
+        print("Homographies computed for both halves.")
+
     def detect_corners_and_compute(self, corners_top=None, corners_bottom=None):
         # top half
         print("Annotate TOP half: TL, TR, mid-left, mid-right")
