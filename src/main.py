@@ -71,6 +71,14 @@ def main(args):
     video_loader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False, num_workers=4)
     print(f'Video Loader initialized with {len(dataset)} clips')
 
+    # print GPU information
+    if args.device == 'cuda' and torch.cuda.is_available():
+        print(f"Using CUDA device: {torch.cuda.get_device_name(0)}")
+    elif args.device == 'mps' and torch.backends.mps.is_available():
+        print("Using Apple Silicon MPS device")
+    else:
+        print("Using CPU")
+
     # Load event detection model configuration
     event_model = create_model(model_type='astrm', model_config_path='event_detection/model_configs/ASTRM.json',
                                device=args.device, model_checkpoint_path='event_detection/checkpoints/ASTRM_TTAV3.pth')
@@ -174,8 +182,8 @@ def main(args):
     # corners_bottom = np.array([(197, 129), (309, 126), (191, 173), (313, 172)], dtype=np.float32)
     # table_detector.detect_corners_and_compute()
     table_detector.set_corners_manual(
-        corners_top=np.array([(204, 96), (306, 96), (197, 129), (309, 126)], dtype=np.float32),
-        corners_bottom=np.array([(197, 129), (309, 126), (191, 173), (313, 172)], dtype=np.float32)
+        corners_top=np.array([(249, 131), (347, 137), (218, 153), (320, 121)], dtype=np.float32),
+        corners_bottom=np.array([(218, 153), (322, 160), (185, 177), (293, 184)], dtype=np.float32)
     )
 
     # plt.show(converted_img)
@@ -316,9 +324,9 @@ if __name__ == "__main__":
     # read json file
     with open(f'predicted_events_{os.path.basename(args.video_path).split(".")[0]}.json', 'r') as f:
         pred_events = json.load(f)
-    with open('/home/august/github/TTA_Project/src/score_timeline.json', 'r') as f:
-        scoreboard_changes = json.load(f)
-    calculate_points_score_pred(scoreboard_changes, pred_events)
+    # with open('/home/august/github/TTA_Project/src/score_timeline.json', 'r') as f:
+    #     scoreboard_changes = json.load(f)
+    # calculate_points_score_pred(scoreboard_changes, pred_events)
     draw_bounces_on_table(pred_events, save_path='bounces_on_table.jpg')
     draw_bounces_on_split_table(pred_events, save_path='bounces_on_table_split.jpg')
     # # visualize the result
