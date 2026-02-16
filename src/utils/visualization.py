@@ -73,7 +73,10 @@ def draw_bounces_on_split_table(bounces, table_size=(1525, 2740), save_path=None
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
         print(f"Saved figure to {save_path}")
 
-    plt.show()
+    # show and close the figure to avoid blocking
+    # plt.show()
+    # plt.close(fig)
+
 
 
 
@@ -128,3 +131,4 @@ def draw_bounces_on_table(bounces, table_size=(1525, 2740), save_path=None):
         print(f"Saved figure to {save_path}")
 
     plt.show()
+    plt.close(fig)

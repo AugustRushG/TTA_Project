@@ -4,14 +4,14 @@ import numpy as np
 import json
 
 class ScoreboardChangeDetector:
-    def __init__(self, frames_folder, video_fps):
+    def __init__(self, frames_folder, video_fps, manual_scoreboard_region=None):
         self.frames_folder = frames_folder
         self.video_fps = video_fps
 
         # let user select scoreboard region from a sample frame
         sample_frame = self._read_image(os.path.join(frames_folder, os.listdir(frames_folder)[0]), crop=False)
         print("Please select the scoreboard region in the displayed frame.")
-        self.scoreboard_region = self.select_scoreboard_region(sample_frame, mode="poly")
+        self.scoreboard_region = self.select_scoreboard_region(sample_frame, mode="poly", manual_input=manual_scoreboard_region)
     
     def _to_bgr(self, frame):
         # Accept PIL or numpy; return numpy BGR
@@ -30,7 +30,7 @@ class ScoreboardChangeDetector:
         bl = pts[np.argmax(d)]
         return np.stack([tl, tr, br, bl], axis=0)
 
-    def select_scoreboard_region(self, frame, mode="poly"):
+    def select_scoreboard_region(self, frame, mode="poly", manual_input=None):
         """
         Let the user select the scoreboard region.
         Args:
@@ -44,6 +44,10 @@ class ScoreboardChangeDetector:
                 [left_bottom, right_bottom, right_top, left_top] as float32 (x,y)
             Returns None if user cancels (ESC).
         """
+
+        if manual_input is not None:
+            return manual_input
+
         img = self._to_bgr(frame).copy()
 
         if mode == "rect":

@@ -56,6 +56,7 @@ class TableDetector:
         """
         corners_top and corners_bottom should be 4x2 numpy arrays of (x, y) coordinates.
         """
+        print("Setting corners manually...")
         self.H_top, _ = cv2.findHomography(corners_top, self.pts_dst_top)
         self.H_bottom, _ = cv2.findHomography(corners_bottom, self.pts_dst_bottom)
         if self.H_top is None or self.H_bottom is None:
