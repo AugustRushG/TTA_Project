@@ -1,5 +1,14 @@
+import matplotlib
+matplotlib.use("Agg")  # non-interactive backend for headless machines
+
+import os
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+
+def safe_show(fig):
+    if os.environ.get("DISPLAY"):
+        plt.show()
+    plt.close(fig)
 
 
 def draw_bounces_on_split_table(bounces, table_size=(1525, 2740), save_path=None):
@@ -70,10 +79,12 @@ def draw_bounces_on_split_table(bounces, table_size=(1525, 2740), save_path=None
         ax.plot(x_plot, y_plot, marker='o', linestyle='', color=color, markersize=5)
         ax.text(x_plot + 5, y_plot, f"{frame_id}", fontsize=6, color=color)
     if save_path:
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        fig.tight_layout()
+        fig.savefig(save_path, dpi=150)
         print(f"Saved figure to {save_path}")
 
     # show and close the figure to avoid blocking
+    safe_show(fig)
     # plt.show()
     # plt.close(fig)
 
@@ -127,8 +138,9 @@ def draw_bounces_on_table(bounces, table_size=(1525, 2740), save_path=None):
 
     # Optional save
     if save_path:
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
-        print(f"Saved figure to {save_path}")
+        fig.tight_layout()
+        fig.savefig(save_path, dpi=150)
 
-    plt.show()
-    plt.close(fig)
+    safe_show(fig)
+    # plt.show()
+    # plt.close(fig)

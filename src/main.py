@@ -58,11 +58,12 @@ def main(args):
     ])
     frame_dir, fps_rate = extract_frames(args.video_path) # dont resize 
 
-    # scoreboard_detector = ScoreboardChangeDetector(frames_folder=frame_dir, video_fps=fps_rate, manual_scoreboard_region=np.array([[426, 600], [517, 544], [489, 478], [381, 535]], dtype=np.float32))
-    # changes = scoreboard_detector.detect_changes()
-    # print(f"In total {len(changes)} scoreboard changes detected at frames:")
-    # with open("score_timeline.json", "w") as f:
-    #     json.dump(changes, f, indent=4)
+    manual_scoreboard_region=np.array([[426, 600], [517, 544], [489, 478], [381, 535]], dtype=np.float32)
+    scoreboard_detector = ScoreboardChangeDetector(frames_folder=frame_dir, video_fps=fps_rate, manual_scoreboard_region=manual_scoreboard_region)
+    changes = scoreboard_detector.detect_changes()
+    print(f"In total {len(changes)} scoreboard changes detected at frames:")
+    with open("score_timeline.json", "w") as f:
+        json.dump(changes, f, indent=4)
 
     game_name = os.path.basename(args.video_path).split('.')[0]
     print(f'Extracted frames for {game_name} into {frame_dir}')
@@ -161,29 +162,30 @@ def main(args):
         dataset.num_frames // 2 + random.randint(0, 100),
     ]
 
-    # converted_img_paths = []
+    converted_img_paths = []
 
-    # for i, idx in enumerate(frame_indices):
-    #     filename = f"{idx:06d}.jpg"
-    #     img_path = os.path.join(frame_dir, filename)
+    for i, idx in enumerate(frame_indices):
+        filename = f"{idx:06d}.jpg"
+        img_path = os.path.join(frame_dir, filename)
 
-    #     img = Image.open(img_path).convert("RGB")
-    #     # img_trans = transforms.CenterCrop(size=(224,224))
-    #     img_trans = transforms.Resize((288, 512))
-    #     converted_img = img_trans(img)
+        img = Image.open(img_path).convert("RGB")
+        # img_trans = transforms.CenterCrop(size=(224,224))
+        img_trans = transforms.Resize((288, 512))
+        converted_img = img_trans(img)
 
-    #     os.makedirs('./result', exist_ok=True)
-    #     converted_img_path = os.path.join('./result', f'converted_{i}.jpg')
-    #     converted_img.save(converted_img_path)
-    #     converted_img_paths.append(converted_img_path)
+        os.makedirs('./result', exist_ok=True)
+        converted_img_path = os.path.join('./result', f'converted_{i}.jpg')
+        converted_img.save(converted_img_path)
+        converted_img_paths.append(converted_img_path)
     
-    img_path = "/home/s224705071/github/TTA_Project/src/result/converted_0.jpg"
+    # img_path = "/home/s224705071/github/TTA_Project/src/result/converted_0.jpg"
+    img_path = converted_img_paths[0]
     table_detector = TableDetector(image_path=img_path, topdown_width=1525, topdown_height=2740)
     # corners_top = np.array([(204, 96), (306, 96), (197, 129), (309, 126)], dtype=np.float32)
     # corners_bottom = np.array([(197, 129), (309, 126), (191, 173), (313, 172)], dtype=np.float32)
     # table_detector.detect_corners_and_compute()
     table_detector.set_corners_manual(
-        corners_top=np.array([(248, 131), (347, 137), (218, 153), (320, 121)], dtype=np.float32),
+        corners_top=np.array([(246, 127), (351, 133), (214, 156), (319, 164)], dtype=np.float32),
         corners_bottom=np.array([(218, 153), (322, 160), (185, 177), (293, 184)], dtype=np.float32)
     )
 
@@ -329,7 +331,7 @@ if __name__ == "__main__":
     #     scoreboard_changes = json.load(f)
     # calculate_points_score_pred(scoreboard_changes, pred_events)
     draw_bounces_on_table(pred_events, save_path='bounces_on_table.jpg')
-    # draw_bounces_on_split_table(pred_events, save_path='bounces_on_table_split.jpg')
+    draw_bounces_on_split_table(pred_events, save_path='bounces_on_table_split.png')
     # # visualize the result
     # AnalysisUtils.count_bounces(pred_events)
     # AnalysisUtils.count_serves(pred_events)

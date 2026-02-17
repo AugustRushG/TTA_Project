@@ -46,6 +46,7 @@ class ScoreboardChangeDetector:
         """
 
         if manual_input is not None:
+            print("Using Manual Input for Scoreboard detector")
             return manual_input
 
         img = self._to_bgr(frame).copy()
