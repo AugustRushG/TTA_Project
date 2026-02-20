@@ -199,3 +199,4 @@ cython_debug/
 *.MP4
 *.pth
 *.pt
+/src/*.json

@@ -1,0 +1,2171 @@
+[
+{
+  "video": "\/data\/local-files?d=BallTracking\/Videos\/25WPE_SLO_M11_SF_Creange_FRA_v_von_Einem_AUS_game1.mp4",
+  "id": 28,
+  "box": [
+    {
+      "framesCount": 9366,
+      "duration": 312.2,
+      "sequence": [
+        {
+          "frame": 1,
+          "enabled": true,
+          "rotation": 0,
+          "x": 29.234375,
+          "y": 30.66666666666667,
+          "width": 1.5000000000000036,
+          "height": 4.166666666666666,
+          "time": 0.03333333333333333
+        }
+      ],
+      "labels": [
+        "close_score"
+      ]
+    },
+    {
+      "framesCount": 9366,
+      "duration": 312.2,
+      "sequence": [
+        {
+          "frame": 1,
+          "enabled": true,
+          "rotation": 0,
+          "x": 30.453125000000004,
+          "y": 29.666666666666664,
+          "width": 1.5937500000000029,
+          "height": 4.333333333333332,
+          "time": 0.03333333333333333
+        }
+      ],
+      "labels": [
+        "far_score"
+      ]
+    }
+  ],
+  "left_score": [
+    {
+      "ranges": [
+        {
+          "start": 1,
+          "end": 1
+        }
+      ],
+      "timelinelabels": [
+        "c0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1,
+          "end": 1
+        }
+      ],
+      "timelinelabels": [
+        "f0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 200,
+          "end": 200
+        }
+      ],
+      "timelinelabels": [
+        "c0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 200,
+          "end": 200
+        }
+      ],
+      "timelinelabels": [
+        "f1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 646,
+          "end": 646
+        }
+      ],
+      "timelinelabels": [
+        "c1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 646,
+          "end": 646
+        }
+      ],
+      "timelinelabels": [
+        "f1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1058,
+          "end": 1058
+        }
+      ],
+      "timelinelabels": [
+        "c1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1058,
+          "end": 1058
+        }
+      ],
+      "timelinelabels": [
+        "f2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1298,
+          "end": 1298
+        }
+      ],
+      "timelinelabels": [
+        "c2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1298,
+          "end": 1298
+        }
+      ],
+      "timelinelabels": [
+        "f2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2080,
+          "end": 2080
+        }
+      ],
+      "timelinelabels": [
+        "c2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2080,
+          "end": 2080
+        }
+      ],
+      "timelinelabels": [
+        "f3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2489,
+          "end": 2489
+        }
+      ],
+      "timelinelabels": [
+        "c2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2489,
+          "end": 2489
+        }
+      ],
+      "timelinelabels": [
+        "f4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3071,
+          "end": 3071
+        }
+      ],
+      "timelinelabels": [
+        "c2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3071,
+          "end": 3071
+        }
+      ],
+      "timelinelabels": [
+        "f5"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3461,
+          "end": 3461
+        }
+      ],
+      "timelinelabels": [
+        "c3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3461,
+          "end": 3461
+        }
+      ],
+      "timelinelabels": [
+        "f5"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4007,
+          "end": 4007
+        }
+      ],
+      "timelinelabels": [
+        "c4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4007,
+          "end": 4007
+        }
+      ],
+      "timelinelabels": [
+        "f5"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4605,
+          "end": 4605
+        }
+      ],
+      "timelinelabels": [
+        "c4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4605,
+          "end": 4605
+        }
+      ],
+      "timelinelabels": [
+        "f6"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5242,
+          "end": 5242
+        }
+      ],
+      "timelinelabels": [
+        "c5"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5242,
+          "end": 5242
+        }
+      ],
+      "timelinelabels": [
+        "f6"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5690,
+          "end": 5690
+        }
+      ],
+      "timelinelabels": [
+        "c6"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5690,
+          "end": 5690
+        }
+      ],
+      "timelinelabels": [
+        "f6"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6588,
+          "end": 6588
+        }
+      ],
+      "timelinelabels": [
+        "c7"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6588,
+          "end": 6588
+        }
+      ],
+      "timelinelabels": [
+        "f6"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7119,
+          "end": 7119
+        }
+      ],
+      "timelinelabels": [
+        "c8"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7119,
+          "end": 7119
+        }
+      ],
+      "timelinelabels": [
+        "f6"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7611,
+          "end": 7611
+        }
+      ],
+      "timelinelabels": [
+        "c8"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7611,
+          "end": 7611
+        }
+      ],
+      "timelinelabels": [
+        "f7"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 8049,
+          "end": 8049
+        }
+      ],
+      "timelinelabels": [
+        "c9"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 8049,
+          "end": 8049
+        }
+      ],
+      "timelinelabels": [
+        "f7"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 8517,
+          "end": 8517
+        }
+      ],
+      "timelinelabels": [
+        "c10"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 8517,
+          "end": 8517
+        }
+      ],
+      "timelinelabels": [
+        "f7"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 8996,
+          "end": 8996
+        }
+      ],
+      "timelinelabels": [
+        "c10"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 8996,
+          "end": 8996
+        }
+      ],
+      "timelinelabels": [
+        "f8"
+      ]
+    }
+  ],
+  "annotator": 1,
+  "annotation_id": 42,
+  "created_at": "2026-02-13T00:50:00.789233Z",
+  "updated_at": "2026-02-13T00:50:00.789262Z",
+  "lead_time": 480.896
+},
+{
+  "video": "\/data\/local-files?d=Tracking_Event\/videos\/JPN\/25WPF_JPN_M1_G_Shikai_JPN_v_Savinov_AUS_game1.mp4",
+  "id": 71,
+  "box": [
+    {
+      "framesCount": 7950,
+      "duration": 265,
+      "sequence": [
+        {
+          "frame": 197,
+          "enabled": true,
+          "rotation": 0,
+          "x": 19.671875,
+          "y": 39.49999999999999,
+          "width": 1.4999999999999991,
+          "height": 4.000000000000002,
+          "time": 6.566666666666666
+        }
+      ],
+      "labels": [
+        "close_score"
+      ]
+    },
+    {
+      "framesCount": 7950,
+      "duration": 265,
+      "sequence": [
+        {
+          "frame": 197,
+          "enabled": true,
+          "rotation": 0,
+          "x": 21.546875,
+          "y": 37.166666666666664,
+          "width": 1.7812500000000002,
+          "height": 4.833333333333327,
+          "time": 6.566666666666666
+        }
+      ],
+      "labels": [
+        "far_score"
+      ]
+    }
+  ],
+  "left_score": [
+    {
+      "ranges": [
+        {
+          "start": 197,
+          "end": 197
+        }
+      ],
+      "timelinelabels": [
+        "c0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 197,
+          "end": 197
+        }
+      ],
+      "timelinelabels": [
+        "f0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 777,
+          "end": 777
+        }
+      ],
+      "timelinelabels": [
+        "c0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 777,
+          "end": 777
+        }
+      ],
+      "timelinelabels": [
+        "f1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1221,
+          "end": 1221
+        }
+      ],
+      "timelinelabels": [
+        "c0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1221,
+          "end": 1221
+        }
+      ],
+      "timelinelabels": [
+        "f2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1614,
+          "end": 1614
+        }
+      ],
+      "timelinelabels": [
+        "c0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1614,
+          "end": 1614
+        }
+      ],
+      "timelinelabels": [
+        "f3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1945,
+          "end": 1945
+        }
+      ],
+      "timelinelabels": [
+        "c0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1945,
+          "end": 1945
+        }
+      ],
+      "timelinelabels": [
+        "f4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2485,
+          "end": 2485
+        }
+      ],
+      "timelinelabels": [
+        "c1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2485,
+          "end": 2485
+        }
+      ],
+      "timelinelabels": [
+        "f4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2930,
+          "end": 2930
+        }
+      ],
+      "timelinelabels": [
+        "c2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2930,
+          "end": 2930
+        }
+      ],
+      "timelinelabels": [
+        "f4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3253,
+          "end": 3253
+        }
+      ],
+      "timelinelabels": [
+        "c2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3253,
+          "end": 3253
+        }
+      ],
+      "timelinelabels": [
+        "f5"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3795,
+          "end": 3795
+        }
+      ],
+      "timelinelabels": [
+        "c3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3795,
+          "end": 3795
+        }
+      ],
+      "timelinelabels": [
+        "f5"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4301,
+          "end": 4301
+        }
+      ],
+      "timelinelabels": [
+        "c3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4301,
+          "end": 4301
+        }
+      ],
+      "timelinelabels": [
+        "f6"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4845,
+          "end": 4845
+        }
+      ],
+      "timelinelabels": [
+        "c3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4845,
+          "end": 4845
+        }
+      ],
+      "timelinelabels": [
+        "f7"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5147,
+          "end": 5147
+        }
+      ],
+      "timelinelabels": [
+        "c4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5147,
+          "end": 5147
+        }
+      ],
+      "timelinelabels": [
+        "f7"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6390,
+          "end": 6390
+        }
+      ],
+      "timelinelabels": [
+        "c4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6390,
+          "end": 6390
+        }
+      ],
+      "timelinelabels": [
+        "f8"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6847,
+          "end": 6847
+        }
+      ],
+      "timelinelabels": [
+        "c4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6847,
+          "end": 6847
+        }
+      ],
+      "timelinelabels": [
+        "f9"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7322,
+          "end": 7322
+        }
+      ],
+      "timelinelabels": [
+        "c4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7322,
+          "end": 7322
+        }
+      ],
+      "timelinelabels": [
+        "f10"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7800,
+          "end": 7800
+        }
+      ],
+      "timelinelabels": [
+        "c4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7800,
+          "end": 7800
+        }
+      ],
+      "timelinelabels": [
+        "f11"
+      ]
+    }
+  ],
+  "annotator": 1,
+  "annotation_id": 43,
+  "created_at": "2026-02-13T04:33:54.620863Z",
+  "updated_at": "2026-02-13T04:33:54.620894Z",
+  "lead_time": 393.29
+},
+{
+  "video": "\/data\/local-files?d=Tracking_Event\/videos\/JPN\/25WPF_JPN_W4-5_G_Jung_Young_A_KOR_v_Miyazaki_JPN_game1.mp4",
+  "id": 73,
+  "box": [
+    {
+      "framesCount": 7575,
+      "duration": 252.5,
+      "sequence": [
+        {
+          "frame": 135,
+          "enabled": true,
+          "rotation": 0,
+          "x": 88.76562499999999,
+          "y": 34.666666666666664,
+          "width": 1.5937500000000069,
+          "height": 5.166666666666669,
+          "time": 4.5
+        }
+      ],
+      "labels": [
+        "close_score"
+      ]
+    },
+    {
+      "framesCount": 7575,
+      "duration": 252.5,
+      "sequence": [
+        {
+          "frame": 135,
+          "enabled": true,
+          "rotation": 0,
+          "x": 86.796875,
+          "y": 31.83333333333333,
+          "width": 1.9687499999999858,
+          "height": 5.3333333333333375,
+          "time": 4.5
+        }
+      ],
+      "labels": [
+        "far_score"
+      ]
+    }
+  ],
+  "left_score": [
+    {
+      "ranges": [
+        {
+          "start": 135,
+          "end": 135
+        }
+      ],
+      "timelinelabels": [
+        "c0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 135,
+          "end": 135
+        }
+      ],
+      "timelinelabels": [
+        "f0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 535,
+          "end": 535
+        }
+      ],
+      "timelinelabels": [
+        "c0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 535,
+          "end": 535
+        }
+      ],
+      "timelinelabels": [
+        "f1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 869,
+          "end": 869
+        }
+      ],
+      "timelinelabels": [
+        "c0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 869,
+          "end": 869
+        }
+      ],
+      "timelinelabels": [
+        "f2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1302,
+          "end": 1302
+        }
+      ],
+      "timelinelabels": [
+        "c1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1302,
+          "end": 1302
+        }
+      ],
+      "timelinelabels": [
+        "f2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1645,
+          "end": 1645
+        }
+      ],
+      "timelinelabels": [
+        "c1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1645,
+          "end": 1645
+        }
+      ],
+      "timelinelabels": [
+        "f3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2599,
+          "end": 2599
+        }
+      ],
+      "timelinelabels": [
+        "c1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2599,
+          "end": 2599
+        }
+      ],
+      "timelinelabels": [
+        "f4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3067,
+          "end": 3067
+        }
+      ],
+      "timelinelabels": [
+        "c1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3067,
+          "end": 3067
+        }
+      ],
+      "timelinelabels": [
+        "f5"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3423,
+          "end": 3423
+        }
+      ],
+      "timelinelabels": [
+        "c1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3423,
+          "end": 3423
+        }
+      ],
+      "timelinelabels": [
+        "f6"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3892,
+          "end": 3892
+        }
+      ],
+      "timelinelabels": [
+        "c1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3892,
+          "end": 3892
+        }
+      ],
+      "timelinelabels": [
+        "f7"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4876,
+          "end": 4876
+        }
+      ],
+      "timelinelabels": [
+        "c2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4876,
+          "end": 4876
+        }
+      ],
+      "timelinelabels": [
+        "f7"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5189,
+          "end": 5189
+        }
+      ],
+      "timelinelabels": [
+        "c3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5189,
+          "end": 5189
+        }
+      ],
+      "timelinelabels": [
+        "f7"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5653,
+          "end": 5653
+        }
+      ],
+      "timelinelabels": [
+        "c3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5653,
+          "end": 5653
+        }
+      ],
+      "timelinelabels": [
+        "f8"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6135,
+          "end": 6135
+        }
+      ],
+      "timelinelabels": [
+        "c3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6135,
+          "end": 6135
+        }
+      ],
+      "timelinelabels": [
+        "f9"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6606,
+          "end": 6606
+        }
+      ],
+      "timelinelabels": [
+        "c3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6606,
+          "end": 6606
+        }
+      ],
+      "timelinelabels": [
+        "f10"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6892,
+          "end": 6892
+        }
+      ],
+      "timelinelabels": [
+        "c3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6892,
+          "end": 6892
+        }
+      ],
+      "timelinelabels": [
+        "f11"
+      ]
+    }
+  ],
+  "annotator": 1,
+  "annotation_id": 44,
+  "created_at": "2026-02-13T04:41:47.206295Z",
+  "updated_at": "2026-02-13T04:41:47.206337Z",
+  "lead_time": 342.222
+},
+{
+  "video": "\/data\/local-files?d=Tracking_Event\/videos\/USA\/25WPE_USA_M11_QF_Kim_Chang_Gi_KOR_v_von_Einem_AUS_game1.mp4",
+  "id": 75,
+  "box": [
+    {
+      "framesCount": 10307,
+      "duration": 343.567,
+      "sequence": [
+        {
+          "frame": 225,
+          "enabled": true,
+          "rotation": 0,
+          "x": 8.234375000000002,
+          "y": 51.666666666666636,
+          "width": 2.0625000000000004,
+          "height": 5,
+          "time": 7.5
+        }
+      ],
+      "labels": [
+        "close_score"
+      ]
+    },
+    {
+      "framesCount": 10307,
+      "duration": 343.567,
+      "sequence": [
+        {
+          "frame": 225,
+          "enabled": true,
+          "rotation": 0,
+          "x": 9.734375,
+          "y": 49.833333333333314,
+          "width": 1.875,
+          "height": 4.499999999999997,
+          "time": 7.5
+        }
+      ],
+      "labels": [
+        "far_score"
+      ]
+    }
+  ],
+  "left_score": [
+    {
+      "ranges": [
+        {
+          "start": 224,
+          "end": 224
+        }
+      ],
+      "timelinelabels": [
+        "c0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 225,
+          "end": 225
+        }
+      ],
+      "timelinelabels": [
+        "f0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 594,
+          "end": 594
+        }
+      ],
+      "timelinelabels": [
+        "c1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 594,
+          "end": 594
+        }
+      ],
+      "timelinelabels": [
+        "f0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1117,
+          "end": 1117
+        }
+      ],
+      "timelinelabels": [
+        "c2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1117,
+          "end": 1117
+        }
+      ],
+      "timelinelabels": [
+        "f0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1613,
+          "end": 1613
+        }
+      ],
+      "timelinelabels": [
+        "c2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1613,
+          "end": 1613
+        }
+      ],
+      "timelinelabels": [
+        "f1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1994,
+          "end": 1994
+        }
+      ],
+      "timelinelabels": [
+        "c3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1994,
+          "end": 1994
+        }
+      ],
+      "timelinelabels": [
+        "f1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2594,
+          "end": 2594
+        }
+      ],
+      "timelinelabels": [
+        "c4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2594,
+          "end": 2594
+        }
+      ],
+      "timelinelabels": [
+        "f1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3009,
+          "end": 3009
+        }
+      ],
+      "timelinelabels": [
+        "c4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3009,
+          "end": 3009
+        }
+      ],
+      "timelinelabels": [
+        "f2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3346,
+          "end": 3346
+        }
+      ],
+      "timelinelabels": [
+        "c5"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3346,
+          "end": 3346
+        }
+      ],
+      "timelinelabels": [
+        "f2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3643,
+          "end": 3643
+        }
+      ],
+      "timelinelabels": [
+        "c6"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3643,
+          "end": 3643
+        }
+      ],
+      "timelinelabels": [
+        "f2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4103,
+          "end": 4103
+        }
+      ],
+      "timelinelabels": [
+        "c6"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4103,
+          "end": 4103
+        }
+      ],
+      "timelinelabels": [
+        "f3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4462,
+          "end": 4462
+        }
+      ],
+      "timelinelabels": [
+        "c6"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4462,
+          "end": 4462
+        }
+      ],
+      "timelinelabels": [
+        "f4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4973,
+          "end": 4973
+        }
+      ],
+      "timelinelabels": [
+        "c7"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4973,
+          "end": 4973
+        }
+      ],
+      "timelinelabels": [
+        "f4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5355,
+          "end": 5355
+        }
+      ],
+      "timelinelabels": [
+        "c8"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5355,
+          "end": 5355
+        }
+      ],
+      "timelinelabels": [
+        "f4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5884,
+          "end": 5884
+        }
+      ],
+      "timelinelabels": [
+        "c8"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5884,
+          "end": 5884
+        }
+      ],
+      "timelinelabels": [
+        "f5"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6414,
+          "end": 6414
+        }
+      ],
+      "timelinelabels": [
+        "c8"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6414,
+          "end": 6414
+        }
+      ],
+      "timelinelabels": [
+        "f6"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7002,
+          "end": 7002
+        }
+      ],
+      "timelinelabels": [
+        "c8"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7002,
+          "end": 7002
+        }
+      ],
+      "timelinelabels": [
+        "f7"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7460,
+          "end": 7460
+        }
+      ],
+      "timelinelabels": [
+        "c8"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7460,
+          "end": 7460
+        }
+      ],
+      "timelinelabels": [
+        "f8"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 8032,
+          "end": 8032
+        }
+      ],
+      "timelinelabels": [
+        "c9"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 8032,
+          "end": 8032
+        }
+      ],
+      "timelinelabels": [
+        "f8"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 8812,
+          "end": 8812
+        }
+      ],
+      "timelinelabels": [
+        "c10"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 8812,
+          "end": 8812
+        }
+      ],
+      "timelinelabels": [
+        "f8"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 9526,
+          "end": 9526
+        }
+      ],
+      "timelinelabels": [
+        "c10"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 9526,
+          "end": 9526
+        }
+      ],
+      "timelinelabels": [
+        "f9"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 10208,
+          "end": 10208
+        }
+      ],
+      "timelinelabels": [
+        "c11"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 10208,
+          "end": 10208
+        }
+      ],
+      "timelinelabels": [
+        "f9"
+      ]
+    }
+  ],
+  "annotator": 1,
+  "annotation_id": 46,
+  "created_at": "2026-02-13T23:54:11.235495Z",
+  "updated_at": "2026-02-13T23:54:11.235523Z",
+  "lead_time": 491.33
+},
+{
+  "video": "\/data\/local-files?d=Tracking_Event\/videos\/USA\/25WPF_USA_M9_SF_Ma_AUS_v_Iwabuchi_JPN_game1.mp4",
+  "id": 78,
+  "box": [
+    {
+      "framesCount": 7198,
+      "duration": 239.933333,
+      "sequence": [
+        {
+          "frame": 107,
+          "enabled": true,
+          "rotation": 0,
+          "x": 11.703124999999998,
+          "y": 44.166666666666664,
+          "width": 1.6874999999999993,
+          "height": 4.833333333333335,
+          "time": 3.566666666666667
+        }
+      ],
+      "labels": [
+        "close_score"
+      ]
+    },
+    {
+      "framesCount": 7198,
+      "duration": 239.933333,
+      "sequence": [
+        {
+          "frame": 107,
+          "enabled": true,
+          "rotation": 0,
+          "x": 12.640625,
+          "y": 41.66666666666667,
+          "width": 1.5937500000000004,
+          "height": 4.166666666666666,
+          "time": 3.566666666666667
+        }
+      ],
+      "labels": [
+        "far_score"
+      ]
+    }
+  ],
+  "left_score": [
+    {
+      "ranges": [
+        {
+          "start": 107,
+          "end": 107
+        }
+      ],
+      "timelinelabels": [
+        "c0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 107,
+          "end": 107
+        }
+      ],
+      "timelinelabels": [
+        "f0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 262,
+          "end": 262
+        }
+      ],
+      "timelinelabels": [
+        "c0"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 262,
+          "end": 262
+        }
+      ],
+      "timelinelabels": [
+        "f1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 699,
+          "end": 699
+        }
+      ],
+      "timelinelabels": [
+        "c1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 699,
+          "end": 699
+        }
+      ],
+      "timelinelabels": [
+        "f1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1224,
+          "end": 1224
+        }
+      ],
+      "timelinelabels": [
+        "c1"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1224,
+          "end": 1224
+        }
+      ],
+      "timelinelabels": [
+        "f2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1627,
+          "end": 1627
+        }
+      ],
+      "timelinelabels": [
+        "c2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 1627,
+          "end": 1627
+        }
+      ],
+      "timelinelabels": [
+        "f2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2103,
+          "end": 2103
+        }
+      ],
+      "timelinelabels": [
+        "c3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2103,
+          "end": 2103
+        }
+      ],
+      "timelinelabels": [
+        "f2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2541,
+          "end": 2541
+        }
+      ],
+      "timelinelabels": [
+        "c4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 2541,
+          "end": 2541
+        }
+      ],
+      "timelinelabels": [
+        "f2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3091,
+          "end": 3091
+        }
+      ],
+      "timelinelabels": [
+        "c5"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3091,
+          "end": 3091
+        }
+      ],
+      "timelinelabels": [
+        "f2"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3626,
+          "end": 3626
+        }
+      ],
+      "timelinelabels": [
+        "c5"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 3626,
+          "end": 3626
+        }
+      ],
+      "timelinelabels": [
+        "f3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4219,
+          "end": 4219
+        }
+      ],
+      "timelinelabels": [
+        "c6"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4219,
+          "end": 4219
+        }
+      ],
+      "timelinelabels": [
+        "f3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4915,
+          "end": 4915
+        }
+      ],
+      "timelinelabels": [
+        "c7"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 4915,
+          "end": 4915
+        }
+      ],
+      "timelinelabels": [
+        "f3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5390,
+          "end": 5390
+        }
+      ],
+      "timelinelabels": [
+        "c8"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5390,
+          "end": 5390
+        }
+      ],
+      "timelinelabels": [
+        "f3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5933,
+          "end": 5933
+        }
+      ],
+      "timelinelabels": [
+        "c9"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 5933,
+          "end": 5933
+        }
+      ],
+      "timelinelabels": [
+        "f3"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6273,
+          "end": 6273
+        }
+      ],
+      "timelinelabels": [
+        "c9"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6273,
+          "end": 6273
+        }
+      ],
+      "timelinelabels": [
+        "f4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6725,
+          "end": 6725
+        }
+      ],
+      "timelinelabels": [
+        "c10"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 6725,
+          "end": 6725
+        }
+      ],
+      "timelinelabels": [
+        "f4"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7107,
+          "end": 7107
+        }
+      ],
+      "timelinelabels": [
+        "c11"
+      ]
+    },
+    {
+      "ranges": [
+        {
+          "start": 7107,
+          "end": 7107
+        }
+      ],
+      "timelinelabels": [
+        "f4"
+      ]
+    }
+  ],
+  "annotator": 1,
+  "annotation_id": 45,
+  "created_at": "2026-02-13T23:45:10.001957Z",
+  "updated_at": "2026-02-13T23:45:10.001986Z",
+  "lead_time": 359.014
+}
+]
