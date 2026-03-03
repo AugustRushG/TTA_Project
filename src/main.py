@@ -71,8 +71,8 @@ def main(args):
     else:
         print("Using CPU")
  
- 
-    changes = json.load(open("score_timeline.json", "r")) if os.path.exists("score_timeline.json") else None
+    score_timeline_path = game_name + "_score_timeline.json"
+    changes = json.load(open(score_timeline_path, "r")) if os.path.exists(score_timeline_path) else None
     if changes is None:
         scoreboard_detector = ResNetScoreboardChangeDetector(frames_folder=frame_dir, video_fps=fps_rate, 
                                                         model_path="/home/august/github/TTA_Project/src/best_score_classifier.pt", 
@@ -82,7 +82,7 @@ def main(args):
         final_score_close = changes[-1]['new']['close']['score']
         final_score_far = changes[-1]['new']['far']['score']
         print(f"Final score of the game - Close Table: {final_score_close}, Far Table: {final_score_far}")
-        with open("score_timeline.json", "w") as f:
+        with open(score_timeline_path, "w") as f:
             json.dump(changes, f, indent=4)
 
     dataset = FrameClipDataset(frame_dir, window_size=args.window_size, stride=args.stride, event_transform=event_transform, ball_transform=ball_transform)

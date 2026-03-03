@@ -426,6 +426,9 @@ class ResNetScoreboardChangeDetector:
 
         events = []
 
+        started = False
+        start_frame = None
+
         bqar = tqdm(frame_files, desc="Processing frames for scoreboard change detection")
         for idx, fname in enumerate(bqar):
             if stride > 1 and (idx % stride != 0):
@@ -457,6 +460,30 @@ class ResNetScoreboardChangeDetector:
                 "far": preds["far"],
             })
 
+            # --- NEW: wait until BOTH close and far are confidently 0 to start ---
+            if not started:
+                c0 = preds["close"] is not None and preds["close"]["conf"] >= conf_threshold and preds["close"]["score"] == 0
+                f0 = preds["far"]   is not None and preds["far"]["conf"]   >= conf_threshold and preds["far"]["score"] == 0
+
+                if c0 and f0:
+                    started = True
+                    start_frame = frame_index
+
+                    # initialize stable to 0-0
+                    stable["close"] = preds["close"]
+                    stable["far"]   = preds["far"]
+
+                    # reset candidate state & counts so warmup starts cleanly AFTER 0-0
+                    for roi_name in ["close", "far"]:
+                        candidate_score[roi_name] = None
+                        candidate_best_conf[roi_name] = 0.0
+                        candidate_run[roi_name] = 0
+                        candidate_start_frame[roi_name] = None
+                        accepted_count[roi_name] = 0
+
+                # do NOT run detection logic before started
+                continue
+
             # Process each ROI independently
             roi_confirmed_change = {"close": False, "far": False}
             roi_new_state = {"close": None, "far": None}
@@ -473,9 +500,8 @@ class ResNetScoreboardChangeDetector:
 
                 accepted_count[roi_name] += 1
 
-                # init stable if needed
+                # stable should already be initialized from the 0-0 start gate
                 if stable[roi_name] is None:
-                    stable[roi_name] = cur
                     continue
 
                 # warmup: keep updating stable early
