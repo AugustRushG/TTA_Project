@@ -1,1 +1,2 @@
 from .detector import ScoreboardChangeDetector
+from .detector import ResNetScoreboardChangeDetector

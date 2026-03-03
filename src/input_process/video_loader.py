@@ -6,17 +6,26 @@ import torchvision.transforms as transforms
 import torch
 from glob import glob  # At the top of your script
 from torchvision.io import read_image
+from tqdm import tqdm
 
 
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
 
-def extract_frames(video_path, resize_to=None):
-    frame_dir = os.path.splitext(video_path)[0] + "_frames"
-    # convert space to underscore for easier handling
+def extract_frames(video_path, frame_path=None, resize_to=None):
+    video_name = os.path.splitext(video_path)[0].split('/')[-1]
+    frame_dir = (
+        os.path.splitext(video_path)[0] + "_frames"
+        if frame_path is None
+        else frame_path + f"/{video_name}_frames"
+    )
+
     frame_dir = frame_dir.replace(" ", "_")
+
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
     if os.path.exists(frame_dir):
         print(f"Frame directory {frame_dir} already exists, skipping extraction, fps: {fps}")
         cap.release()
@@ -26,15 +35,28 @@ def extract_frames(video_path, resize_to=None):
         os.makedirs(frame_dir, exist_ok=True)
 
     idx = 0
+
+    # If frame count is valid, use it
+    if total_frames > 0:
+        pbar = tqdm(total=total_frames, desc="Extracting frames", unit="frame")
+    else:
+        pbar = tqdm(desc="Extracting frames", unit="frame")
+
     while True:
         success, frame = cap.read()
         if not success:
             break
+
         if resize_to:
             frame = cv2.resize(frame, resize_to)
+
         out_path = os.path.join(frame_dir, f"{idx:06d}.jpg")
         cv2.imwrite(out_path, frame)
+
         idx += 1
+        pbar.update(1)
+
+    pbar.close()
     cap.release()
 
     print(f"Extracted {idx} frames to {frame_dir}")

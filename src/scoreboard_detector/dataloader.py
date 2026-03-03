@@ -18,8 +18,3 @@ if __name__ == "__main__":
     with open("/home/august/github/TTA_Project/data/converted_scoreboard_data.json", "r") as f:
         data = json.load(f)
     dataset = ScoreboardDataset(data, "/home/august/github/TTA_Project/data", transform=transform)
-    train_loader, val_loader = make_loaders(dataset, batch_size=5, num_workers=4)
-    # print one to check
-    imgs, labels = next(iter(train_loader))
-    print(f"Batch of images shape: {imgs.shape}, dtype: {imgs.dtype}")
-    print(f"Batch of labels shape: {labels.shape}, dtype: {labels.dtype}")

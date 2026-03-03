@@ -2,303 +2,556 @@ import os
 import cv2
 import numpy as np
 import json
+from tqdm import tqdm
+import torch
+import torch.nn.functional as F
+from PIL import Image
+from torchvision import transforms
+from .model import ScoreClassifier
+MAX_SCORE = 15  # or whatever your max class is
+
+def select_roi(frame, title="Select ROI", existing=None, allow_cancel=True):
+    """
+    frame: numpy HxWxC (BGR)
+    existing: optional (x1,y1,x2,y2) to show as a hint (we can't prefill selectROI,
+                but we can draw it before selecting)
+    returns: (x1,y1,x2,y2) or None if cancelled
+    """
+    if frame is None or frame.size == 0:
+        raise ValueError("Empty frame provided to ROI selector.")
+
+    img = frame.copy()
+
+    # Draw existing ROI as a hint
+    if existing is not None:
+        x1, y1, x2, y2 = map(int, existing)
+        cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        cv2.putText(img, "Existing ROI (green) - draw new one if needed",
+                    (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+
+    # OpenCV selectROI expects a window; make it resizable
+    cv2.namedWindow(title, cv2.WINDOW_NORMAL)
+
+    # Returns (x, y, w, h). If user cancels, returns (0,0,0,0)
+    x, y, w, h = cv2.selectROI(title, img, showCrosshair=True, fromCenter=False)
+    cv2.destroyWindow(title)
+
+    if w == 0 or h == 0:
+        if allow_cancel:
+            return None
+        raise RuntimeError("ROI selection cancelled / invalid (w or h == 0).")
+
+    x1, y1, x2, y2 = int(x), int(y), int(x + w), int(y + h)
+    return (x1, y1, x2, y2)
+
+
+
+def read_image(path):
+    # read image use cv2 or PIL
+    image = cv2.imread(path)
+    if image is None:
+        raise FileNotFoundError(f"Image not found: {path}")
+    return image
+    
+
+
 
 class ScoreboardChangeDetector:
-    def __init__(self, frames_folder, video_fps, manual_scoreboard_region=None):
+    def __init__(self, frames_folder, video_fps):
         self.frames_folder = frames_folder
         self.video_fps = video_fps
 
-        # let user select scoreboard region from a sample frame
-        sample_frame = self._read_image(os.path.join(frames_folder, os.listdir(frames_folder)[0]), crop=False)
-        print("Please select the scoreboard region in the displayed frame.")
-        self.scoreboard_region = self.select_scoreboard_region(sample_frame, mode="poly", manual_input=manual_scoreboard_region)
-    
-    def _to_bgr(self, frame):
-        # Accept PIL or numpy; return numpy BGR
-        if hasattr(frame, "mode"):  # PIL Image
-            frame = np.array(frame)[:, :, ::-1].copy()  # RGB->BGR
-        return frame
+        num_images = len([name for name in os.listdir(frames_folder)
+                          if os.path.isfile(os.path.join(frames_folder, name))])
+        print(f"Number of images in folder: {num_images}")
 
-    def _order_quad_xy_tl(self, pts):
-        """Order 4 (x,y) points to [TL, TR, BR, BL]."""
-        pts = np.asarray(pts, dtype=np.float32)
-        s = pts.sum(axis=1)
-        d = np.diff(pts, axis=1).ravel()
-        tl = pts[np.argmin(s)]
-        br = pts[np.argmax(s)]
-        tr = pts[np.argmin(d)]
-        bl = pts[np.argmax(d)]
-        return np.stack([tl, tr, br, bl], axis=0)
+        random_image_index = np.random.randint(1, num_images + 1)
+        print(f"Selected image index for region selection: {random_image_index}")
 
-    def select_scoreboard_region(self, frame, mode="poly", manual_input=None):
+        sample_image_path = os.path.join(frames_folder, f"{random_image_index:06d}.jpg")
+        sample_frame = read_image(sample_image_path)
+
+        print("Please select the close scoreboard region in the displayed frame.")
+        self.close_scoreboard_region = select_roi(sample_frame, title="Select CLOSE scoreboard ROI")
+
+        print("Please select the far scoreboard region in the displayed frame.")
+        self.far_scoreboard_region = select_roi(sample_frame, title="Select FAR scoreboard ROI")
+
+    def detect_changes(
+        self,
+        stride=1,
+        warmup=10,            # frames to initialize stable reference
+        patience=3,           # consecutive frames that must indicate change
+        diff_threshold=12.0,  # higher => less sensitive (tune this)
+        min_interval_frames=10,  # prevent double-counting flicker
+        blur_ksize=5,         # 0 to disable blur
+        debug=False,
+    ):
         """
-        Let the user select the scoreboard region.
-        Args:
-            frame: numpy BGR image or PIL.Image
-            mode : 'rect' (drag a rectangle) or 'poly' (click 4 corners)
+        Detect scoreboard changes by image difference only.
+        Assumes each ROI starts at 0 and increments by 1 whenever a stable change is detected.
+
         Returns:
-            If mode='rect':
-                (x, y, w, h)  integers in pixel coords (origin top-left)
-            If mode='poly':
-                quad_pts in *your* expected order:
-                [left_bottom, right_bottom, right_top, left_top] as float32 (x,y)
-            Returns None if user cancels (ESC).
+            events: list of dicts like:
+              {
+                "frame": int,
+                "time": "M:SS",
+                "roi": "close"|"far",
+                "old_score": int,
+                "new_score": int,
+                "diff": float
+              }
+            scores: final scores dict {"close": int, "far": int}
         """
 
-        if manual_input is not None:
-            print("Using Manual Input for Scoreboard detector")
-            return manual_input
-
-        img = self._to_bgr(frame).copy()
-
-        if mode == "rect":
-            cv2.namedWindow("Select ROI - Drag, ENTER to confirm, ESC to cancel", cv2.WINDOW_NORMAL)
-            r = cv2.selectROI("Select ROI - Drag, ENTER to confirm, ESC to cancel", img, showCrosshair=True, fromCenter=False)
-            cv2.destroyWindow("Select ROI - Drag, ENTER to confirm, ESC to cancel")
-            x, y, w, h = map(int, r)
-            if w == 0 or h == 0:
+        # --- helpers ---
+        def crop(frame, roi):
+            if roi is None:
                 return None
-            return (x, y, w, h)
+            x1, y1, x2, y2 = map(int, roi)
+            H, W = frame.shape[:2]
+            x1 = max(0, min(x1, W - 1))
+            x2 = max(0, min(x2, W))
+            y1 = max(0, min(y1, H - 1))
+            y2 = max(0, min(y2, H))
+            if x2 <= x1 or y2 <= y1:
+                return None
+            patch = frame[y1:y2, x1:x2]
+            return patch if patch.size > 0 else None
 
-        elif mode == "poly":
-            win = "Click 4 corners (any order). ENTER=confirm, r=reset, ESC=cancel"
-            pts = []
+        def preprocess(patch_bgr):
+            # Convert to grayscale + optional blur to reduce noise / compression artifacts
+            g = cv2.cvtColor(patch_bgr, cv2.COLOR_BGR2GRAY)
+            if blur_ksize and blur_ksize > 0:
+                k = blur_ksize if blur_ksize % 2 == 1 else blur_ksize + 1
+                g = cv2.GaussianBlur(g, (k, k), 0)
+            return g
 
-            def on_mouse(event, x, y, flags, param):
-                nonlocal pts
-                if event == cv2.EVENT_LBUTTONDOWN:
-                    if len(pts) < 4:
-                        pts.append((x, y))
-                elif event == cv2.EVENT_RBUTTONDOWN and pts:
-                    pts.pop()  # quick undo with right-click
+        def diff_score(a_gray, b_gray):
+            # mean absolute pixel difference
+            d = cv2.absdiff(a_gray, b_gray)
+            return float(d.mean())
 
-            cv2.namedWindow(win, cv2.WINDOW_NORMAL)
-            cv2.setMouseCallback(win, on_mouse)
+        # --- frame list ---
+        frame_files = sorted([f for f in os.listdir(self.frames_folder)
+                              if f.lower().endswith((".jpg", ".jpeg", ".png"))])
 
-            while True:
-                disp = img.copy()
-                # draw clicks
-                for i, (x, y) in enumerate(pts):
-                    cv2.circle(disp, (x, y), 5, (0, 255, 255), -1)
-                    cv2.putText(disp, str(i+1), (x+6, y-6), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0,255,255), 2)
-                # connect lines
-                if len(pts) >= 2:
-                    for i in range(1, len(pts)):
-                        cv2.line(disp, pts[i-1], pts[i], (0, 255, 255), 2)
-                if len(pts) == 4:
-                    cv2.line(disp, pts[3], pts[0], (0, 255, 255), 2)
+        # Scores start at 0
+        scores = {"close": 0, "far": 0}
+        events = []
 
-                cv2.putText(disp, "L-click: add  |  R-click: undo  |  r: reset  |  ENTER: confirm  |  ESC: cancel",
-                            (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (30, 200, 30), 2)
+        # Stable references (what ROI looked like last confirmed state)
+        stable_ref = {"close": None, "far": None}
 
-                cv2.imshow(win, disp)
-                key = cv2.waitKey(20) & 0xFF
-                if key == 27:  # ESC
-                    cv2.destroyWindow(win)
-                    return None
-                elif key in (ord('\r'), 13):  # ENTER/RETURN
-                    if len(pts) == 4:
-                        break
-                elif key in (ord('r'), ord('R')):
-                    pts = []
+        # Debounce/candidate state per ROI
+        cand_run = {"close": 0, "far": 0}
+        cand_best_diff = {"close": 0.0, "far": 0.0}
 
-            cv2.destroyWindow(win)
+        # Prevent double counting
+        last_event_frame = {"close": -10**9, "far": -10**9}
 
-            # Order to TL,TR,BR,BL then convert to your expected [LB,RB,RT,LT]
-            TL, TR, BR, BL = self._order_quad_xy_tl(pts)
-            LB, RB, RT, LT = BL, BR, TR, TL
-            quad_lb_rb_rt_lt = np.stack([LB, RB, RT, LT], axis=0).astype(np.float32)
-            return quad_lb_rb_rt_lt
-
-        else:
-            raise ValueError("mode must be 'rect' or 'poly'")
-        
-    def warp_scoreboard_tltrbrbl(self, frame, src, out_size):
-        W, H = out_size
-        dst = np.array([[0,0],[W-1,0],[W-1,H-1],[0,H-1]], dtype=np.float32)
-        M = cv2.getPerspectiveTransform(np.float32(src), dst)
-        warped = cv2.warpPerspective(frame, M, (W, H), flags=cv2.INTER_LINEAR,
-                                    borderMode=cv2.BORDER_REPLICATE)
-        return warped, M
-
-    def _crop_scoreboard(self, frame):
-        if self.scoreboard_region is None:
-            raise ValueError("Scoreboard region not set.")
-
-        pts = np.asarray(self.scoreboard_region, dtype=np.float32)
-        lb, rb, rt, lt = pts
-        pts = np.array([lt, rt, rb, lb], dtype=np.float32)  # TL,TR,BR,BL
-
-        # Polygon: pts is TL,TR,BR,BL (or any order you already normalized to TL,TR,BR,BL)
-        if pts.shape == (4, 2):
-            # 1) Crop to the quad's bounding box
-            x_min = int(np.floor(pts[:, 0].min()))
-            x_max = int(np.ceil(pts[:, 0].max()))
-            y_min = int(np.floor(pts[:, 1].min()))
-            y_max = int(np.ceil(pts[:, 1].max()))
-
-            # clip to image bounds
-            Hf, Wf = frame.shape[:2]
-            x_min = max(0, min(x_min, Wf-1)); x_max = max(0, min(x_max, Wf-1))
-            y_min = max(0, min(y_min, Hf-1)); y_max = max(0, min(y_max, Hf-1))
-            if x_max <= x_min or y_max <= y_min:
-                raise ValueError("Scoreboard quad is out of bounds or degenerate.")
-
-            cropped = frame[y_min:y_max+1, x_min:x_max+1].copy()
-
-            # 2) Shift points to local coords of the crop
-            src_local = pts.copy()
-            src_local[:, 0] -= x_min
-            src_local[:, 1] -= y_min
-
-            # 3) Warp
-            warped, _ = self.warp_scoreboard_tltrbrbl(cropped, src_local, (100, 100))
-            # cv2.imshow("Cropped Scoreboard", warped); cv2.waitKey(1)  # beware headless envs
-            return warped
-
-        # Rectangle (x, y, w, h)
-        elif len(pts) == 4 and not hasattr(pts[0], "__len__"):
-            x, y, w, h = map(int, pts)
-            return frame[y:y+h, x:x+w]
-
-        else:
-            raise ValueError("Invalid scoreboard region format.")
-
-
-    def _read_image(self, path, crop=True):
-        # read image use cv2 or PIL
-        image = cv2.imread(path)
-        if image is None:
-            raise FileNotFoundError(f"Image not found: {path}")
-        if crop:
-            image = self._crop_scoreboard(image)
-        return image
-    
-    def nms_score_changes(self, change_times, fps, window_s=5.0):
-        """
-        Temporal NMS (no side). Keeps the strongest detection within ±window_s seconds.
-        Args:
-            change_times: dict {frame:int -> score:int}
-            fps:          video framerate
-            window_s:     seconds for suppression window
-        Returns:
-            dict {frame:int -> score:int} (sorted by frame)
-        """
-        if not change_times:
-            return {}
-
-        window_f = int(round(window_s * fps))
-
-        # sort by score desc, then frame asc
-        items = sorted(change_times.items(), key=lambda kv: (-kv[1], kv[0]))
-        kept = []
-        suppressed = set()
-
-        for i, (fi, si) in enumerate(items):
-            if fi in suppressed:
+        accepted = 0
+        pbar = tqdm(frame_files, desc="Processing frames for scoreboard change detection")
+        for i, fname in enumerate(pbar):
+            if stride > 1 and (i % stride != 0):
                 continue
-            kept.append((fi, si))
-            # suppress neighbors in temporal window
-            for fj, sj in items[i+1:]:
-                if abs(fj - fi) <= window_f:
-                    suppressed.add(fj)
 
-        return dict(sorted(kept, key=lambda kv: kv[0]))
-
-
-    
-    def detect_changes(self):
-
-        change_times = {}
-        prev_gray = None
-        state = "STABLE"     # STABLE | CANDIDATE
-        pending_frame = None
-
-        # thresholds as mean-per-pixel on 0..255 scale
-        tau_enter_mean    = 12.0   # flag change (vs previous frame)
-        tau_confirm_mean  =  9.0   # confirm change (hysteresis)
-        tau_block_mean    = 30.0   # BIG change vs the FIRST frame => board moved/blocked
-
-        # sort numerically by frame index in filename (e.g., "123.jpg")
-        files = sorted(
-            [f for f in os.listdir(self.frames_folder) if f.lower().endswith(('.jpg', '.png'))],
-            key=lambda f: int(os.path.splitext(f)[0])
-        )
-
-        original_gray = None  # keep the very first ROI as reference
-
-        for frame_file in files:
-            frame_path = os.path.join(self.frames_folder, frame_file)
-
-            # _read_image should return rectified/cropped ROI (BGR uint8)
-            frame = self._read_image(frame_path)
+            frame_path = os.path.join(self.frames_folder, fname)
+            frame = read_image(frame_path)  # expects BGR numpy array
             if frame is None:
                 continue
 
-            # light denoise + gray
-            roi  = cv2.GaussianBlur(frame, (3, 3), 0)
-            gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
-          
+            frame_idx = int(os.path.splitext(fname)[0])
 
-            if original_gray is None:
-                original_gray = gray.copy()
+            for roi_name, roi in [("close", self.close_scoreboard_region),
+                                  ("far", self.far_scoreboard_region)]:
+                patch = crop(frame, roi)
+                if patch is None:
+                    continue
 
-            if prev_gray is None:
-                prev_gray = gray
-                continue
-            
+                cur = preprocess(patch)
 
-            H, W = gray.shape
-            N = H * W
-            tau_enter_sum   = tau_enter_mean   * N
-            tau_confirm_sum = tau_confirm_mean * N
-            tau_block_sum   = tau_block_mean   * N
+                # Initialize stable reference for first few frames
+                if stable_ref[roi_name] is None:
+                    stable_ref[roi_name] = cur
+                    continue
 
-            # local change (vs previous frame)
-            d_prev = float(np.sum(cv2.absdiff(gray, prev_gray)))
-            # global change (vs first frame)
-            d_orig = float(np.sum(cv2.absdiff(gray, original_gray)))
+                # Warmup period: keep updating stable_ref to “settle”
+                if accepted < warmup:
+                    stable_ref[roi_name] = cur
+                    continue
 
-            frame_num = int(os.path.splitext(frame_file)[0])
+                # Cooldown: avoid counting multiple times too fast
+                if frame_idx - last_event_frame[roi_name] < min_interval_frames:
+                    continue
 
-            # --- block/movement guard: if too far from the first frame, skip everything ---
-            if d_orig >= tau_block_sum:
-                # Treat as board moving/blocked; don't arm/confirm, just advance.
-                state = "STABLE"
-                pending_frame = None
-                prev_gray = gray
-                continue
+                d = diff_score(cur, stable_ref[roi_name])
 
-            # --- regular 2-stage detect (whole-ROI) ---
-            if state == "STABLE":
-                if d_prev >= tau_enter_sum:
-                    state = "CANDIDATE"
-                    pending_frame = frame_num
-            else:  # CANDIDATE
-                if d_prev >= tau_confirm_sum:
-                    # commit event at the first (pending) frame
-                    change_times[pending_frame] = int(d_prev)
-                # reset either way
-                state = "STABLE"
-                pending_frame = None
+                if debug:
+                    print(f"[{roi_name}] frame={frame_idx} diff={d:.2f} score={scores[roi_name]}")
 
-            prev_gray = gray
+                if d >= diff_threshold:
+                    cand_run[roi_name] += 1
+                    cand_best_diff[roi_name] = max(cand_best_diff[roi_name], d)
+                else:
+                    # decay/reset candidate if similarity returns
+                    cand_run[roi_name] = 0
+                    cand_best_diff[roi_name] = 0.0
+                    # also refresh stable reference slowly (helps with lighting drift)
+                    stable_ref[roi_name] = cur
 
-        # temporal de-duplication (no side)
-        change_times = self.nms_score_changes(change_times, self.video_fps, window_s=5.0)
+                # Confirm change if persistent
+                if cand_run[roi_name] >= patience:
+                    old_s = scores[roi_name]
+                    scores[roi_name] = old_s + 1
 
-        for f, s in change_times.items():
-            t = self.calculate_time_from_frame(f)
-            change_times[f] = {'frame':f, 'score': s, 'time': t}
+                    events.append({
+                        "frame": frame_idx,
+                        "time": self.calculate_time_from_frame(frame_idx),
+                        "roi": roi_name,
+                        "old_score": old_s,
+                        "new_score": scores[roi_name],
+                        "diff": cand_best_diff[roi_name],
+                    })
 
-        return change_times
+                    last_event_frame[roi_name] = frame_idx
 
-    
+                    # After confirming a change, update the stable reference to current
+                    stable_ref[roi_name] = cur
+
+                    # reset candidate
+                    cand_run[roi_name] = 0
+                    cand_best_diff[roi_name] = 0.0
+
+            accepted += 1
+
+        return events, scores
+
     def calculate_time_from_frame(self, frame_idx):
         total_seconds = frame_idx / self.video_fps
         minutes = int(total_seconds // 60)
         seconds = int(total_seconds % 60)
         return f"{minutes}:{seconds:02d}"
+
+
+
+
+
+class ResNetScoreboardChangeDetector:
+    def __init__(self, frames_folder, video_fps, model_path, device):
+        self.frames_folder = frames_folder
+        self.video_fps = video_fps
+        self.device = device
+        self.load_pretrained_model(model_path, device)
+        # count how many images in the folder
+        num_images = len([name for name in os.listdir(frames_folder) if os.path.isfile(os.path.join(frames_folder, name))])
+        print(f"Number of images in folder: {num_images}")
+        # select random image from the folder
+        random_image_index = np.random.randint(1, num_images + 1)
+        print(f"Selected image index for region selection: {random_image_index}")
+        sample_image_path = os.path.join(frames_folder, f"{random_image_index:06d}.jpg")
+        sample_frame = self._read_image(sample_image_path)
+        print("Please select the close scoreboard region in the displayed frame.")
+        self.close_scoreboard_region = self.select_close_scoreboard_region(sample_frame)
+        print("Please select the far scoreboard region in the displayed frame.")
+        self.far_scoreboard_region = self.select_far_scoreboard_region(sample_frame)
+
+    def _read_image(self, path):
+        # read image use cv2 or PIL
+        image = cv2.imread(path)
+        if image is None:
+            raise FileNotFoundError(f"Image not found: {path}")
+        return image
+
+    def load_pretrained_model(self, model_path, device):
+        self.model = ScoreClassifier(num_classes=14, backbone="resnet34")
+        self.model.load_state_dict(torch.load(model_path, map_location="cpu"))
+        self.model.to(device)
+        self.model.eval()  # set to eval mode
+    
+
+    def _select_roi(self, frame, title="Select ROI", existing=None, allow_cancel=True):
+        """
+        frame: numpy HxWxC (BGR)
+        existing: optional (x1,y1,x2,y2) to show as a hint (we can't prefill selectROI,
+                  but we can draw it before selecting)
+        returns: (x1,y1,x2,y2) or None if cancelled
+        """
+        if frame is None or frame.size == 0:
+            raise ValueError("Empty frame provided to ROI selector.")
+
+        img = frame.copy()
+
+        # Draw existing ROI as a hint
+        if existing is not None:
+            x1, y1, x2, y2 = map(int, existing)
+            cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.putText(img, "Existing ROI (green) - draw new one if needed",
+                        (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+
+        # OpenCV selectROI expects a window; make it resizable
+        cv2.namedWindow(title, cv2.WINDOW_NORMAL)
+
+        # Returns (x, y, w, h). If user cancels, returns (0,0,0,0)
+        x, y, w, h = cv2.selectROI(title, img, showCrosshair=True, fromCenter=False)
+        cv2.destroyWindow(title)
+
+        if w == 0 or h == 0:
+            if allow_cancel:
+                return None
+            raise RuntimeError("ROI selection cancelled / invalid (w or h == 0).")
+
+        x1, y1, x2, y2 = int(x), int(y), int(x + w), int(y + h)
+        return (x1, y1, x2, y2)
+
+    def _save_rois(self):
+        if not self.roi_save_path:
+            return
+        os.makedirs(os.path.dirname(self.roi_save_path), exist_ok=True)
+        with open(self.roi_save_path, "w") as f:
+            json.dump(self.rois, f, indent=2)
+
+    def select_close_scoreboard_region(self, frame):
+        """
+        User draws ROI for close scoreboard.
+        Returns (x1,y1,x2,y2) or None if cancelled.
+        """
+        roi = self._select_roi(frame, title="Select CLOSE scoreboard ROI")
+        return roi
+
+    def select_far_scoreboard_region(self, frame):
+        """
+        User draws ROI for far scoreboard.
+        Returns (x1,y1,x2,y2) or None if cancelled.
+        """
+        roi = self._select_roi(frame, title="Select FAR scoreboard ROI")
+
+        return roi
+
+    def detect_changes(
+        self,
+        conf_threshold=0.90,
+        patience=3,
+        warmup=5,
+        stride=1,
+    ):
+        """
+        Detect scoreboard score changes using BOTH close and far ROIs independently,
+        and emit events containing old/new for BOTH (with confidence).
+
+        Event format:
+        {
+            "frame": int,
+            "time_sec": float,
+            "old": {
+            "close": {"score": int, "conf": float} | None,
+            "far":   {"score": int, "conf": float} | None
+            },
+            "new": {
+            "close": {"score": int, "conf": float} | None,
+            "far":   {"score": int, "conf": float} | None
+            }
+        }
+        """
+        device = self.device
+        transform = transforms.Compose([
+            transforms.Resize((96, 96)),
+            transforms.Grayscale(num_output_channels=3),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406],
+                                [0.229, 0.224, 0.225]),
+        ])
+        def is_valid_transition(old_s, new_s, allow_reset=False, max_score=13):
+            if old_s is None:
+                return True
+            if new_s == old_s:
+                return True
+            if new_s == old_s + 1 and new_s <= max_score:
+                return True
+            if allow_reset and old_s >= max_score - 1 and new_s == 0:
+                # optional: allow reset near the end of a game
+                return True
+            return False
+        
+        def clamp_roi(roi, W, H):
+            x1, y1, x2, y2 = map(int, roi)
+            x1 = max(0, min(x1, W - 1))
+            x2 = max(0, min(x2, W))
+            y1 = max(0, min(y1, H - 1))
+            y2 = max(0, min(y2, H))
+            if x2 <= x1 or y2 <= y1:
+                return None
+            return (x1, y1, x2, y2)
+
+        def crop_bgr(frame_bgr, roi):
+            if roi is None:
+                return None
+            H, W = frame_bgr.shape[:2]
+            roi = clamp_roi(roi, W, H)
+            if roi is None:
+                return None
+            x1, y1, x2, y2 = roi
+            patch = frame_bgr[y1:y2, x1:x2]
+            if patch.size == 0:
+                return None
+            return patch
+
+        def infer_patch(patch_bgr):
+            patch_rgb = cv2.cvtColor(patch_bgr, cv2.COLOR_BGR2RGB)
+            pil = Image.fromarray(patch_rgb)
+            x = transform(pil).unsqueeze(0).to(device)
+
+            logits = self.model(x)
+            probs = F.softmax(logits, dim=1)
+            conf, pred = probs.max(dim=1)
+            return int(pred.item()), float(conf.item())
+
+        frame_files = sorted(
+            [f for f in os.listdir(self.frames_folder) if f.lower().endswith((".jpg", ".jpeg", ".png"))]
+        )
+
+        # Per-frame logs (optional debug)
+        per_frame = []
+
+        # Stable + candidate states per ROI
+        # Each state is dict: {"score": int, "conf": float} or None
+        stable = {"close": None, "far": None}
+
+        candidate_score = {"close": None, "far": None}
+        candidate_best_conf = {"close": 0.0, "far": 0.0}
+        candidate_run = {"close": 0, "far": 0}
+        candidate_start_frame = {"close": None, "far": None}
+
+        accepted_count = {"close": 0, "far": 0}
+
+        events = []
+
+        bqar = tqdm(frame_files, desc="Processing frames for scoreboard change detection")
+        for idx, fname in enumerate(bqar):
+            if stride > 1 and (idx % stride != 0):
+                continue
+
+            frame_path = os.path.join(self.frames_folder, fname)
+            frame = self._read_image(frame_path)
+
+            frame_index = int(os.path.splitext(fname)[0])
+            time_sec = frame_index / float(self.video_fps)
+
+            # Infer both rois (if available)
+            preds = {"close": None, "far": None}  # each is {"score": s, "conf": c} or None
+
+            close_patch = crop_bgr(frame, self.close_scoreboard_region)
+            if close_patch is not None:
+                s, c = infer_patch(close_patch)
+                preds["close"] = {"score": s, "conf": c}
+
+            far_patch = crop_bgr(frame, self.far_scoreboard_region)
+            if far_patch is not None:
+                s, c = infer_patch(far_patch)
+                preds["far"] = {"score": s, "conf": c}
+
+            per_frame.append({
+                "frame": frame_index,
+                "time_sec": time_sec,
+                "close": preds["close"],
+                "far": preds["far"],
+            })
+
+            # Process each ROI independently
+            roi_confirmed_change = {"close": False, "far": False}
+            roi_new_state = {"close": None, "far": None}
+            roi_old_state = {"close": None, "far": None}
+
+            for roi_name in ["close", "far"]:
+                cur = preds[roi_name]
+                if cur is None:
+                    continue
+
+                # reject low confidence
+                if cur["conf"] < conf_threshold:
+                    continue
+
+                accepted_count[roi_name] += 1
+
+                # init stable if needed
+                if stable[roi_name] is None:
+                    stable[roi_name] = cur
+                    continue
+
+                # warmup: keep updating stable early
+                if accepted_count[roi_name] <= warmup:
+                    stable[roi_name] = cur
+                    # also reset candidate
+                    candidate_score[roi_name] = None
+                    candidate_best_conf[roi_name] = 0.0
+                    candidate_run[roi_name] = 0
+                    candidate_start_frame[roi_name] = None
+                    continue
+
+                # If same as stable, reset candidate
+                if cur["score"] == stable[roi_name]["score"]:
+                    stable[roi_name] = cur  # refresh conf
+                    candidate_score[roi_name] = None
+                    candidate_best_conf[roi_name] = 0.0
+                    candidate_run[roi_name] = 0
+                    candidate_start_frame[roi_name] = None
+                    continue
+
+
+                old_s = stable[roi_name]["score"]
+                # hard constraint: next score must be old+1 (or optional reset)
+                if not is_valid_transition(old_s, cur["score"], allow_reset=False, max_score=13):
+                    # ignore this prediction as impossible jump
+                    continue
+
+            
+                # Build/advance candidate
+                if candidate_score[roi_name] is None or cur["score"] != candidate_score[roi_name]:
+                    candidate_score[roi_name] = cur["score"]
+                    candidate_best_conf[roi_name] = cur["conf"]
+                    candidate_run[roi_name] = 1
+                    candidate_start_frame[roi_name] = frame_index
+                else:
+                    candidate_run[roi_name] += 1
+                    candidate_best_conf[roi_name] = max(candidate_best_conf[roi_name], cur["conf"])
+
+                # Confirm change
+                if candidate_run[roi_name] >= patience:
+                    roi_confirmed_change[roi_name] = True
+                    roi_old_state[roi_name] = stable[roi_name]
+                    roi_new_state[roi_name] = {"score": candidate_score[roi_name], "conf": candidate_best_conf[roi_name]}
+
+                    # update stable
+                    stable[roi_name] = roi_new_state[roi_name]
+
+                    # reset candidate
+                    candidate_score[roi_name] = None
+                    candidate_best_conf[roi_name] = 0.0
+                    candidate_run[roi_name] = 0
+                    candidate_start_frame[roi_name] = None
+
+            # Emit ONE combined event if either ROI changed on this frame
+            if roi_confirmed_change["close"] or roi_confirmed_change["far"]:
+                # old/new should include BOTH ROIs (even if only one changed)
+                old_combined = {
+                    "close": roi_old_state["close"] if roi_old_state["close"] is not None else stable["close"],
+                    "far": roi_old_state["far"] if roi_old_state["far"] is not None else stable["far"],
+                }
+                new_combined = {
+                    "close": roi_new_state["close"] if roi_new_state["close"] is not None else stable["close"],
+                    "far": roi_new_state["far"] if roi_new_state["far"] is not None else stable["far"],
+                }
+
+                events.append({
+                    "frame": frame_index,
+                    "time_sec": time_sec,
+                    "old": old_combined,
+                    "new": new_combined,
+                })
+
+        return events, per_frame
+
+
 
 
 def read_txt(file_path):

@@ -68,7 +68,7 @@ if __name__ == "__main__":
     from torchvision import transforms
     import matplotlib.pyplot as plt
 
-    with open("/home/august/github/TTA_Project/data/converted_scoreboard_data.json", "r") as f:
+    with open("/home/august/github/TTA_Project/data/train_videos/scoreboard_data/converted_scoreboard_data.json", "r") as f:
         data = json.load(f)
 
     # IMPORTANT: remove horizontal flip for digits; keep small rotations
@@ -79,7 +79,7 @@ if __name__ == "__main__":
         transforms.ToTensor(),  # converts PIL -> Tensor in [0,1]
     ])
 
-    dataset = ScoreboardDataset(data, "/home/august/github/TTA_Project/data", transform=transform)
+    dataset = ScoreboardDataset(data, "/home/august/github/TTA_Project/data/train_videos/scoreboard_data/frames", transform=transform)
     print(f"Dataset size: {len(dataset)}")
     # count scores
     score_counts = {}
@@ -89,6 +89,7 @@ if __name__ == "__main__":
     print("Score distribution:", score_counts)
 
     random_idx = torch.randint(0, len(dataset), (1,)).item()
+    print(f"Randomly selected index: {random_idx}")
     img, score = dataset.__getitem__(random_idx)
     print(f"Image shape: {tuple(img.shape)}, dtype: {img.dtype}, Score: {score}")
 

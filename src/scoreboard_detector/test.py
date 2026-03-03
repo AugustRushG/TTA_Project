@@ -3,11 +3,20 @@ from .model import ScoreClassifier
 import torch
 from PIL import Image
 from torchvision import transforms
+import os
+import numpy as np
 
 
 def main():
     # read an image and show the box for testing
-    image_path = '/home/august/github/TTA_Project/data/25WPF_JPN_M1_G_Shikai_JPN_v_Savinov_AUS_game1_frames/007913.jpg'
+    folder_path = '/home/august/github/TTA_Project/data/train_videos/scoreboard_data/frames/26WPF_AUS_M11_G_von_Einem_AUS_v_Yuen_King_Shing_HKG_game1_frames'
+    # read how many images are in the folder
+    num_images = len([name for name in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, name))])
+    print(f"Number of images in folder: {num_images}")
+    # select random image from the folder
+    random_image_index = np.random.randint(1, num_images + 1)
+    print(f"Selected image index: {random_image_index}")
+    image_path = os.path.join(folder_path, f"{random_image_index:06d}.jpg")
 
     img = cv2.imread(image_path)
     if img is None:
@@ -28,7 +37,7 @@ def main():
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-    model = ScoreClassifier(num_classes=12, backbone="resnet34")
+    model = ScoreClassifier(num_classes=14, backbone="resnet34")
     # load the trained model weights
     model.load_state_dict(torch.load("/home/august/github/TTA_Project/src/best_score_classifier.pt", map_location="cpu"))
 
@@ -44,8 +53,10 @@ def main():
 
     output = model(input_tensor)
     print(f"Model output logits: {output}")
+    output = torch.softmax(output, dim=1)  # convert logits to probabilities
+    print(f"Model output probabilities: {output}")
     predicted_score = output.argmax(dim=1).item()
-    print(f"Predicted score: {predicted_score}")
+    print(f"Predicted score: {predicted_score} with confidence {output.max().item():.4f}")
 
 
 if __name__ == "__main__":

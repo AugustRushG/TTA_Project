@@ -1,7 +1,7 @@
 import json
 import numpy as np
 import cv2
-
+import os
 
 
 def convert_box(box_data, video_width, video_height):
@@ -46,16 +46,24 @@ def get_box_coordinates(box_information):
 
 
 def main():
-    video_height = 720
-    video_width = 1280
 
-    pred_file = json.load(open('/home/august/github/TTA_Project/data/scoreboard_reco_.json', 'r'))
+    pred_file = json.load(open('/home/august/github/TTA_Project/data/train_videos/scoreboard_data/scoreboard_reco_.json', 'r'))
 
     converted_data = []
 
     for video in pred_file:
         video_name = video['video']
-        video_name = video_name.split('/')[-1].split('.')[0]
+        video_name = os.path.basename(video['video'])
+        # remove file extension
+        video_name = os.path.splitext(video_name)[0]
+        # replace spaces with underscores
+        video_name = video_name.replace(' ', '_')
+        if '25WPF' in video_name:
+            video_height = 720
+            video_width = 1280
+        else:
+            video_height = 1080
+            video_width = 1920
         print(f"Processing video: {video_name}")
 
         box_infor = video
@@ -82,7 +90,7 @@ def main():
         converted_data.extend(close_scoreboard_scores)
         converted_data.extend(far_scoreboard_scores)
     
-    with open('/home/august/github/TTA_Project/data/converted_scoreboard_data.json', 'w') as f:
+    with open('/home/august/github/TTA_Project/data/train_videos/scoreboard_data/converted_scoreboard_data.json', 'w') as f:
         json.dump(converted_data, f, indent=4)
         
 

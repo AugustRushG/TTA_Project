@@ -3,7 +3,7 @@ import torch.nn as nn
 from torchvision import models
 
 class ScoreClassifier(nn.Module):
-    def __init__(self, num_classes=100, backbone="resnet18", pretrained=True):
+    def __init__(self, num_classes=100, backbone="resnet18", pretrained=True, freeze_backbone=False):
         super().__init__()
 
         if backbone == "resnet18":
@@ -20,8 +20,18 @@ class ScoreClassifier(nn.Module):
             print(f"Using ResNet34 backbone, pretrained={pretrained}, feature dim={in_dim}")
         else:
             raise ValueError(f"Unknown backbone: {backbone}")
+        
+        if freeze_backbone:
+            for param in self.backbone.parameters():
+                param.requires_grad = False
+            print("Backbone frozen, only training head layers")
 
-        self.head = nn.Linear(in_dim, num_classes)
+        # multiple fully connected layers with dropout
+        self.head = nn.Sequential(
+            nn.Linear(in_dim, 256),
+            nn.ReLU(),
+            nn.Linear(256, num_classes)
+        )
 
     def forward(self, x):
         feat = self.backbone(x)      # [B, in_dim]
