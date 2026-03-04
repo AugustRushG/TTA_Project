@@ -57,7 +57,7 @@ def read_image(path):
 
 
 class ScoreboardChangeDetector:
-    def __init__(self, frames_folder, video_fps):
+    def __init__(self, frames_folder, video_fps, existing_close_coord=None, existing_far_coord=None):
         self.frames_folder = frames_folder
         self.video_fps = video_fps
 
@@ -72,10 +72,10 @@ class ScoreboardChangeDetector:
         sample_frame = read_image(sample_image_path)
 
         print("Please select the close scoreboard region in the displayed frame.")
-        self.close_scoreboard_region = select_roi(sample_frame, title="Select CLOSE scoreboard ROI")
+        self.close_scoreboard_region = select_roi(sample_frame, title="Select CLOSE scoreboard ROI", existing=existing_close_coord)
 
         print("Please select the far scoreboard region in the displayed frame.")
-        self.far_scoreboard_region = select_roi(sample_frame, title="Select FAR scoreboard ROI")
+        self.far_scoreboard_region = select_roi(sample_frame, title="Select FAR scoreboard ROI", existing=existing_far_coord)
 
     def detect_changes(
         self,
@@ -238,7 +238,7 @@ class ScoreboardChangeDetector:
 
 
 class ResNetScoreboardChangeDetector:
-    def __init__(self, frames_folder, video_fps, model_path, device):
+    def __init__(self, frames_folder, video_fps, model_path, device, existing_close_coord=None, existing_far_coord=None):
         self.frames_folder = frames_folder
         self.video_fps = video_fps
         self.device = device
@@ -252,9 +252,9 @@ class ResNetScoreboardChangeDetector:
         sample_image_path = os.path.join(frames_folder, f"{random_image_index:06d}.jpg")
         sample_frame = self._read_image(sample_image_path)
         print("Please select the close scoreboard region in the displayed frame.")
-        self.close_scoreboard_region = self.select_close_scoreboard_region(sample_frame)
+        self.close_scoreboard_region = self.select_close_scoreboard_region(sample_frame, existing_close_coord)
         print("Please select the far scoreboard region in the displayed frame.")
-        self.far_scoreboard_region = self.select_far_scoreboard_region(sample_frame)
+        self.far_scoreboard_region = self.select_far_scoreboard_region(sample_frame, existing_far_coord)
 
     def _read_image(self, path):
         # read image use cv2 or PIL
@@ -311,21 +311,27 @@ class ResNetScoreboardChangeDetector:
         with open(self.roi_save_path, "w") as f:
             json.dump(self.rois, f, indent=2)
 
-    def select_close_scoreboard_region(self, frame):
+    def select_close_scoreboard_region(self, frame, existing=None):
         """
         User draws ROI for close scoreboard.
         Returns (x1,y1,x2,y2) or None if cancelled.
         """
-        roi = self._select_roi(frame, title="Select CLOSE scoreboard ROI")
+        if existing == None:
+            roi = self._select_roi(frame, title="Select CLOSE scoreboard ROI")
+        else:
+            roi = existing
+       
         return roi
 
-    def select_far_scoreboard_region(self, frame):
+    def select_far_scoreboard_region(self, frame, existing=None):
         """
         User draws ROI for far scoreboard.
         Returns (x1,y1,x2,y2) or None if cancelled.
         """
-        roi = self._select_roi(frame, title="Select FAR scoreboard ROI")
-
+        if existing == None:
+            roi = self._select_roi(frame, title="Select FAR scoreboard ROI")
+        else:
+            roi = existing
         return roi
 
     def detect_changes(
