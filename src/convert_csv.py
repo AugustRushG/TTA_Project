@@ -5,14 +5,14 @@ import csv
 # =========================================================
 # USER CONFIG
 # =========================================================
-JSON_PATH = "final_rally_summary_26WPF_AUS_W10_G_Yang_Qian_AUS v_Tian_TPE_game1.json"
+JSON_PATH = "final_rally_summary_26WPF_AUS_W10_G_Yang_Qian_AUS v_Tian_TPE_game2.json"
 CSV_PATH = "output_rally_events.csv"
 
-TIMELINE_VALUE = "Game 1"
-GAME_VALUE = "26WPF_AUS_M11"
+TIMELINE_VALUE = "Game 2"
+GAME_VALUE = "26WPF_AUS_W10"
 
 PLAYER_CLOSE_NAME = "yang"
-PLAYER_FAR_NAME = "alexandre"
+PLAYER_FAR_NAME = "tian"
 
 
 # =========================================================

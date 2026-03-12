@@ -1,8 +1,30 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-import matplotlib.cm as cm
 import numpy as np
 import os
+
+
+def iter_bounce_locations(events, loc_key):
+    for event in events:
+        if not isinstance(event, dict):
+            continue
+
+        candidates = [event]
+        bounces = event.get("bounces", [])
+        if isinstance(bounces, list):
+            for bounce in bounces:
+                if isinstance(bounce, dict):
+                    candidates.append(bounce)
+
+        for item in candidates:
+            loc = item.get(loc_key)
+            if not isinstance(loc, dict):
+                continue
+            if "x" not in loc or "y" not in loc:
+                continue
+
+            frame_id = item.get("frame_index", item.get("frame_id", None))
+            yield frame_id, float(loc["x"]), float(loc["y"])
 
 def safe_show(fig):
     if os.environ.get("DISPLAY"):
@@ -11,10 +33,12 @@ def safe_show(fig):
 
 
 def draw_bounces_on_split_table(grouped_rallies, table_size=(1525, 2740), save_path=None,
-                                loc_key="mapped_ball_location",  # or "draw_ball_location"
-                                mirror_far_x=True):
+                                loc_key="mapped_ball_location",  # or "draw_ball_location" / "draw_ball_location_split"
+                                mirror_far_x=True,
+                                split_size=(153, 137)):
     """
-    Draw bounces on a vertically split table view (far/close halves), both with origin at bottom-left.
+    Draw bounces on a vertically split table view (far/close halves), using the original split
+    coordinate convention.
 
     Args:
         grouped_rallies (list): each item: {"rally_id": ..., "events": [event, ...]}
@@ -28,18 +52,19 @@ def draw_bounces_on_split_table(grouped_rallies, table_size=(1525, 2740), save_p
     """
     W, H = table_size
     half_H = H / 2.0
+    split_w, split_l = split_size
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 6), constrained_layout=True)
 
     # setup axes
-    titles = ["Far Table Half (origin bottom-left)", "Close Table Half (origin bottom-left)"]
+    titles = ["Far Table Half", "Close Table Half"]
     for ax, title in zip(axes, titles):
         ax.set_xlim(0, W)
         ax.set_ylim(0, half_H)
         ax.set_aspect('equal')
         ax.set_title(title)
-        ax.set_xlabel("X (pixels)")
-        ax.set_ylabel("Y (pixels)")
+        ax.set_xlabel("X")
+        ax.set_ylabel("Y")
 
         # outline
         ax.add_patch(patches.Rectangle((0, 0), W, half_H, fill=False, linewidth=2, edgecolor='black'))
@@ -49,43 +74,54 @@ def draw_bounces_on_split_table(grouped_rallies, table_size=(1525, 2740), save_p
 
     # color per rally
     n_rallies = len(grouped_rallies)
-    cmap = cm.get_cmap("tab20", max(n_rallies, 1))
+    cmap = plt.get_cmap("tab20", max(n_rallies, 1))
 
     for rally_idx, rally in enumerate(grouped_rallies):
         rally_color = cmap(rally_idx)
         events = rally.get("events", [])
 
         for event in events:
-            loc = event.get(loc_key, None)
-            if not loc:
+            if not isinstance(event, dict):
                 continue
 
-            frame_id = event.get("frame_index", event.get("frame_id", None))
-            x = float(loc["x"])
-            y = float(loc["y"])
+            candidates = [event]
+            bounces = event.get("bounces", [])
+            if isinstance(bounces, list):
+                for bounce in bounces:
+                    if isinstance(bounce, dict):
+                        candidates.append(bounce)
 
-            # Your mapped coords are in FULL TABLE space with origin at TOP-LEFT:
-            # Convert to bottom-left full-table first:
-            y_bl_full = H - y   # bottom-left full-table y
+            for item in candidates:
+                loc = item.get(loc_key)
+                if not isinstance(loc, dict):
+                    continue
+                if "x" not in loc or "y" not in loc:
+                    continue
 
-            # Decide far vs close using original y in top-left space:
-            # far half is y in [0, H/2), close half is y in [H/2, H]
-            if y < half_H:
-                side = 0  # far
-                # map to half-table bottom-left: far occupies top region in TL coords -> upper half
-                # In bottom-left full coords, upper half is y in [H/2, H]
-                y_half = y_bl_full - half_H  # now in [0, half_H]
-                x_half = (W - x) if mirror_far_x else x
-            else:
-                side = 1  # close
-                # bottom region in TL coords -> lower half
-                y_half = y_bl_full  # already in [0, half_H]
-                x_half = x
+                frame_id = item.get("frame_index", item.get("frame_id", None))
 
-            ax = axes[side]
-            ax.plot(x_half, y_half, marker='o', linestyle='', color=rally_color, markersize=5)
-            if frame_id is not None:
-                ax.text(x_half + 5, y_half, f"{frame_id}", fontsize=6, color=rally_color)
+                if loc_key.endswith("_split") and isinstance(loc.get("table_half"), str):
+                    side = 0 if loc.get("table_half") == "far" else 1
+                    x_half = float(loc["x"])
+                    y_half = float(loc["y"])
+                else:
+                    # Convert FULL table coords (top-left origin) -> original split convention
+                    x = float(loc["x"])
+                    y = float(loc["y"])
+
+                    if y < half_H:
+                        side = 0  # far
+                        x_half = (W - x) if mirror_far_x else x
+                        y_half = y
+                    else:
+                        side = 1  # close
+                        x_half = x
+                        y_half = H - y
+
+                ax = axes[side]
+                ax.plot(x_half, y_half, marker='o', linestyle='', color=rally_color, markersize=5)
+                if frame_id is not None:
+                    ax.text(x_half + 0.5, y_half, f"{frame_id}", fontsize=6, color=rally_color)
 
     if save_path:
         fig.savefig(save_path, dpi=150)
@@ -117,7 +153,7 @@ def draw_bounces_on_table(grouped_rallies, table_size=(1525, 2740), save_path=No
 
     # Generate distinct colors for rallies
     num_rallies = len(grouped_rallies)
-    cmap = cm.get_cmap('tab20', num_rallies)  # good categorical colormap
+    cmap = plt.get_cmap('tab20', num_rallies)  # good categorical colormap
 
     for rally_idx, rally in enumerate(grouped_rallies):
 
@@ -125,13 +161,7 @@ def draw_bounces_on_table(grouped_rallies, table_size=(1525, 2740), save_path=No
 
         events = rally['events']
 
-        for event in events:
-            if "mapped_ball_location" not in event:
-                continue
-
-            frame_id = event['frame_index']
-            x = event["mapped_ball_location"]["x"]
-            y = event["mapped_ball_location"]["y"]
+        for frame_id, x, y in iter_bounce_locations(events, "mapped_ball_location"):
 
             ax.plot(x, y,
                     marker='o',
