@@ -1,13 +1,17 @@
+import copy
 import json
 import os
 from datetime import datetime
-from typing import Any, Dict, List, Tuple
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
 import cv2
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
 from matplotlib.widgets import RectangleSelector
+
+from json_to_xml import write_xml_data
 
 
 def load_json(path: str) -> Any:
@@ -448,6 +452,93 @@ def convert_grouped_to_output(
         close_player=close_player,
         far_player=far_player,
     )
+
+
+def build_final_output_paths(game_name: str, output_dir: str = ".") -> Dict[str, str]:
+    base_dir = Path(output_dir)
+    return {
+        "summary_path": str(base_dir / f"final_rally_summary_{game_name}.json"),
+        "xml_ready_json_path": str(base_dir / f"xml_ready_{game_name}.json"),
+        "xml_path": str(base_dir / f"xml_ready_{game_name}.xml"),
+    }
+
+
+def remove_files(paths: Optional[List[str]]) -> List[str]:
+    removed: List[str] = []
+    if not paths:
+        return removed
+
+    for path in paths:
+        if not path:
+            continue
+        if os.path.exists(path):
+            os.remove(path)
+            removed.append(path)
+
+    return removed
+
+
+def export_final_artifacts(
+    grouped_rallies: List[Dict[str, Any]],
+    game_name: str,
+    game_label: str,
+    close_player: str,
+    far_player: str,
+    fps: float = 30.0,
+    output_dir: str = ".",
+    summary_path: Optional[str] = None,
+    xml_ready_json_path: Optional[str] = None,
+    xml_path: Optional[str] = None,
+    nest_bounces_under_hits: bool = True,
+    include_bounces_in_output: bool = True,
+    table_w: float = 1525.0,
+    table_h: float = 2740.0,
+    split_w: float = 153.0,
+    split_l: float = 137.0,
+    cleanup_paths: Optional[List[str]] = None,
+) -> Dict[str, Any]:
+    paths = build_final_output_paths(game_name=game_name, output_dir=output_dir)
+    summary_path = summary_path or paths["summary_path"]
+    xml_ready_json_path = xml_ready_json_path or paths["xml_ready_json_path"]
+    xml_path = xml_path or paths["xml_path"]
+
+    export_source = copy.deepcopy(grouped_rallies)
+    if nest_bounces_under_hits:
+        export_source = reorganize_rallies_with_bounces_under_hits(export_source)
+
+    enriched_grouped, updated_bounces = update_split_draw_coordinates(
+        grouped_rallies=export_source,
+        table_w=table_w,
+        table_h=table_h,
+        split_w=split_w,
+        split_l=split_l,
+    )
+
+    # Persist summary after bounce nesting and split-coordinate enrichment
+    # so final_rally_summary contains grouped bounces and x2/y2.
+    save_json(summary_path, enriched_grouped)
+
+    output_payload = convert_grouped_to_output(
+        grouped_rallies=enriched_grouped,
+        fps=fps,
+        game=game_label,
+        close_player=close_player,
+        far_player=far_player,
+        include_bounces=include_bounces_in_output,
+    )
+
+    save_json(xml_ready_json_path, output_payload)
+    write_xml_data(output_payload, xml_path)
+    removed_files = remove_files(cleanup_paths)
+
+    return {
+        "summary_path": summary_path,
+        "xml_ready_json_path": xml_ready_json_path,
+        "xml_path": xml_path,
+        "updated_bounces": updated_bounces,
+        "instance_count": len(output_payload["file"]["ALL_INSTANCES"]["instance"]),
+        "removed_files": removed_files,
+    }
 
 
 def save_new_output_file(payload: Dict[str, Any], prefix: str = "grouped_to_output_game2_from_enriched") -> str:

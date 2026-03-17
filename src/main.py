@@ -8,16 +8,20 @@ from table_detector import TableDetector
 from scoreboard_detector import ScoreboardChangeDetector, ResNetScoreboardChangeDetector
 from utils.visualization import draw_bounces_on_split_table, draw_bounces_on_table
 from analysis import AnalysisUtils
+from convert_grouped_rallies_to_output import convert_grouped_rallies
+from json_to_xml import write_xml_data
 import torch
 import torchvision.transforms as transforms
 import json
 import argparse
 import random
+import copy
 from tqdm import tqdm
 from PIL import Image
 import numpy as np
 import matplotlib
 matplotlib.use("TkAgg")  # or Qt5Agg
+from notebook_helpers import reorganize_rallies_with_bounces_under_hits, update_split_draw_coordinates
 
 
 
@@ -42,6 +46,13 @@ def parse_args():
     parser.add_argument('--window_size', type=int, default=100, help='Size of the sliding window for frame processing.')
     parser.add_argument('--stride', type=int, default=50, help='Stride for the sliding window.')
     parser.add_argument('--device', type=str, default='cuda', choices=['cpu', 'cuda', 'mps'], help='Device to run the models on.')
+    parser.add_argument('--summary-output', type=str, help='Path to the final rally summary JSON file.')
+    parser.add_argument('--json-output', type=str, help='Path to the XML-ready JSON file.')
+    parser.add_argument('--xml-output', type=str, help='Path to the final XML file.')
+    parser.add_argument('--game-label', type=str, default='Game 1', help='Game label text for XML-ready output.')
+    parser.add_argument('--close-player', type=str, default='Close Player', help='Close side player display name.')
+    parser.add_argument('--far-player', type=str, default='Far Player', help='Far side player display name.')
+    parser.add_argument('--include-bounces', action='store_true', help='Include nested bounce entries in XML-ready output.')
     return parser.parse_args()
 
 
@@ -71,19 +82,14 @@ def main(args):
     else:
         print("Using CPU")
  
-    score_timeline_path = game_name + "_score_timeline.json"
-    changes = json.load(open(score_timeline_path, "r")) if os.path.exists(score_timeline_path) else None
-    if changes is None:
-        scoreboard_detector = ResNetScoreboardChangeDetector(frames_folder=frame_dir, video_fps=fps_rate, 
-                                                        model_path="/home/august/github/TTA_Project/src/best_score_classifier.pt", 
-                                                        device=args.device)
-        changes, _ = scoreboard_detector.detect_changes(conf_threshold=0.9)
-        print(f"In total {len(changes)} scoreboard changes detected at frames:")
-        final_score_close = changes[-1]['new']['close']['score']
-        final_score_far = changes[-1]['new']['far']['score']
-        print(f"Final score of the game - Close Table: {final_score_close}, Far Table: {final_score_far}")
-        with open(score_timeline_path, "w") as f:
-            json.dump(changes, f, indent=4)
+    scoreboard_detector = ResNetScoreboardChangeDetector(frames_folder=frame_dir, video_fps=fps_rate, 
+                                                    model_path="/home/august/github/TTA_Project/src/best_score_classifier.pt", 
+                                                    device=args.device)
+    changes, _ = scoreboard_detector.detect_changes(conf_threshold=0.9)
+    print(f"In total {len(changes)} scoreboard changes detected at frames:")
+    final_score_close = changes[-1]['new']['close']['score']
+    final_score_far = changes[-1]['new']['far']['score']
+    print(f"Final score of the game - Close Table: {final_score_close}, Far Table: {final_score_far}")
 
     dataset = FrameClipDataset(frame_dir, window_size=args.window_size, stride=args.stride, event_transform=event_transform, ball_transform=ball_transform)
     video_loader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False, num_workers=4)
@@ -119,8 +125,8 @@ def main(args):
     pred_events = {}
     threshold = 0.05  # threshold for event detection scores, can be adjusted
 
-    grouped_rallies = json.load(open(f'grouped_rallies_{game_name}.json', 'r')) if os.path.exists(f'grouped_rallies_{game_name}.json') else None
-    
+    grouped_rallies = None
+
     if grouped_rallies is None:
         # generating event predictions
         for data in tqdm(video_loader, desc="Processing clips"):
@@ -131,7 +137,6 @@ def main(args):
             # Process clips with event detection model
             pred_results, pred_scores = event_model.predict(clips, device=args.device)  # pred_results: [B, T], pred_scores: [B, T, C]
 
-            # print(f"Clip shape: {clips.shape}, Start index: {start_idx}, End index: {end_idx}")
             pred_results = pred_results[0] # batch = 1, so we can take the first element
             pred_scores = pred_scores[0]  # batch = 1, so we can take the first element
 
@@ -140,19 +145,15 @@ def main(args):
                 current_time = current_id / fps_rate
                 current_time_in_mins = f"{int(current_time // 60):02d}:{int(current_time % 60):02d}"
 
-                # filter: set scores < threshold to 0
                 filtered_scores = pred_score_classes * (pred_score_classes >= threshold)
 
                 filtered_scores[0] = -1
-                # find the highest class & score after filtering
                 best_class = filtered_scores.argmax()
                 best_score = filtered_scores[best_class]
 
-                # skip if the highest remaining class is 0 (empty) or score is 0
                 if best_score == 0:
                     continue
 
-                # add to dict
                 pred_events[current_id] = {
                     'time': current_time,
                     'time_in_mins': current_time_in_mins,
@@ -163,10 +164,7 @@ def main(args):
         event_windows = {'close_table_serve': 20, 'far_table_serve': 20}
         pred_events = nms_on_dict(pred_events, event_windows=event_windows)  # Apply NMS to the predictions
 
-        # group events into rallies based on the closest serve event
         grouped_rallies = filter_based_on_score_changes(pred_events, changes)
-        with open(f'grouped_rallies_{game_name}.json', 'w') as f:
-            json.dump(grouped_rallies, f, indent=4)
 
     frame_indices = [
         dataset.num_frames // 2 - random.randint(0, 100),
@@ -271,9 +269,40 @@ def main(args):
                             'y': float(mapped_y)
                         }
 
-    # generate the final rally summary based on the events and ball locations
-    with open(f'final_rally_summary_{game_name}.json', 'w') as f:
-        json.dump(grouped_rallies, f, indent=4)
+    summary_output_path = args.summary_output or f'final_rally_summary_{game_name}.json'
+    json_output_path = args.json_output or f'xml_ready_{game_name}.json'
+    xml_output_path = args.xml_output or f'xml_ready_{game_name}.xml'
+
+    summary_grouped = copy.deepcopy(grouped_rallies)
+    summary_grouped = reorganize_rallies_with_bounces_under_hits(summary_grouped)
+    summary_grouped, _ = update_split_draw_coordinates(
+        grouped_rallies=summary_grouped,
+        table_w=1525.0,
+        table_h=2740.0,
+        split_w=153.0,
+        split_l=137.0,
+    )
+
+    with open(summary_output_path, 'w', encoding='utf-8') as f:
+        json.dump(summary_grouped, f, indent=4, ensure_ascii=False)
+
+    output_payload = convert_grouped_rallies(
+        grouped_rallies=grouped_rallies,
+        fps=fps_rate,
+        game=args.game_label,
+        close_player=args.close_player,
+        far_player=args.far_player,
+        include_bounces=args.include_bounces,
+    )
+
+    with open(json_output_path, 'w', encoding='utf-8') as f:
+        json.dump(output_payload, f, indent=4, ensure_ascii=False)
+
+    write_xml_data(output_payload, xml_output_path)
+
+    print(f"Saved final rally summary: {summary_output_path}")
+    print(f"Saved XML-ready JSON: {json_output_path}")
+    print(f"Saved XML: {xml_output_path}")
 
 
     return grouped_rallies
@@ -380,12 +409,7 @@ def filter_based_on_score_changes(pred_events, scoreboard_changes):
             
 if __name__ == "__main__":
     args = parse_args()
-    pred_events = main(args)
-    # read json file
-    with open(f'final_rally_summary_{os.path.basename(args.video_path).split(".")[0]}.json', 'r') as f:
-        grouped_rallies = json.load(f)
-    draw_bounces_on_table(grouped_rallies, save_path='bounces_on_table.jpg')
-    draw_bounces_on_split_table(grouped_rallies, save_path='bounces_on_table_split.png')
+    main(args)
     # # visualize the result
     # AnalysisUtils.count_bounces(pred_events)
     # AnalysisUtils.count_serves(pred_events)
