@@ -1,7 +1,7 @@
 import copy
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -316,6 +316,9 @@ def _rally_start_end(rally: Dict[str, Any]) -> Dict[str, str]:
     return {"start": f"{start:.2f}", "end": f"{end:.2f}"}
 
 
+
+
+
 def _build_common_labels(rally: Dict[str, Any], point_number: int, game_label: str, close_player: str, far_player: str) -> List[Dict[str, str]]:
     old_score = rally.get("old_score", {}) or {}
     point_won = _infer_point_won(rally, close_player, far_player)
@@ -330,6 +333,29 @@ def _build_common_labels(rally: Dict[str, Any], point_number: int, game_label: s
         {"group": "Point Won", "text": point_won},
     ]
 
+
+
+def _build_single_shot_label(event, rally_shot_number):
+    shot_name = _event_to_shot(event.get("event_type", ""))
+    xy = _find_xy_from_event_or_bounce(event)
+
+    label = ([
+        {"group": "Rally Shot Number", "text": str(rally_shot_number)},
+        {"group": "Rally Shot", "text": shot_name},
+        {"group": "Rally Stroke", "text": shot_name},
+        {"group": "x2", "text": xy["x2"]},
+        {"group": "y2", "text": xy["y2"]},
+        {"group": "Error Type", "text": "NA"},
+        {"group": "Error", "text": "NA"},
+        {"group": "Error Area", "text": "NA"},
+    ])
+    
+    return label
+
+
+    
+
+    
 
 def _build_rally_shot_labels(rally: Dict[str, Any]) -> List[Dict[str, str]]:
     labels: List[Dict[str, str]] = []
@@ -367,6 +393,12 @@ def _build_rally_shot_labels(rally: Dict[str, Any]) -> List[Dict[str, str]]:
 
     return labels
 
+
+
+def _add_seconds(time_val: float, seconds: int = 1) -> float:
+    whole = int(time_val) + seconds
+    centis = time_val - int(time_val)
+    return round(whole + centis, 2)
 
 def convert_enriched_to_output(
     enriched_data: List[Dict[str, Any]],
@@ -434,6 +466,58 @@ def convert_enriched_to_output(
             ],
         })
         instance_id += 1
+
+
+        # --- Per-shot instances for a single rally
+        rally_shot_number = 1
+        for event in events:
+            event_type = str(event.get("event_type", ""))
+            if not event_type:
+                continue
+            
+            # Keep shot contacts, including serve.
+            if not (
+                event_type.endswith("serve")
+                or event_type.endswith("forehand")
+                or event_type.endswith("backhand")
+            ):
+                continue
+
+            player = _event_to_player(event_type, close_player, far_player)
+            if player == "NA":
+                continue
+
+            # Get shot-level timing if available, else fall back to rally times.
+            raw_time = event.get("time")
+            if isinstance(raw_time, (int, float)):
+                shot_start_num = float(raw_time)
+            else:
+                shot_start_num = float(times["start"])
+
+            shot_end_num = _add_seconds(shot_start_num)
+            shot_start = f"{shot_start_num:.2f}"
+            shot_end = f"{shot_end_num:.2f}"
+
+            
+
+            shot_code = f"{player} Shot"
+
+            # Build shot-specific labels (same structure as serve but for this event).
+            shot_instance_labels = _build_common_labels(rally, point_number, game_label, close_player, far_player)
+
+            
+            shot_instance_labels += _build_single_shot_label(event, rally_shot_number)
+           
+            instances.append({
+                "ID": str(instance_id),
+                "start": shot_start,
+                "end":   shot_end,
+                "code":  shot_code,
+                "label": shot_instance_labels,
+            })
+
+            rally_shot_number += 1
+            instance_id += 1
 
     return {"file": {"ALL_INSTANCES": {"instance": instances}}}
 
@@ -726,6 +810,13 @@ def reorganize_rallies_with_bounces_under_hits(grouped_rallies):
                 linear.extend(_linearize_events(nested_bounces))
         return linear
 
+    def _bounce_matches_previous(bounce_event_type, previous_event_type):
+        if previous_event_type.startswith("far"):
+            return bounce_event_type.startswith("close")
+        elif previous_event_type.startswith("close"):
+            return bounce_event_type.startswith("far")
+        return True  # if previous doesn't start with far/close, no restriction
+
     for rally in grouped_rallies:
         events = rally["events"]
         linear_events = _linearize_events(events)
@@ -737,6 +828,9 @@ def reorganize_rallies_with_bounces_under_hits(grouped_rallies):
 
             if "bounce" in event_type:
                 if previous_non_bounce_event is not None:
+                    previous_event_type = str(previous_non_bounce_event.get("event_type", ""))
+                    if not _bounce_matches_previous(event_type, previous_event_type):
+                        continue  # drop the bounce if it doesn't match
                     if "bounces" not in previous_non_bounce_event or not isinstance(previous_non_bounce_event.get("bounces"), list):
                         previous_non_bounce_event["bounces"] = []
                     previous_non_bounce_event["bounces"].append(event)

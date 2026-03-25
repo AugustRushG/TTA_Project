@@ -200,3 +200,4 @@ cython_debug/
 *.pth
 *.pt
 /src/*.json
+/src/outputs
