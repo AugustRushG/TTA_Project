@@ -1,0 +1,1339 @@
+Log file created at Tue Apr  7 11:31:33 2026
+Logs and model checkpoints will be saved to: ../logs/ASTRM800_SL_TTAV3(1.0)_FP16_8GPU_50epochs_lr1e-3_bs10_seed42
+Running on 8 GPU(s)
+Seed: 42
+CPUs available for DataLoader workers: 40
+num workers for DataLoader: 4
+Random seed set to: 42
+Number of classes: 8
+Training dataset size: 5000 clips
+Validation dataset size: 1250 clips
+Effective total batch size: 48
+Model initialized with configuration: {'base_model': 'regnety_008', 'temporal_shift_mode': 'gsm', 'num_frames_clip': 100, 'num_classes': 9, 'cbam': False, 'gru_layers': 1}
+>>>>>>>>>>>>>>>Setup complete. Starting training...<<<<<<<<<<<<<
+--- Epoch 0/50 ---
+Training Loss: 0.4852
+Learning Rate after epoch 0: 0.0003396406445520643
+--- Epoch 1/50 ---
+Training Loss: 0.3054
+Learning Rate after epoch 1: 0.0006670950158919884
+--- Epoch 2/50 ---
+Training Loss: 0.2403
+Learning Rate after epoch 2: 0.0009901723163231828
+--- Epoch 3/50 ---
+Training Loss: 0.2296
+Learning Rate after epoch 3: 0.0009825027998069061
+--- Epoch 4/50 ---
+Training Loss: 0.1943
+Learning Rate after epoch 4: 0.000972700845756105
+--- Epoch 5/50 ---
+Training Loss: 0.1887
+Learning Rate after epoch 5: 0.0009608102320770365
+--- Epoch 6/50 ---
+Training Loss: 0.1845
+Learning Rate after epoch 6: 0.0009468840651368781
+--- Epoch 7/50 ---
+Training Loss: 0.1682
+Learning Rate after epoch 7: 0.0009309845425778132
+--- Epoch 8/50 ---
+Training Loss: 0.1715
+Learning Rate after epoch 8: 0.0009131826755272573
+--- Epoch 9/50 ---
+Training Loss: 0.1650
+Learning Rate after epoch 9: 0.0008935579714449282
+--- Epoch 10/50 ---
+Training Loss: 0.1575
+Learning Rate after epoch 10: 0.0008721980790232272
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.59
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   50.03   487   517   456
+close_table_backhand  37.07    43    99    47
+close_table_bounce    53.88   125   110   104
+close_table_forehand  58.64    56    50    29
+close_table_serve     43.55    27    37    33
+far_table_backhand    36.24    27    33    62
+far_table_bounce      54.79   143   136   100
+far_table_forehand    45.33    34    32    50
+far_table_serve       33.04    19    33    44
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  25.27  47.12  54.86  56.40
+close_table_bounce    52.45  70.17  72.21  72.95
+close_table_forehand  56.51  69.93  71.87  71.97
+close_table_serve     37.32  55.02  55.21  55.35
+far_table_backhand    33.71  49.50  54.74  56.74
+far_table_bounce      54.80  68.81  71.73  72.02
+far_table_forehand    39.84  54.79  55.91  59.10
+far_table_serve       31.12  44.43  50.91  53.83
+mAP                   41.38  57.47  60.93  62.30
+Avg mAP (across tolerances): 55.52
+Best model saved with mAP: 60.2324
+--- Epoch 11/50 ---
+Training Loss: 0.1676
+Learning Rate after epoch 11: 0.0008491983967269019
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.46
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   50.61   457   406   486
+close_table_backhand  37.36    34    58    56
+close_table_bounce    49.12   112   115   117
+close_table_forehand  57.95    51    40    34
+close_table_serve     47.62    25    20    35
+far_table_backhand    36.59    30    45    59
+far_table_bounce      58.55   137    88   106
+far_table_forehand    50.32    39    32    45
+far_table_serve       28.00    14    23    49
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  33.35  52.27  59.95  64.20
+close_table_bounce    46.35  74.08  75.75  76.27
+close_table_forehand  60.93  75.56  77.82  77.82
+close_table_serve     42.29  63.91  64.48  64.87
+far_table_backhand    33.78  53.09  54.73  57.82
+far_table_bounce      55.06  70.77  72.94  75.15
+far_table_forehand    47.67  54.34  57.11  58.79
+far_table_serve       31.82  54.92  60.19  63.21
+mAP                   43.91  62.37  65.37  67.27
+Avg mAP (across tolerances): 59.73
+Best model saved with mAP: 65.0016
+--- Epoch 12/50 ---
+Training Loss: 0.1417
+Learning Rate after epoch 12: 0.0008246616467203437
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.54
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   48.79   445   436   498
+close_table_backhand  24.72    22    66    68
+close_table_bounce    48.54   100    83   129
+close_table_forehand  56.32    49    40    36
+close_table_serve     43.64    24    26    36
+far_table_backhand    40.00    42    79    47
+far_table_bounce      60.90   155   111    88
+far_table_forehand    41.33    31    35    53
+far_table_serve        7.41     3    15    60
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  17.65  43.18  50.43  55.97
+close_table_bounce    47.45  66.05  69.20  70.14
+close_table_forehand  61.08  69.52  71.38  72.14
+close_table_serve     35.38  58.15  64.24  64.78
+far_table_backhand    34.16  48.85  53.75  56.50
+far_table_bounce      57.10  71.96  73.78  74.49
+far_table_forehand    38.33  48.68  50.67  52.21
+far_table_serve       26.27  42.16  54.46  63.00
+mAP                   39.68  56.07  60.99  63.65
+Avg mAP (across tolerances): 55.10
+--- Epoch 13/50 ---
+Training Loss: 0.1525
+Learning Rate after epoch 13: 0.0007986974160854715
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.51
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   51.53   489   466   454
+close_table_backhand  30.93    30    74    60
+close_table_bounce    51.79   123   123   106
+close_table_forehand  55.49    48    40    37
+close_table_serve     44.83    26    30    34
+far_table_backhand    40.00    34    47    55
+far_table_bounce      62.16   147    83    96
+far_table_forehand    44.85    37    44    47
+far_table_serve       37.88    25    44    38
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  25.14  46.16  55.14  61.12
+close_table_bounce    51.62  71.74  74.44  75.21
+close_table_forehand  55.97  75.60  76.67  76.73
+close_table_serve     38.40  58.58  59.39  59.71
+far_table_backhand    35.33  51.19  53.60  55.16
+far_table_bounce      61.00  75.72  77.50  78.17
+far_table_forehand    47.61  55.79  56.67  57.25
+far_table_serve       27.17  43.71  53.44  60.53
+mAP                   42.78  59.81  63.36  65.49
+Avg mAP (across tolerances): 57.86
+--- Epoch 14/50 ---
+Training Loss: 0.1617
+Learning Rate after epoch 14: 0.0007714216673792118
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.41
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   50.55   433   337   510
+close_table_backhand  18.18    12    30    78
+close_table_bounce    52.82   117    97   112
+close_table_forehand  54.64    50    48    35
+close_table_serve     33.03    18    31    42
+far_table_backhand    42.62    39    55    50
+far_table_bounce      59.96   137    77   106
+far_table_forehand    44.29    31    25    53
+far_table_serve        3.03     1     2    62
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  23.67  45.30  55.68  60.68
+close_table_bounce    50.16  67.56  71.66  72.70
+close_table_forehand  56.11  69.98  73.00  73.93
+close_table_serve     28.66  52.40  56.69  57.04
+far_table_backhand    33.95  51.25  53.33  55.57
+far_table_bounce      56.60  74.90  76.38  77.28
+far_table_forehand    39.07  57.58  58.70  60.72
+far_table_serve       21.40  44.74  51.27  55.77
+mAP                   38.70  57.96  62.09  64.21
+Avg mAP (across tolerances): 55.74
+--- Epoch 15/50 ---
+Training Loss: 0.1402
+Learning Rate after epoch 15: 0.000742956220716577
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.48
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   54.56   541   499   402
+close_table_backhand  28.42    26    67    64
+close_table_bounce    57.43   141   121    88
+close_table_forehand  61.54    56    41    29
+close_table_serve     50.82    31    31    29
+far_table_backhand    43.05    48    86    41
+far_table_bounce      63.26   161   105    82
+far_table_forehand    45.93    31    20    53
+far_table_serve       42.03    29    46    34
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  21.33  47.46  57.99  63.99
+close_table_bounce    58.78  74.96  76.68  77.05
+close_table_forehand  62.84  76.02  77.01  77.01
+close_table_serve     47.95  72.21  74.20  74.73
+far_table_backhand    35.83  52.71  56.57  58.40
+far_table_bounce      64.04  78.45  78.86  79.16
+far_table_forehand    44.07  56.22  58.25  60.45
+far_table_serve       35.32  55.67  59.98  64.20
+mAP                   46.27  64.21  67.44  69.37
+Avg mAP (across tolerances): 61.83
+Best model saved with mAP: 67.0101
+--- Epoch 16/50 ---
+Training Loss: 0.1344
+Learning Rate after epoch 16: 0.0007134282096924536
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.40
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   53.52   490   398   453
+close_table_backhand  30.95    26    52    64
+close_table_bounce    55.67   130   108    99
+close_table_forehand  63.44    59    42    26
+close_table_serve     39.18    19    18    41
+far_table_backhand    46.99    43    51    46
+far_table_bounce      62.80   146    76    97
+far_table_forehand    50.98    39    30    45
+far_table_serve       21.43    12    37    51
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  26.44  49.23  56.60  60.32
+close_table_bounce    56.67  72.73  73.82  74.30
+close_table_forehand  62.59  75.09  75.90  76.05
+close_table_serve     31.46  59.11  63.99  64.01
+far_table_backhand    40.36  59.38  62.35  63.92
+far_table_bounce      62.90  75.35  76.43  76.75
+far_table_forehand    46.77  56.73  60.56  62.89
+far_table_serve       23.43  48.68  57.01  63.92
+mAP                   43.83  62.04  65.83  67.77
+Avg mAP (across tolerances): 59.87
+--- Epoch 17/50 ---
+Training Loss: 0.1450
+Learning Rate after epoch 17: 0.0006829695135721095
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.64
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   53.32   558   592   385
+close_table_backhand  33.19    38   101    52
+close_table_bounce    54.93   142   146    87
+close_table_forehand  52.12    43    37    42
+close_table_serve     48.85    32    39    28
+far_table_backhand    41.99    59   133    30
+far_table_bounce      63.32   164   111    79
+far_table_forehand    28.57    18    24    66
+far_table_serve       34.92    22    41    41
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  23.26  47.50  58.27  61.92
+close_table_bounce    54.26  75.38  76.40  77.17
+close_table_forehand  50.75  66.68  67.05  67.10
+close_table_serve     39.43  65.94  68.35  69.83
+far_table_backhand    38.04  56.35  59.15  59.55
+far_table_bounce      62.89  75.94  77.12  77.61
+far_table_forehand    26.98  45.29  49.77  51.27
+far_table_serve       27.17  51.08  57.38  60.38
+mAP                   40.35  60.52  64.19  65.60
+Avg mAP (across tolerances): 57.66
+--- Epoch 18/50 ---
+Training Loss: 0.1496
+Learning Rate after epoch 18: 0.0006517161682863787
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.45
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   52.67   489   425   454
+close_table_backhand  37.44    38    75    52
+close_table_bounce    56.89   128    93   101
+close_table_forehand  56.18    50    43    35
+close_table_serve     48.39    30    34    30
+far_table_backhand    35.75    37    81    52
+far_table_bounce      64.29   153    80    90
+far_table_forehand    44.09    28    15    56
+far_table_serve       10.87     5    24    58
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  26.55  48.53  56.40  59.00
+close_table_bounce    54.01  74.54  77.08  77.90
+close_table_forehand  57.51  75.56  77.32  77.37
+close_table_serve     39.93  60.23  62.28  62.28
+far_table_backhand    31.28  55.49  59.31  62.38
+far_table_bounce      64.30  77.71  78.66  79.35
+far_table_forehand    42.95  52.81  54.79  56.89
+far_table_serve       23.18  49.17  53.56  57.20
+mAP                   42.46  61.75  64.92  66.55
+Avg mAP (across tolerances): 58.92
+--- Epoch 19/50 ---
+Training Loss: 0.1400
+Learning Rate after epoch 19: 0.0006198077588621725
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.50
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   53.85   525   482   418
+close_table_backhand  38.10    40    80    50
+close_table_bounce    53.78   121   100   108
+close_table_forehand  55.03    41    23    44
+close_table_serve     45.90    28    34    32
+far_table_backhand    36.65    46   116    43
+far_table_bounce      64.95   164    98    79
+far_table_forehand    52.63    40    28    44
+far_table_serve       27.03    15    33    48
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  24.73  49.43  58.86  62.51
+close_table_bounce    57.93  73.77  75.12  75.75
+close_table_forehand  55.59  69.65  71.47  71.47
+close_table_serve     45.47  72.56  74.78  74.78
+far_table_backhand    30.09  56.65  63.86  66.24
+far_table_bounce      66.30  80.35  81.31  82.00
+far_table_forehand    45.67  57.63  60.45  61.72
+far_table_serve       26.37  50.90  59.59  64.22
+mAP                   44.02  63.87  68.18  69.84
+Avg mAP (across tolerances): 61.48
+Best model saved with mAP: 67.2952
+--- Epoch 20/50 ---
+Training Loss: 0.1527
+Learning Rate after epoch 20: 0.0005873867960018644
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.50
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   56.12   575   531   368
+close_table_backhand  30.34    27    61    63
+close_table_bounce    60.81   142    96    87
+close_table_forehand  50.85    60    91    25
+close_table_serve     50.41    31    32    29
+far_table_backhand    39.65    45    93    44
+far_table_bounce      66.29   174   108    69
+far_table_forehand    46.07    41    53    43
+far_table_serve       38.26    22    30    41
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  17.39  42.39  54.92  58.69
+close_table_bounce    59.09  77.89  80.80  81.84
+close_table_forehand  51.24  71.47  74.04  74.18
+close_table_serve     42.24  70.50  73.64  73.64
+far_table_backhand    35.99  53.54  58.04  61.10
+far_table_bounce      66.85  79.67  80.04  80.59
+far_table_forehand    51.85  62.59  65.92  67.72
+far_table_serve       35.65  60.95  65.72  69.30
+mAP                   45.04  64.88  69.14  70.88
+Avg mAP (across tolerances): 62.48
+Best model saved with mAP: 68.2994
+--- Epoch 21/50 ---
+Training Loss: 0.1296
+Learning Rate after epoch 21: 0.0005545980795958954
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.43
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   54.29   513   434   430
+close_table_backhand  25.15    21    56    69
+close_table_bounce    58.22   131    90    98
+close_table_forehand  53.20    54    64    31
+close_table_serve     47.27    26    24    34
+far_table_backhand    38.89    42    85    47
+far_table_bounce      65.01   157    83    86
+far_table_forehand    50.63    40    34    44
+far_table_serve       40.78    21    19    42
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  19.99  46.03  56.01  62.91
+close_table_bounce    55.35  77.83  78.96  79.33
+close_table_forehand  54.82  71.28  77.65  77.90
+close_table_serve     44.71  62.46  63.04  63.23
+far_table_backhand    30.83  56.29  58.90  64.97
+far_table_bounce      63.13  79.06  79.84  80.61
+far_table_forehand    52.19  57.96  60.38  60.75
+far_table_serve       37.77  63.27  66.59  68.47
+mAP                   44.85  64.27  67.67  69.77
+Avg mAP (across tolerances): 61.64
+--- Epoch 22/50 ---
+Training Loss: 0.1393
+Learning Rate after epoch 22: 0.000521588052011317
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.35
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   51.76   441   320   502
+close_table_backhand  21.94    17    48    73
+close_table_bounce    56.44   114    61   115
+close_table_forehand  54.17    52    55    33
+close_table_serve     50.00    25    15    35
+far_table_backhand    37.43    32    50    57
+far_table_bounce      61.75   134    57   109
+far_table_forehand    46.04    32    23    52
+far_table_serve       36.70    20    26    43
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  16.66  40.28  49.74  61.73
+close_table_bounce    54.83  77.94  80.35  80.81
+close_table_forehand  55.22  74.17  75.16  75.86
+close_table_serve     51.90  73.98  76.11  76.11
+far_table_backhand    34.83  59.87  66.50  68.06
+far_table_bounce      64.59  78.84  79.80  80.33
+far_table_forehand    51.48  63.84  65.39  67.67
+far_table_serve       29.89  55.64  58.99  60.38
+mAP                   44.93  65.57  69.01  71.37
+Avg mAP (across tolerances): 62.72
+Best model saved with mAP: 68.6491
+--- Epoch 23/50 ---
+Training Loss: 0.1463
+Learning Rate after epoch 23: 0.0004885041440446292
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.44
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   54.43   522   453   421
+close_table_backhand  24.86    23    72    67
+close_table_bounce    56.31   125    90   104
+close_table_forehand  55.74    51    47    34
+close_table_serve     47.37    27    27    33
+far_table_backhand    41.24    40    65    49
+far_table_bounce      64.71   165   102    78
+far_table_forehand    55.70    44    30    40
+far_table_serve       38.46    25    42    38
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  15.76  43.22  52.84  63.60
+close_table_bounce    56.25  75.48  77.08  77.64
+close_table_forehand  54.69  77.40  77.61  77.81
+close_table_serve     46.22  68.37  70.67  71.10
+far_table_backhand    36.17  63.91  68.30  70.67
+far_table_bounce      67.06  83.51  84.47  84.70
+far_table_forehand    52.67  64.08  65.95  67.93
+far_table_serve       35.73  55.57  61.64  64.61
+mAP                   45.57  66.44  69.82  72.26
+Avg mAP (across tolerances): 63.52
+Best model saved with mAP: 69.5072
+--- Epoch 24/50 ---
+Training Loss: 0.1388
+Learning Rate after epoch 24: 0.0004554941164600515
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.39
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   55.64   523   414   420
+close_table_backhand  30.93    30    74    60
+close_table_bounce    60.00   132    79    97
+close_table_forehand  60.30    60    54    25
+close_table_serve     47.62    25    20    35
+far_table_backhand    33.19    38   102    51
+far_table_bounce      68.51   161    66    82
+far_table_forehand    44.44    30    21    54
+far_table_serve       33.33    18    27    45
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  19.18  44.31  56.70  65.66
+close_table_bounce    60.51  77.63  79.55  80.08
+close_table_forehand  62.80  77.23  77.23  77.23
+close_table_serve     46.10  66.33  67.92  69.04
+far_table_backhand    30.34  56.56  61.00  62.64
+far_table_bounce      69.09  82.89  83.56  83.90
+far_table_forehand    42.62  55.92  58.83  60.94
+far_table_serve       37.64  63.59  70.91  74.57
+mAP                   46.03  65.56  69.46  71.76
+Avg mAP (across tolerances): 63.20
+--- Epoch 25/50 ---
+Training Loss: 0.1344
+Learning Rate after epoch 25: 0.00042270540005408285
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.36
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   58.45   574   447   369
+close_table_backhand  32.79    30    63    60
+close_table_bounce    60.32   149   116    80
+close_table_forehand  58.65    61    62    24
+close_table_serve     49.56    28    25    32
+far_table_backhand    44.90    44    63    45
+far_table_bounce      68.45   166    76    77
+far_table_forehand    54.44    49    47    35
+far_table_serve       38.10    20    22    43
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  22.65  48.06  59.61  66.52
+close_table_bounce    59.50  78.02  80.89  81.48
+close_table_forehand  62.36  79.01  79.01  79.01
+close_table_serve     41.50  65.06  67.94  69.33
+far_table_backhand    36.96  60.70  63.71  66.31
+far_table_bounce      68.49  84.54  85.15  85.23
+far_table_forehand    50.07  63.55  65.72  66.89
+far_table_serve       36.85  59.37  61.88  64.05
+mAP                   47.30  67.29  70.49  72.35
+Avg mAP (across tolerances): 64.36
+Best model saved with mAP: 70.0433
+--- Epoch 26/50 ---
+Training Loss: 0.1199
+Learning Rate after epoch 26: 0.00039028443719377437
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.36
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   57.95   565   442   378
+close_table_backhand  35.62    39    90    51
+close_table_bounce    63.11   148    92    81
+close_table_forehand  60.82    52    34    33
+close_table_serve     47.06    24    18    36
+far_table_backhand    42.06    49    95    40
+far_table_bounce      66.40   163    85    80
+far_table_forehand    56.00    42    24    42
+far_table_serve       38.26    22    30    41
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  27.50  52.85  62.93  67.35
+close_table_bounce    63.63  79.42  81.14  81.57
+close_table_forehand  59.82  73.08  74.25  74.25
+close_table_serve     44.31  68.72  70.56  70.56
+far_table_backhand    34.58  59.37  67.37  70.20
+far_table_bounce      68.03  84.60  85.23  85.50
+far_table_forehand    55.64  66.55  68.60  69.90
+far_table_serve       36.90  61.16  62.83  66.67
+mAP                   48.80  68.22  71.61  73.25
+Avg mAP (across tolerances): 65.47
+Best model saved with mAP: 71.0267
+--- Epoch 27/50 ---
+Training Loss: 0.1337
+Learning Rate after epoch 27: 0.0003583760277695684
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.33
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   56.59   524   385   419
+close_table_backhand  27.08    26    76    64
+close_table_bounce    62.95   141    78    88
+close_table_forehand  59.14    55    46    30
+close_table_serve     43.14    22    20    38
+far_table_backhand    41.24    40    65    49
+far_table_bounce      66.38   157    73    86
+far_table_forehand    52.17    36    18    48
+far_table_serve       38.66    23    33    40
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  16.69  43.09  53.55  58.75
+close_table_bounce    62.40  79.42  82.75  83.43
+close_table_forehand  55.49  71.70  73.48  73.48
+close_table_serve     43.01  68.16  68.58  68.73
+far_table_backhand    32.81  59.08  66.11  68.40
+far_table_bounce      67.37  84.24  85.03  85.26
+far_table_forehand    49.03  58.91  61.13  62.32
+far_table_serve       39.02  65.47  67.63  68.65
+mAP                   45.73  66.26  69.78  71.13
+Avg mAP (across tolerances): 63.22
+--- Epoch 28/50 ---
+Training Loss: 0.1367
+Learning Rate after epoch 28: 0.0003271226824838381
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.39
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   56.94   552   444   391
+close_table_backhand  34.02    33    71    57
+close_table_bounce    62.88   144    85    85
+close_table_forehand  57.30    51    42    34
+close_table_serve     45.28    24    22    36
+far_table_backhand    39.13    36    59    53
+far_table_bounce      63.20   164   112    79
+far_table_forehand    53.71    47    44    37
+far_table_serve       44.80    28    34    35
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  23.45  53.27  63.24  67.12
+close_table_bounce    61.42  78.98  81.30  82.09
+close_table_forehand  60.48  79.78  80.02  80.17
+close_table_serve     43.89  69.29  70.54  71.53
+far_table_backhand    34.96  62.29  65.23  67.62
+far_table_bounce      66.03  83.19  83.50  83.79
+far_table_forehand    56.00  67.68  69.67  71.38
+far_table_serve       39.85  62.23  65.31  66.89
+mAP                   48.26  69.59  72.35  73.83
+Avg mAP (across tolerances): 66.01
+Best model saved with mAP: 71.9219
+--- Epoch 29/50 ---
+Training Loss: 0.1287
+Learning Rate after epoch 29: 0.00029666398636349394
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.28
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   56.38   499   328   444
+close_table_backhand  29.41    25    55    65
+close_table_bounce    59.95   119    49   110
+close_table_forehand  58.29    51    39    34
+close_table_serve     44.90    22    16    38
+far_table_backhand    37.31    36    68    53
+far_table_bounce      68.34   163    71    80
+far_table_forehand    57.32    45    28    39
+far_table_serve       25.24    13    27    50
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  23.07  51.36  59.36  64.63
+close_table_bounce    60.74  78.72  80.70  81.64
+close_table_forehand  59.93  76.67  76.98  77.01
+close_table_serve     43.41  70.56  72.08  72.46
+far_table_backhand    32.33  59.17  63.01  64.70
+far_table_bounce      70.21  85.14  85.67  85.88
+far_table_forehand    55.81  69.09  71.29  73.31
+far_table_serve       27.10  51.02  64.57  66.31
+mAP                   46.57  67.72  71.71  73.24
+Avg mAP (across tolerances): 64.81
+--- Epoch 30/50 ---
+Training Loss: 0.1166
+Learning Rate after epoch 30: 0.0002671359753393709
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.26
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   55.80   481   300   462
+close_table_backhand  29.68    23    42    67
+close_table_bounce    56.92   111    50   118
+close_table_forehand  57.14    50    40    35
+close_table_serve     42.59    23    25    37
+far_table_backhand    37.99    34    56    55
+far_table_bounce      69.21   163    65    80
+far_table_forehand    53.24    37    18    47
+far_table_serve       33.64    18    26    45
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  20.33  44.11  57.28  63.84
+close_table_bounce    58.83  77.09  79.10  80.09
+close_table_forehand  58.45  76.99  78.21  78.21
+close_table_serve     41.28  66.71  68.87  69.54
+far_table_backhand    34.79  57.36  59.17  62.16
+far_table_bounce      67.89  81.42  82.42  82.49
+far_table_forehand    51.77  66.06  67.74  69.98
+far_table_serve       35.53  54.32  57.67  62.17
+mAP                   46.11  65.51  68.81  71.06
+Avg mAP (across tolerances): 62.87
+--- Epoch 31/50 ---
+Training Loss: 0.1080
+Learning Rate after epoch 31: 0.00023867052867673628
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.30
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   56.41   508   350   435
+close_table_backhand  28.07    24    57    66
+close_table_bounce    60.39   125    60   104
+close_table_forehand  53.89    52    56    33
+close_table_serve     45.54    23    18    37
+far_table_backhand    40.23    35    50    54
+far_table_bounce      67.51   161    73    82
+far_table_forehand    55.90    45    32    39
+far_table_serve       40.00    22    25    41
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  18.51  45.19  57.07  63.30
+close_table_bounce    58.89  80.52  82.34  83.26
+close_table_forehand  53.31  72.59  74.29  74.44
+close_table_serve     45.27  68.72  70.84  70.84
+far_table_backhand    32.68  59.47  64.25  66.15
+far_table_bounce      66.96  84.55  85.59  85.89
+far_table_forehand    54.97  67.18  69.84  71.57
+far_table_serve       37.20  62.24  66.74  69.67
+mAP                   45.97  67.56  71.37  73.14
+Avg mAP (across tolerances): 64.51
+--- Epoch 32/50 ---
+Training Loss: 0.1085
+Learning Rate after epoch 32: 0.00021139477997047723
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.28
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   53.80   457   299   486
+close_table_backhand  27.06    23    57    67
+close_table_bounce    62.09   122    42   107
+close_table_forehand  50.34    37    25    48
+close_table_serve     30.30    15    24    45
+far_table_backhand    40.00    34    47    55
+far_table_bounce      66.11   157    75    86
+far_table_forehand    53.95    41    27    43
+far_table_serve       34.41    16    14    47
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  21.46  51.90  60.56  66.70
+close_table_bounce    57.49  77.89  80.34  81.92
+close_table_forehand  55.85  74.65  75.19  75.19
+close_table_serve     33.35  64.61  65.81  66.14
+far_table_backhand    33.72  63.01  67.89  70.25
+far_table_bounce      65.32  83.93  84.38  84.69
+far_table_forehand    52.73  64.94  68.36  71.23
+far_table_serve       36.41  56.73  60.71  63.56
+mAP                   44.54  67.21  70.40  72.46
+Avg mAP (across tolerances): 63.65
+--- Epoch 33/50 ---
+Training Loss: 0.1303
+Learning Rate after epoch 33: 0.000185430549335605
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.35
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   54.63   496   377   447
+close_table_backhand  30.23    26    56    64
+close_table_bounce    60.19   127    66   102
+close_table_forehand  50.93    41    35    44
+close_table_serve     38.78    19    19    41
+far_table_backhand    40.70    35    48    54
+far_table_bounce      65.19   162    92    81
+far_table_forehand    54.24    48    45    36
+far_table_serve       39.32    23    31    40
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  20.32  48.46  61.73  68.47
+close_table_bounce    58.49  77.37  79.57  80.12
+close_table_forehand  53.83  76.80  78.05  78.26
+close_table_serve     37.34  65.78  67.05  67.05
+far_table_backhand    34.15  58.92  60.56  63.62
+far_table_bounce      66.97  84.56  85.25  85.40
+far_table_forehand    57.60  69.57  73.16  75.95
+far_table_serve       38.08  66.55  67.86  70.74
+mAP                   45.85  68.50  71.65  73.70
+Avg mAP (across tolerances): 64.93
+--- Epoch 34/50 ---
+Training Loss: 0.1138
+Learning Rate after epoch 34: 0.000160893799329048
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.32
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   57.14   530   382   413
+close_table_backhand  32.43    30    65    60
+close_table_bounce    60.43   126    62   103
+close_table_forehand  54.86    48    42    37
+close_table_serve     38.46    20    24    40
+far_table_backhand    44.66    46    71    43
+far_table_bounce      69.26   169    76    74
+far_table_forehand    54.09    43    32    41
+far_table_serve       39.67    24    34    39
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  22.44  54.94  65.70  69.78
+close_table_bounce    58.35  78.68  79.88  80.86
+close_table_forehand  55.54  76.93  77.50  77.50
+close_table_serve     36.34  69.01  71.63  71.69
+far_table_backhand    38.23  65.27  67.47  69.81
+far_table_bounce      67.71  83.47  85.30  85.46
+far_table_forehand    54.70  66.15  69.11  71.96
+far_table_serve       37.23  65.15  66.70  70.03
+mAP                   46.32  69.95  72.91  74.63
+Avg mAP (across tolerances): 65.95
+Best model saved with mAP: 72.4978
+--- Epoch 35/50 ---
+Training Loss: 0.0993
+Learning Rate after epoch 35: 0.000137894117032722
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.23
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   56.83   491   294   452
+close_table_backhand  30.77    24    42    66
+close_table_bounce    60.58   126    61   103
+close_table_forehand  57.80    50    38    35
+close_table_serve     38.00    19    21    41
+far_table_backhand    41.88    40    62    49
+far_table_bounce      69.28   159    57    84
+far_table_forehand    52.48    37    20    47
+far_table_serve       36.96    17    12    46
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  24.85  61.71  67.39  68.43
+close_table_bounce    59.12  79.29  80.87  82.02
+close_table_forehand  56.65  78.34  79.61  79.61
+close_table_serve     37.94  70.77  73.48  73.48
+far_table_backhand    36.37  62.78  67.66  70.69
+far_table_bounce      68.84  83.73  85.01  85.25
+far_table_forehand    52.10  64.97  68.06  70.52
+far_table_serve       38.83  64.17  67.37  70.14
+mAP                   46.84  70.72  73.68  75.02
+Avg mAP (across tolerances): 66.57
+Best model saved with mAP: 73.1406
+--- Epoch 36/50 ---
+Training Loss: 0.1020
+Learning Rate after epoch 36: 0.0001165342246110207
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.24
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   56.76   493   301   450
+close_table_backhand  29.45    24    49    66
+close_table_bounce    59.46   121    57   108
+close_table_forehand  60.57    53    37    32
+close_table_serve     42.42    21    18    39
+far_table_backhand    41.42    35    45    54
+far_table_bounce      67.67   157    64    86
+far_table_forehand    58.23    46    28    38
+far_table_serve       39.22    20    19    43
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  21.14  55.09  62.07  65.93
+close_table_bounce    58.99  77.82  79.21  80.77
+close_table_forehand  58.36  80.13  81.09  81.09
+close_table_serve     36.22  70.03  70.17  70.17
+far_table_backhand    37.12  64.67  69.13  71.74
+far_table_bounce      66.25  83.12  84.36  84.61
+far_table_forehand    58.17  68.38  71.44  74.39
+far_table_serve       39.90  68.69  70.83  72.35
+mAP                   47.02  70.99  73.54  75.13
+Avg mAP (across tolerances): 66.67
+Best model saved with mAP: 73.2201
+--- Epoch 37/50 ---
+Training Loss: 0.1045
+Learning Rate after epoch 37: 9.690952052869158e-05
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.27
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   56.98   514   347   429
+close_table_backhand  28.22    23    50    67
+close_table_bounce    62.94   135    65    94
+close_table_forehand  53.76    50    51    35
+close_table_serve     38.30    18    16    42
+far_table_backhand    43.75    42    61    47
+far_table_bounce      68.22   161    68    82
+far_table_forehand    57.33    43    23    41
+far_table_serve       45.76    27    28    36
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  21.22  52.00  61.04  65.81
+close_table_bounce    61.16  78.91  80.05  81.20
+close_table_forehand  54.00  75.47  77.03  77.03
+close_table_serve     35.73  66.90  67.25  67.31
+far_table_backhand    38.98  64.57  68.67  70.72
+far_table_bounce      66.76  83.18  83.80  83.99
+far_table_forehand    53.67  67.81  71.53  73.69
+far_table_serve       42.89  64.85  69.19  71.76
+mAP                   46.80  69.21  72.32  73.94
+Avg mAP (across tolerances): 65.57
+--- Epoch 38/50 ---
+Training Loss: 0.1139
+Learning Rate after epoch 38: 7.910765347813583e-05
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.25
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   57.42   511   326   432
+close_table_backhand  33.52    30    59    60
+close_table_bounce    60.14   126    64   103
+close_table_forehand  59.89    53    39    32
+close_table_serve     40.40    20    19    40
+far_table_backhand    42.49    41    63    48
+far_table_bounce      68.38   160    65    83
+far_table_forehand    57.14    42    21    42
+far_table_serve       40.82    20    15    43
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  21.90  54.71  63.73  68.51
+close_table_bounce    58.73  78.26  79.95  81.12
+close_table_forehand  57.80  77.22  77.49  77.49
+close_table_serve     34.03  70.95  72.65  72.94
+far_table_backhand    38.16  64.06  68.40  70.04
+far_table_bounce      67.30  84.23  84.68  84.89
+far_table_forehand    49.48  66.62  71.07  73.75
+far_table_serve       40.15  70.13  71.57  74.26
+mAP                   45.94  70.77  73.69  75.37
+Avg mAP (across tolerances): 66.45
+Best model saved with mAP: 73.2793
+--- Epoch 39/50 ---
+Training Loss: 0.0973
+Learning Rate after epoch 39: 6.320813091907046e-05
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.26
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   57.46   520   347   423
+close_table_backhand  32.40    29    60    61
+close_table_bounce    59.63   130    77    99
+close_table_forehand  58.62    51    38    34
+close_table_serve     45.28    24    22    36
+far_table_backhand    44.09    41    56    48
+far_table_bounce      69.33   165    68    78
+far_table_forehand    57.52    44    25    40
+far_table_serve       44.00    22    15    41
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  21.33  53.91  63.39  67.13
+close_table_bounce    59.42  79.13  80.95  82.38
+close_table_forehand  56.55  79.12  79.80  79.80
+close_table_serve     39.80  75.22  75.34  75.34
+far_table_backhand    39.74  63.87  69.87  71.34
+far_table_bounce      69.08  85.41  85.93  86.22
+far_table_forehand    51.92  67.41  72.52  74.62
+far_table_serve       43.65  64.87  67.57  69.60
+mAP                   47.69  71.12  74.42  75.80
+Avg mAP (across tolerances): 67.26
+Best model saved with mAP: 73.7812
+--- Epoch 40/50 ---
+Training Loss: 0.1046
+Learning Rate after epoch 40: 4.928196397891181e-05
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.29
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   56.15   500   338   443
+close_table_backhand  31.18    29    67    61
+close_table_bounce    58.65   117    53   112
+close_table_forehand  58.43    52    41    33
+close_table_serve     40.38    21    23    39
+far_table_backhand    43.43    43    66    46
+far_table_bounce      68.70   158    59    85
+far_table_forehand    55.84    43    27    41
+far_table_serve       37.25    19    20    44
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  21.15  52.98  62.39  66.48
+close_table_bounce    57.34  76.96  78.85  80.38
+close_table_forehand  57.82  78.98  79.75  79.75
+close_table_serve     34.16  72.93  73.99  74.14
+far_table_backhand    37.39  61.95  69.45  71.22
+far_table_bounce      67.31  84.37  84.73  85.11
+far_table_forehand    51.45  67.00  70.89  72.97
+far_table_serve       39.32  64.07  64.59  66.17
+mAP                   45.74  69.90  73.08  74.53
+Avg mAP (across tolerances): 65.81
+--- Epoch 41/50 ---
+Training Loss: 0.1138
+Learning Rate after epoch 41: 3.739135029984335e-05
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.25
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   56.80   497   310   446
+close_table_backhand  31.58    27    54    63
+close_table_bounce    59.79   116    43   113
+close_table_forehand  56.32    49    40    36
+close_table_serve     43.14    22    20    38
+far_table_backhand    43.43    43    66    46
+far_table_bounce      69.18   165    69    78
+far_table_forehand    55.41    41    23    43
+far_table_serve       36.96    17    12    46
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  22.95  54.90  63.39  67.37
+close_table_bounce    58.18  78.04  79.84  81.35
+close_table_forehand  58.39  78.38  79.05  79.05
+close_table_serve     35.88  73.99  74.25  74.50
+far_table_backhand    40.84  63.90  68.49  70.29
+far_table_bounce      68.76  85.88  86.40  86.83
+far_table_forehand    50.24  65.74  70.16  72.81
+far_table_serve       40.93  69.31  70.16  71.89
+mAP                   47.02  71.27  73.97  75.51
+Avg mAP (across tolerances): 66.94
+--- Epoch 42/50 ---
+Training Loss: 0.0962
+Learning Rate after epoch 42: 2.7589396249046192e-05
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.24
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   57.26   503   311   440
+close_table_backhand  31.21    27    56    63
+close_table_bounce    60.74   123    53   106
+close_table_forehand  58.76    52    40    33
+close_table_serve     43.56    22    19    38
+far_table_backhand    40.21    38    62    51
+far_table_bounce      69.83   162    59    81
+far_table_forehand    55.41    41    23    43
+far_table_serve       40.00    20    17    43
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  20.85  52.84  62.72  66.74
+close_table_bounce    58.21  78.44  80.12  81.73
+close_table_forehand  57.62  78.90  79.66  79.66
+close_table_serve     35.76  72.36  73.67  73.99
+far_table_backhand    37.72  62.53  67.96  69.43
+far_table_bounce      68.17  85.83  86.18  86.50
+far_table_forehand    49.91  65.22  69.13  71.66
+far_table_serve       38.74  71.49  72.83  74.91
+mAP                   45.87  70.95  74.03  75.58
+Avg mAP (across tolerances): 66.61
+--- Epoch 43/50 ---
+Training Loss: 0.1008
+Learning Rate after epoch 43: 1.9919879732771514e-05
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.25
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   56.82   498   312   445
+close_table_backhand  29.24    25    56    65
+close_table_bounce    59.65   119    51   110
+close_table_forehand  56.65    49    39    36
+close_table_serve     42.59    23    25    37
+far_table_backhand    41.67    40    63    49
+far_table_bounce      68.40   158    61    85
+far_table_forehand    56.95    43    24    41
+far_table_serve       41.24    20    14    43
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  21.23  53.74  63.75  67.40
+close_table_bounce    58.51  78.43  80.18  81.80
+close_table_forehand  57.31  78.57  79.25  79.25
+close_table_serve     36.34  73.36  74.48  74.93
+far_table_backhand    37.93  63.70  68.81  70.36
+far_table_bounce      67.85  85.91  86.31  86.58
+far_table_forehand    51.07  67.16  70.58  73.16
+far_table_serve       39.54  71.64  72.51  74.67
+mAP                   46.22  71.56  74.48  76.02
+Avg mAP (across tolerances): 67.07
+Best model saved with mAP: 74.0227
+--- Epoch 44/50 ---
+Training Loss: 0.1084
+Learning Rate after epoch 44: 1.4417054673584603e-05
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.26
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   57.30   510   327   433
+close_table_backhand  32.58    29    59    61
+close_table_bounce    60.49   124    57   105
+close_table_forehand  55.49    48    40    37
+close_table_serve     42.99    23    24    37
+far_table_backhand    42.64    42    66    47
+far_table_bounce      68.94   162    65    81
+far_table_forehand    54.42    40    23    44
+far_table_serve       42.86    21    14    42
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  21.02  53.77  63.72  67.62
+close_table_bounce    58.65  78.35  80.09  81.75
+close_table_forehand  57.14  79.07  79.65  79.65
+close_table_serve     34.46  71.82  73.75  74.11
+far_table_backhand    38.81  63.32  67.73  69.33
+far_table_bounce      67.66  85.43  85.75  86.03
+far_table_forehand    50.80  66.18  70.17  72.29
+far_table_serve       41.27  69.34  70.12  71.64
+mAP                   46.23  70.91  73.87  75.30
+Avg mAP (across tolerances): 66.58
+--- Epoch 45/50 ---
+Training Loss: 0.0994
+Learning Rate after epoch 45: 1.1105498024030903e-05
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.24
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   57.06   499   307   444
+close_table_backhand  29.41    25    55    65
+close_table_bounce    61.54   124    50   105
+close_table_forehand  56.98    49    38    36
+close_table_serve     41.51    22    24    38
+far_table_backhand    42.33    40    60    49
+far_table_bounce      68.82   160    62    83
+far_table_forehand    54.17    39    21    45
+far_table_serve       40.00    20    17    43
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  21.17  53.38  62.87  66.33
+close_table_bounce    58.98  78.21  79.95  81.60
+close_table_forehand  57.46  79.16  79.53  79.53
+close_table_serve     35.44  72.34  73.28  73.50
+far_table_backhand    38.67  63.13  68.03  69.60
+far_table_bounce      67.61  85.48  85.84  86.10
+far_table_forehand    51.02  66.75  70.80  73.30
+far_table_serve       41.95  69.41  70.04  71.62
+mAP                   46.54  70.98  73.79  75.20
+Avg mAP (across tolerances): 66.63
+--- Epoch 46/50 ---
+Training Loss: 0.0963
+Learning Rate after epoch 46: 1e-05
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.24
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   56.98   498   307   445
+close_table_backhand  32.18    28    56    62
+close_table_bounce    59.80   119    50   110
+close_table_forehand  56.14    48    38    37
+close_table_serve     42.72    22    21    38
+far_table_backhand    42.49    41    63    48
+far_table_bounce      69.53   162    61    81
+far_table_forehand    56.16    41    21    43
+far_table_serve       41.24    20    14    43
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  22.14  54.05  63.68  67.00
+close_table_bounce    58.30  77.72  79.79  81.56
+close_table_forehand  58.00  79.57  80.17  80.17
+close_table_serve     35.02  73.46  74.51  74.95
+far_table_backhand    38.25  63.23  67.80  69.36
+far_table_bounce      67.46  85.50  85.99  86.29
+far_table_forehand    50.38  67.08  70.62  73.62
+far_table_serve       41.18  69.43  70.38  71.74
+mAP                   46.34  71.25  74.12  75.59
+Avg mAP (across tolerances): 66.83
+--- Epoch 47/50 ---
+Training Loss: 0.1072
+Learning Rate after epoch 47: 1.1105395081547321e-05
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.25
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   56.75   498   314   445
+close_table_backhand  30.59    26    54    64
+close_table_bounce    60.85   122    50   107
+close_table_forehand  56.50    50    42    35
+close_table_serve     42.72    22    21    38
+far_table_backhand    43.75    42    61    47
+far_table_bounce      67.96   158    64    85
+far_table_forehand    54.67    41    25    43
+far_table_serve       37.11    18    16    45
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  21.58  53.92  62.31  65.64
+close_table_bounce    58.00  77.76  79.47  81.17
+close_table_forehand  57.70  78.69  79.21  79.21
+close_table_serve     35.97  72.20  73.70  74.03
+far_table_backhand    38.82  63.05  67.44  69.20
+far_table_bounce      67.40  85.11  85.50  85.78
+far_table_forehand    50.46  67.12  71.35  73.81
+far_table_serve       42.33  70.30  71.23  72.52
+mAP                   46.53  71.02  73.78  75.17
+Avg mAP (across tolerances): 66.62
+--- Epoch 48/50 ---
+Training Loss: 0.1187
+Learning Rate after epoch 48: 1.4416643363416346e-05
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.25
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   57.45   511   325   432
+close_table_backhand  29.07    25    57    65
+close_table_bounce    61.58   125    52   104
+close_table_forehand  58.06    54    47    31
+close_table_serve     43.14    22    20    38
+far_table_backhand    41.00    41    70    48
+far_table_bounce      69.23   162    63    81
+far_table_forehand    55.78    41    22    43
+far_table_serve       40.82    20    15    43
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  21.16  53.34  62.50  66.21
+close_table_bounce    58.95  78.39  80.37  82.12
+close_table_forehand  58.67  79.06  79.82  79.82
+close_table_serve     36.59  72.41  73.44  73.74
+far_table_backhand    38.17  63.23  67.69  69.33
+far_table_bounce      67.34  85.61  86.07  86.40
+far_table_forehand    50.52  66.40  70.41  73.34
+far_table_serve       42.70  71.38  72.87  73.71
+mAP                   46.76  71.23  74.15  75.58
+Avg mAP (across tolerances): 66.93
+--- Epoch 49/50 ---
+Training Loss: 0.1054
+Learning Rate after epoch 49: 1.9918956006962546e-05
+Synchronizing results across GPUs...
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.22
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   57.04   494   295   449
+close_table_backhand  30.95    26    52    64
+close_table_bounce    60.30   120    49   109
+close_table_forehand  60.00    51    34    34
+close_table_serve     41.24    20    17    40
+far_table_backhand    40.00    36    55    53
+far_table_bounce      69.21   163    65    80
+far_table_forehand    55.26    42    26    42
+far_table_serve       41.67    20    13    43
+
+AP Table:
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  22.39  54.31  63.58  66.81
+close_table_bounce    58.47  77.32  79.50  81.22
+close_table_forehand  58.60  77.79  78.45  78.45
+close_table_serve     34.92  70.59  72.17  72.46
+far_table_backhand    38.33  63.35  67.96  69.70
+far_table_bounce      68.00  85.47  85.92  86.30
+far_table_forehand    51.95  67.87  72.29  74.95
+far_table_serve       42.69  68.91  69.75  70.63
+mAP                   46.92  70.70  73.70  75.06
+Avg mAP (across tolerances): 66.60

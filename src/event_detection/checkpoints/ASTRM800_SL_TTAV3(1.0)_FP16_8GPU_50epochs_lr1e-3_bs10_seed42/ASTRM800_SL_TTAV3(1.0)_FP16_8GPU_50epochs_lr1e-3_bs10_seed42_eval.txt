@@ -1,0 +1,60 @@
+Log file created at Tue Apr  7 15:30:40 2026
+>>>>>>>>>>>>>>>Starting evaluation on the Test Dataset<<<<<<<<<<<<<
+GPU count: 8
+GPU name: NVIDIA A100-SXM4-40GB
+GPU memory: 42.29 GB
+Results and Figures will be saved at ../logs/ASTRM800_SL_TTAV3(1.0)_FP16_8GPU_50epochs_lr1e-3_bs10_seed42
+Model loaded from ../logs/ASTRM800_SL_TTAV3(1.0)_FP16_8GPU_50epochs_lr1e-3_bs10_seed42/best_model.pth
+Test dataset size: 1193
+Saving predictions: ../logs/ASTRM800_SL_TTAV3(1.0)_FP16_8GPU_50epochs_lr1e-3_bs10_seed42/pred-test.json
+=== Results on validation (w/o NMS) ===
+Error (frame-level): 1.62
+
+Exact frame              F1    TP    FP    FN
+--------------------  -----  ----  ----  ----
+any                   44.74   383   263   683
+close_table_backhand  10.22     7    32    91
+close_table_bounce    54.59   122    54   149
+close_table_forehand  41.25    33    43    51
+close_table_serve     22.86    12    27    54
+far_table_backhand    20.80    13    26    73
+far_table_bounce      52.43   124    66   159
+far_table_forehand    44.44    40    29    71
+far_table_serve       21.18     9     9    58
+
+
+=== Results on (w/o NMS) ===
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand  10.98  30.97  38.94  45.44
+close_table_bounce    54.95  69.91  71.87  73.66
+close_table_forehand  39.60  58.73  61.84  62.05
+close_table_serve     22.44  38.41  47.49  58.57
+far_table_backhand    19.33  38.92  41.93  49.75
+far_table_bounce      52.48  71.69  73.75  74.59
+far_table_forehand    38.65  55.52  61.66  63.10
+far_table_serve       24.42  39.84  48.64  50.28
+mAP                   32.86  50.50  55.76  59.68
+Avg mAP (across tolerances): 49.70
+
+=== Results on (w/ NMS) ===
+AP @ tol                  0      1      2      4
+--------------------  -----  -----  -----  -----
+close_table_backhand   4.03  31.15  44.24  52.65
+close_table_bounce    46.53  73.50  77.59  80.29
+close_table_forehand  30.96  60.26  65.99  66.64
+close_table_serve     16.62  43.30  52.79  67.34
+far_table_backhand     9.47  43.27  51.15  61.76
+far_table_bounce      43.16  78.03  81.74  83.57
+far_table_forehand    30.02  58.64  66.73  68.46
+far_table_serve       17.56  43.64  56.00  59.32
+mAP                   24.79  53.97  62.03  67.50
+Avg mAP (across tolerances): 52.08
+Model Complexity Summary:
+  MACs: 2.804e+11
+  GFLOPs: 560.81
+  Params: 20.89 M
+  Model Size: 79.71 MB
+  Avg Latency: 50.73 ms/clip
+  Throughput: 19.71 clips/s
+  Throughput: 1971.10 frames/s

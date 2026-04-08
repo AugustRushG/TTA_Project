@@ -1,0 +1,1734 @@
+Log file created at Tue Mar 31 09:11:51 2026
+Logs and model checkpoints will be saved to: ../logs/TOTNet_TTA_(5)_Bidirect_(512,512)_BallMask_50epochs_WBCE[1,2,3,3]_bs_ch32
+Running on 1 GPU(s)
+Seed: 2024
+CPUs available for DataLoader workers: 10
+num workers for DataLoader: 8
+Total samples: 10
+Training samples: 8
+Validation samples: 2
+Image size: (512, 512)
+Building model: TOTNet
+Training arguments saved to: ../logs/TOTNet_TTA_(5)_Bidirect_(512,512)_BallMask_50epochs_WBCE[1,2,3,3]_bs_ch32/training_args.json
+Model parameters saved to: ../logs/TOTNet_TTA_(5)_Bidirect_(512,512)_BallMask_50epochs_WBCE[1,2,3,3]_bs_ch32/model_params.json
+Val Epoch 0 | Batch 0/210 | RMSE: 193.9077 | F1: 0.0000
+Val Epoch 0 | Batch 10/210 | RMSE: 94.4009 | F1: 0.0000
+Val Epoch 0 | Batch 20/210 | RMSE: 89.2247 | F1: 0.4000
+Val Epoch 0 | Batch 30/210 | RMSE: 121.6323 | F1: 0.4000
+Val Epoch 0 | Batch 40/210 | RMSE: 96.8995 | F1: 0.0000
+Val Epoch 0 | Batch 50/210 | RMSE: 77.7449 | F1: 0.0000
+Val Epoch 0 | Batch 60/210 | RMSE: 151.9101 | F1: 0.0000
+Val Epoch 0 | Batch 70/210 | RMSE: 134.0302 | F1: 0.0000
+Val Epoch 0 | Batch 80/210 | RMSE: 1.1453 | F1: 1.0000
+Val Epoch 0 | Batch 90/210 | RMSE: 0.7488 | F1: 1.0000
+Val Epoch 0 | Batch 100/210 | RMSE: 34.6533 | F1: 0.8571
+Val Epoch 0 | Batch 110/210 | RMSE: 85.1940 | F1: 0.0000
+Val Epoch 0 | Batch 120/210 | RMSE: 58.9341 | F1: 0.4000
+Val Epoch 0 | Batch 130/210 | RMSE: 1.6327 | F1: 0.8571
+Val Epoch 0 | Batch 140/210 | RMSE: 0.7071 | F1: 1.0000
+Val Epoch 0 | Batch 150/210 | RMSE: 76.3931 | F1: 0.0000
+Val Epoch 0 | Batch 160/210 | RMSE: 38.6500 | F1: 0.4000
+Val Epoch 0 | Batch 170/210 | RMSE: 9.1175 | F1: 0.0000
+Val Epoch 0 | Batch 180/210 | RMSE: 1.1453 | F1: 1.0000
+Val Epoch 0 | Batch 190/210 | RMSE: 5.4653 | F1: 0.4000
+Val Epoch 0 | Batch 200/210 | RMSE: 0.5000 | F1: 1.0000
+
+Val Epoch 0 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 15.9999 │
+│ RMSE      │ 54.5788 │
+│ Precision │  0.4    │
+│ Recall    │  0.6762 │
+│ F1        │  0.4737 │
+│ Accuracy  │  0.4    │
+╰───────────┴─────────╯
+Epoch 0 | Train Loss: 5.0375 | F1: 0.4737 | RMSE: 54.5788 | LR: 0.001000
+New best checkpoint saved — F1: 0.4737 at epoch 0
+Val Epoch 1 | Batch 0/210 | RMSE: 173.7897 | F1: 0.0000
+Val Epoch 1 | Batch 10/210 | RMSE: 91.1199 | F1: 0.0000
+Val Epoch 1 | Batch 20/210 | RMSE: 172.9638 | F1: 0.0000
+Val Epoch 1 | Batch 30/210 | RMSE: 95.0565 | F1: 0.0000
+Val Epoch 1 | Batch 40/210 | RMSE: 151.1152 | F1: 0.0000
+Val Epoch 1 | Batch 50/210 | RMSE: 37.1653 | F1: 0.6667
+Val Epoch 1 | Batch 60/210 | RMSE: 98.2757 | F1: 0.6667
+Val Epoch 1 | Batch 70/210 | RMSE: 140.9175 | F1: 0.0000
+Val Epoch 1 | Batch 80/210 | RMSE: 1.4543 | F1: 0.8571
+Val Epoch 1 | Batch 90/210 | RMSE: 1.4126 | F1: 0.8571
+Val Epoch 1 | Batch 100/210 | RMSE: 0.6036 | F1: 1.0000
+Val Epoch 1 | Batch 110/210 | RMSE: 94.2057 | F1: 0.0000
+Val Epoch 1 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 1 | Batch 130/210 | RMSE: 2.7622 | F1: 0.6667
+Val Epoch 1 | Batch 140/210 | RMSE: 1.0406 | F1: 1.0000
+Val Epoch 1 | Batch 150/210 | RMSE: 81.3632 | F1: 0.0000
+Val Epoch 1 | Batch 160/210 | RMSE: 2.6913 | F1: 0.6667
+Val Epoch 1 | Batch 170/210 | RMSE: 145.0546 | F1: 0.0000
+Val Epoch 1 | Batch 180/210 | RMSE: 0.9126 | F1: 0.8571
+Val Epoch 1 | Batch 190/210 | RMSE: 4.1546 | F1: 0.6667
+Val Epoch 1 | Batch 200/210 | RMSE: 1.1036 | F1: 1.0000
+
+Val Epoch 1 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 16.0645 │
+│ RMSE      │ 51.8085 │
+│ Precision │  0.4405 │
+│ Recall    │  0.7143 │
+│ F1        │  0.5195 │
+│ Accuracy  │  0.4405 │
+╰───────────┴─────────╯
+Epoch 1 | Train Loss: 4.2050 | F1: 0.5195 | RMSE: 51.8085 | LR: 0.000999
+New best checkpoint saved — F1: 0.5195 at epoch 1
+Val Epoch 2 | Batch 0/210 | RMSE: 185.1575 | F1: 0.0000
+Val Epoch 2 | Batch 10/210 | RMSE: 100.6010 | F1: 0.0000
+Val Epoch 2 | Batch 20/210 | RMSE: 144.0426 | F1: 0.4000
+Val Epoch 2 | Batch 30/210 | RMSE: 75.4591 | F1: 0.4000
+Val Epoch 2 | Batch 40/210 | RMSE: 109.6650 | F1: 0.0000
+Val Epoch 2 | Batch 50/210 | RMSE: 2.0306 | F1: 0.4000
+Val Epoch 2 | Batch 60/210 | RMSE: 31.8764 | F1: 0.6667
+Val Epoch 2 | Batch 70/210 | RMSE: 140.5264 | F1: 0.0000
+Val Epoch 2 | Batch 80/210 | RMSE: 0.7803 | F1: 1.0000
+Val Epoch 2 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 2 | Batch 100/210 | RMSE: 1.2071 | F1: 1.0000
+Val Epoch 2 | Batch 110/210 | RMSE: 85.3570 | F1: 0.0000
+Val Epoch 2 | Batch 120/210 | RMSE: 24.9229 | F1: 0.6667
+Val Epoch 2 | Batch 130/210 | RMSE: 23.9923 | F1: 0.6667
+Val Epoch 2 | Batch 140/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 2 | Batch 150/210 | RMSE: 76.0743 | F1: 0.0000
+Val Epoch 2 | Batch 160/210 | RMSE: 2.4268 | F1: 0.6667
+Val Epoch 2 | Batch 170/210 | RMSE: 145.1915 | F1: 0.0000
+Val Epoch 2 | Batch 180/210 | RMSE: 0.6453 | F1: 1.0000
+Val Epoch 2 | Batch 190/210 | RMSE: 5.3346 | F1: 0.4000
+Val Epoch 2 | Batch 200/210 | RMSE: 0.9988 | F1: 1.0000
+
+Val Epoch 2 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 14.2178 │
+│ RMSE      │ 50.7938 │
+│ Precision │  0.4798 │
+│ Recall    │  0.8    │
+│ F1        │  0.5671 │
+│ Accuracy  │  0.4798 │
+╰───────────┴─────────╯
+Epoch 2 | Train Loss: 4.0438 | F1: 0.5671 | RMSE: 50.7938 | LR: 0.000996
+New best checkpoint saved — F1: 0.5671 at epoch 2
+Val Epoch 3 | Batch 0/210 | RMSE: 107.6111 | F1: 0.4000
+Val Epoch 3 | Batch 10/210 | RMSE: 87.1618 | F1: 0.4000
+Val Epoch 3 | Batch 20/210 | RMSE: 1.6545 | F1: 0.8571
+Val Epoch 3 | Batch 30/210 | RMSE: 1.8536 | F1: 0.8571
+Val Epoch 3 | Batch 40/210 | RMSE: 6.8157 | F1: 0.0000
+Val Epoch 3 | Batch 50/210 | RMSE: 2.0150 | F1: 0.6667
+Val Epoch 3 | Batch 60/210 | RMSE: 56.3151 | F1: 0.4000
+Val Epoch 3 | Batch 70/210 | RMSE: 64.0104 | F1: 0.6667
+Val Epoch 3 | Batch 80/210 | RMSE: 0.9988 | F1: 1.0000
+Val Epoch 3 | Batch 90/210 | RMSE: 1.0721 | F1: 1.0000
+Val Epoch 3 | Batch 100/210 | RMSE: 1.2488 | F1: 1.0000
+Val Epoch 3 | Batch 110/210 | RMSE: 43.4887 | F1: 0.0000
+Val Epoch 3 | Batch 120/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 3 | Batch 130/210 | RMSE: 2.5678 | F1: 0.6667
+Val Epoch 3 | Batch 140/210 | RMSE: 0.9988 | F1: 1.0000
+Val Epoch 3 | Batch 150/210 | RMSE: 76.4804 | F1: 0.0000
+Val Epoch 3 | Batch 160/210 | RMSE: 3.0595 | F1: 0.6667
+Val Epoch 3 | Batch 170/210 | RMSE: 82.2621 | F1: 0.4000
+Val Epoch 3 | Batch 180/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 3 | Batch 190/210 | RMSE: 4.0607 | F1: 0.4000
+Val Epoch 3 | Batch 200/210 | RMSE: 0.6768 | F1: 1.0000
+
+Val Epoch 3 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 12.8925 │
+│ RMSE      │ 28.504  │
+│ Precision │  0.5702 │
+│ Recall    │  0.8952 │
+│ F1        │  0.6656 │
+│ Accuracy  │  0.5702 │
+╰───────────┴─────────╯
+Epoch 3 | Train Loss: 3.9029 | F1: 0.6656 | RMSE: 28.5040 | LR: 0.000992
+New best checkpoint saved — F1: 0.6656 at epoch 3
+Val Epoch 4 | Batch 0/210 | RMSE: 2.7555 | F1: 0.6667
+Val Epoch 4 | Batch 10/210 | RMSE: 104.7981 | F1: 0.4000
+Val Epoch 4 | Batch 20/210 | RMSE: 55.7637 | F1: 0.6667
+Val Epoch 4 | Batch 30/210 | RMSE: 2.5303 | F1: 0.8571
+Val Epoch 4 | Batch 40/210 | RMSE: 6.9312 | F1: 0.0000
+Val Epoch 4 | Batch 50/210 | RMSE: 2.1431 | F1: 0.8571
+Val Epoch 4 | Batch 60/210 | RMSE: 3.0957 | F1: 0.4000
+Val Epoch 4 | Batch 70/210 | RMSE: 2.2381 | F1: 0.8571
+Val Epoch 4 | Batch 80/210 | RMSE: 1.0721 | F1: 1.0000
+Val Epoch 4 | Batch 90/210 | RMSE: 0.4268 | F1: 1.0000
+Val Epoch 4 | Batch 100/210 | RMSE: 0.6036 | F1: 1.0000
+Val Epoch 4 | Batch 110/210 | RMSE: 24.5255 | F1: 0.6667
+Val Epoch 4 | Batch 120/210 | RMSE: 0.8839 | F1: 1.0000
+Val Epoch 4 | Batch 130/210 | RMSE: 1.7713 | F1: 0.6667
+Val Epoch 4 | Batch 140/210 | RMSE: 0.6036 | F1: 1.0000
+Val Epoch 4 | Batch 150/210 | RMSE: 58.5122 | F1: 0.0000
+Val Epoch 4 | Batch 160/210 | RMSE: 2.9559 | F1: 0.6667
+Val Epoch 4 | Batch 170/210 | RMSE: 81.5200 | F1: 0.6667
+Val Epoch 4 | Batch 180/210 | RMSE: 0.7906 | F1: 1.0000
+Val Epoch 4 | Batch 190/210 | RMSE: 4.0376 | F1: 0.6667
+Val Epoch 4 | Batch 200/210 | RMSE: 0.6768 | F1: 1.0000
+
+Val Epoch 4 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 12.5134 │
+│ RMSE      │ 26.4969 │
+│ Precision │  0.6    │
+│ Recall    │  0.9048 │
+│ F1        │  0.6931 │
+│ Accuracy  │  0.6    │
+╰───────────┴─────────╯
+Epoch 4 | Train Loss: 3.8701 | F1: 0.6931 | RMSE: 26.4969 | LR: 0.000986
+New best checkpoint saved — F1: 0.6931 at epoch 4
+Val Epoch 5 | Batch 0/210 | RMSE: 194.8885 | F1: 0.0000
+Val Epoch 5 | Batch 10/210 | RMSE: 102.6006 | F1: 0.4000
+Val Epoch 5 | Batch 20/210 | RMSE: 63.7408 | F1: 0.6667
+Val Epoch 5 | Batch 30/210 | RMSE: 40.9322 | F1: 0.8571
+Val Epoch 5 | Batch 40/210 | RMSE: 37.0739 | F1: 0.0000
+Val Epoch 5 | Batch 50/210 | RMSE: 2.4924 | F1: 0.6667
+Val Epoch 5 | Batch 60/210 | RMSE: 3.3725 | F1: 0.4000
+Val Epoch 5 | Batch 70/210 | RMSE: 135.7661 | F1: 0.0000
+Val Epoch 5 | Batch 80/210 | RMSE: 1.0721 | F1: 1.0000
+Val Epoch 5 | Batch 90/210 | RMSE: 0.8953 | F1: 1.0000
+Val Epoch 5 | Batch 100/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 5 | Batch 110/210 | RMSE: 3.6681 | F1: 0.4000
+Val Epoch 5 | Batch 120/210 | RMSE: 0.8839 | F1: 1.0000
+Val Epoch 5 | Batch 130/210 | RMSE: 2.0949 | F1: 0.6667
+Val Epoch 5 | Batch 140/210 | RMSE: 1.2173 | F1: 1.0000
+Val Epoch 5 | Batch 150/210 | RMSE: 75.9369 | F1: 0.0000
+Val Epoch 5 | Batch 160/210 | RMSE: 2.5587 | F1: 0.6667
+Val Epoch 5 | Batch 170/210 | RMSE: 81.6534 | F1: 0.6667
+Val Epoch 5 | Batch 180/210 | RMSE: 0.8090 | F1: 0.8571
+Val Epoch 5 | Batch 190/210 | RMSE: 2.6940 | F1: 0.6667
+Val Epoch 5 | Batch 200/210 | RMSE: 0.7803 | F1: 1.0000
+
+Val Epoch 5 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 13.2502 │
+│ RMSE      │ 34.6333 │
+│ Precision │  0.5536 │
+│ Recall    │  0.8619 │
+│ F1        │  0.6417 │
+│ Accuracy  │  0.5536 │
+╰───────────┴─────────╯
+Epoch 5 | Train Loss: 3.7506 | F1: 0.6417 | RMSE: 34.6333 | LR: 0.000978
+Val Epoch 6 | Batch 0/210 | RMSE: 182.6042 | F1: 0.0000
+Val Epoch 6 | Batch 10/210 | RMSE: 91.4276 | F1: 0.4000
+Val Epoch 6 | Batch 20/210 | RMSE: 52.7222 | F1: 0.6667
+Val Epoch 6 | Batch 30/210 | RMSE: 21.9110 | F1: 0.6667
+Val Epoch 6 | Batch 40/210 | RMSE: 118.9882 | F1: 0.0000
+Val Epoch 6 | Batch 50/210 | RMSE: 1.9663 | F1: 0.6667
+Val Epoch 6 | Batch 60/210 | RMSE: 43.4965 | F1: 0.4000
+Val Epoch 6 | Batch 70/210 | RMSE: 123.5578 | F1: 0.0000
+Val Epoch 6 | Batch 80/210 | RMSE: 1.2173 | F1: 1.0000
+Val Epoch 6 | Batch 90/210 | RMSE: 0.7803 | F1: 1.0000
+Val Epoch 6 | Batch 100/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 6 | Batch 110/210 | RMSE: 2.7361 | F1: 0.6667
+Val Epoch 6 | Batch 120/210 | RMSE: 1.0607 | F1: 1.0000
+Val Epoch 6 | Batch 130/210 | RMSE: 1.7827 | F1: 0.8571
+Val Epoch 6 | Batch 140/210 | RMSE: 1.0406 | F1: 1.0000
+Val Epoch 6 | Batch 150/210 | RMSE: 62.0326 | F1: 0.0000
+Val Epoch 6 | Batch 160/210 | RMSE: 2.5146 | F1: 0.6667
+Val Epoch 6 | Batch 170/210 | RMSE: 54.1850 | F1: 0.8571
+Val Epoch 6 | Batch 180/210 | RMSE: 0.5721 | F1: 1.0000
+Val Epoch 6 | Batch 190/210 | RMSE: 1.1339 | F1: 0.8571
+Val Epoch 6 | Batch 200/210 | RMSE: 0.8953 | F1: 1.0000
+
+Val Epoch 6 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 13.5951 │
+│ RMSE      │ 34.9201 │
+│ Precision │  0.55   │
+│ Recall    │  0.8381 │
+│ F1        │  0.6322 │
+│ Accuracy  │  0.55   │
+╰───────────┴─────────╯
+Epoch 6 | Train Loss: 3.7536 | F1: 0.6322 | RMSE: 34.9201 | LR: 0.000968
+Val Epoch 7 | Batch 0/210 | RMSE: 92.2271 | F1: 0.4000
+Val Epoch 7 | Batch 10/210 | RMSE: 103.8224 | F1: 0.4000
+Val Epoch 7 | Batch 20/210 | RMSE: 8.5352 | F1: 0.8571
+Val Epoch 7 | Batch 30/210 | RMSE: 2.4571 | F1: 0.6667
+Val Epoch 7 | Batch 40/210 | RMSE: 74.5550 | F1: 0.6667
+Val Epoch 7 | Batch 50/210 | RMSE: 2.4496 | F1: 0.6667
+Val Epoch 7 | Batch 60/210 | RMSE: 56.5956 | F1: 0.4000
+Val Epoch 7 | Batch 70/210 | RMSE: 64.0295 | F1: 0.6667
+Val Epoch 7 | Batch 80/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 7 | Batch 90/210 | RMSE: 0.8221 | F1: 1.0000
+Val Epoch 7 | Batch 100/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 7 | Batch 110/210 | RMSE: 5.1140 | F1: 0.4000
+Val Epoch 7 | Batch 120/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 7 | Batch 130/210 | RMSE: 2.6712 | F1: 0.6667
+Val Epoch 7 | Batch 140/210 | RMSE: 1.2173 | F1: 1.0000
+Val Epoch 7 | Batch 150/210 | RMSE: 75.9320 | F1: 0.0000
+Val Epoch 7 | Batch 160/210 | RMSE: 3.0272 | F1: 0.6667
+Val Epoch 7 | Batch 170/210 | RMSE: 2.6119 | F1: 0.6667
+Val Epoch 7 | Batch 180/210 | RMSE: 0.8221 | F1: 1.0000
+Val Epoch 7 | Batch 190/210 | RMSE: 2.3221 | F1: 0.8571
+Val Epoch 7 | Batch 200/210 | RMSE: 0.6036 | F1: 1.0000
+
+Val Epoch 7 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 12.6436 │
+│ RMSE      │ 25.3946 │
+│ Precision │  0.5929 │
+│ Recall    │  0.8905 │
+│ F1        │  0.682  │
+│ Accuracy  │  0.5929 │
+╰───────────┴─────────╯
+Epoch 7 | Train Loss: 3.7115 | F1: 0.6820 | RMSE: 25.3946 | LR: 0.000957
+Val Epoch 8 | Batch 0/210 | RMSE: 80.0079 | F1: 0.4000
+Val Epoch 8 | Batch 10/210 | RMSE: 73.2660 | F1: 0.0000
+Val Epoch 8 | Batch 20/210 | RMSE: 13.7330 | F1: 0.8571
+Val Epoch 8 | Batch 30/210 | RMSE: 40.6991 | F1: 0.0000
+Val Epoch 8 | Batch 40/210 | RMSE: 69.7284 | F1: 0.6667
+Val Epoch 8 | Batch 50/210 | RMSE: 2.5430 | F1: 0.6667
+Val Epoch 8 | Batch 60/210 | RMSE: 25.0118 | F1: 0.4000
+Val Epoch 8 | Batch 70/210 | RMSE: 158.2393 | F1: 0.0000
+Val Epoch 8 | Batch 80/210 | RMSE: 1.2374 | F1: 1.0000
+Val Epoch 8 | Batch 90/210 | RMSE: 1.1036 | F1: 1.0000
+Val Epoch 8 | Batch 100/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 8 | Batch 110/210 | RMSE: 3.4515 | F1: 0.4000
+Val Epoch 8 | Batch 120/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 8 | Batch 130/210 | RMSE: 3.3003 | F1: 0.6667
+Val Epoch 8 | Batch 140/210 | RMSE: 1.0406 | F1: 1.0000
+Val Epoch 8 | Batch 150/210 | RMSE: 51.8429 | F1: 0.0000
+Val Epoch 8 | Batch 160/210 | RMSE: 3.1570 | F1: 0.6667
+Val Epoch 8 | Batch 170/210 | RMSE: 82.5876 | F1: 0.0000
+Val Epoch 8 | Batch 180/210 | RMSE: 0.7358 | F1: 0.8571
+Val Epoch 8 | Batch 190/210 | RMSE: 2.0566 | F1: 0.8571
+Val Epoch 8 | Batch 200/210 | RMSE: 1.0303 | F1: 1.0000
+
+Val Epoch 8 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 13.5427 │
+│ RMSE      │ 30.053  │
+│ Precision │  0.556  │
+│ Recall    │  0.8571 │
+│ F1        │  0.6429 │
+│ Accuracy  │  0.556  │
+╰───────────┴─────────╯
+Epoch 8 | Train Loss: 3.6870 | F1: 0.6429 | RMSE: 30.0530 | LR: 0.000944
+Val Epoch 9 | Batch 0/210 | RMSE: 29.7349 | F1: 0.4000
+Val Epoch 9 | Batch 10/210 | RMSE: 57.1407 | F1: 0.0000
+Val Epoch 9 | Batch 20/210 | RMSE: 4.2498 | F1: 0.8571
+Val Epoch 9 | Batch 30/210 | RMSE: 2.3362 | F1: 0.6667
+Val Epoch 9 | Batch 40/210 | RMSE: 4.9614 | F1: 0.6667
+Val Epoch 9 | Batch 50/210 | RMSE: 1.9863 | F1: 0.8571
+Val Epoch 9 | Batch 60/210 | RMSE: 5.2573 | F1: 0.4000
+Val Epoch 9 | Batch 70/210 | RMSE: 40.2793 | F1: 0.6667
+Val Epoch 9 | Batch 80/210 | RMSE: 1.2488 | F1: 1.0000
+Val Epoch 9 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 9 | Batch 100/210 | RMSE: 1.3839 | F1: 1.0000
+Val Epoch 9 | Batch 110/210 | RMSE: 5.3847 | F1: 0.4000
+Val Epoch 9 | Batch 120/210 | RMSE: 0.8839 | F1: 1.0000
+Val Epoch 9 | Batch 130/210 | RMSE: 2.2748 | F1: 0.8571
+Val Epoch 9 | Batch 140/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 9 | Batch 150/210 | RMSE: 76.2555 | F1: 0.0000
+Val Epoch 9 | Batch 160/210 | RMSE: 2.6598 | F1: 0.6667
+Val Epoch 9 | Batch 170/210 | RMSE: 26.0742 | F1: 0.6667
+Val Epoch 9 | Batch 180/210 | RMSE: 0.7488 | F1: 1.0000
+Val Epoch 9 | Batch 190/210 | RMSE: 2.2334 | F1: 0.8571
+Val Epoch 9 | Batch 200/210 | RMSE: 0.8536 | F1: 1.0000
+
+Val Epoch 9 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 12.1993 │
+│ RMSE      │ 20.0678 │
+│ Precision │  0.6131 │
+│ Recall    │  0.9048 │
+│ F1        │  0.6988 │
+│ Accuracy  │  0.6131 │
+╰───────────┴─────────╯
+Epoch 9 | Train Loss: 3.6825 | F1: 0.6988 | RMSE: 20.0678 | LR: 0.000930
+New best checkpoint saved — F1: 0.6988 at epoch 9
+Val Epoch 10 | Batch 0/210 | RMSE: 91.6944 | F1: 0.4000
+Val Epoch 10 | Batch 10/210 | RMSE: 104.7651 | F1: 0.4000
+Val Epoch 10 | Batch 20/210 | RMSE: 55.7030 | F1: 0.8571
+Val Epoch 10 | Batch 30/210 | RMSE: 2.2071 | F1: 0.8571
+Val Epoch 10 | Batch 40/210 | RMSE: 5.3724 | F1: 0.4000
+Val Epoch 10 | Batch 50/210 | RMSE: 1.6745 | F1: 1.0000
+Val Epoch 10 | Batch 60/210 | RMSE: 44.8915 | F1: 0.4000
+Val Epoch 10 | Batch 70/210 | RMSE: 45.1040 | F1: 0.6667
+Val Epoch 10 | Batch 80/210 | RMSE: 1.1453 | F1: 1.0000
+Val Epoch 10 | Batch 90/210 | RMSE: 0.6768 | F1: 1.0000
+Val Epoch 10 | Batch 100/210 | RMSE: 0.9673 | F1: 1.0000
+Val Epoch 10 | Batch 110/210 | RMSE: 2.7268 | F1: 0.6667
+Val Epoch 10 | Batch 120/210 | RMSE: 1.3107 | F1: 1.0000
+Val Epoch 10 | Batch 130/210 | RMSE: 1.8808 | F1: 0.8571
+Val Epoch 10 | Batch 140/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 10 | Batch 150/210 | RMSE: 75.9203 | F1: 0.0000
+Val Epoch 10 | Batch 160/210 | RMSE: 2.5587 | F1: 0.6667
+Val Epoch 10 | Batch 170/210 | RMSE: 1.0721 | F1: 1.0000
+Val Epoch 10 | Batch 180/210 | RMSE: 0.8221 | F1: 1.0000
+Val Epoch 10 | Batch 190/210 | RMSE: 3.3066 | F1: 0.6667
+Val Epoch 10 | Batch 200/210 | RMSE: 0.6036 | F1: 1.0000
+
+Val Epoch 10 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 12.1817 │
+│ RMSE      │ 28.996  │
+│ Precision │  0.625  │
+│ Recall    │  0.9238 │
+│ F1        │  0.714  │
+│ Accuracy  │  0.625  │
+╰───────────┴─────────╯
+Epoch 10 | Train Loss: 3.6670 | F1: 0.7140 | RMSE: 28.9960 | LR: 0.000914
+New best checkpoint saved — F1: 0.7140 at epoch 10
+Val Epoch 11 | Batch 0/210 | RMSE: 1.9988 | F1: 0.8571
+Val Epoch 11 | Batch 10/210 | RMSE: 65.9938 | F1: 0.4000
+Val Epoch 11 | Batch 20/210 | RMSE: 1.4846 | F1: 0.8571
+Val Epoch 11 | Batch 30/210 | RMSE: 1.8536 | F1: 0.8571
+Val Epoch 11 | Batch 40/210 | RMSE: 4.5532 | F1: 0.4000
+Val Epoch 11 | Batch 50/210 | RMSE: 2.1431 | F1: 0.6667
+Val Epoch 11 | Batch 60/210 | RMSE: 4.5463 | F1: 0.4000
+Val Epoch 11 | Batch 70/210 | RMSE: 33.0270 | F1: 0.8571
+Val Epoch 11 | Batch 80/210 | RMSE: 1.2071 | F1: 1.0000
+Val Epoch 11 | Batch 90/210 | RMSE: 0.8953 | F1: 1.0000
+Val Epoch 11 | Batch 100/210 | RMSE: 0.9256 | F1: 1.0000
+Val Epoch 11 | Batch 110/210 | RMSE: 2.8001 | F1: 0.6667
+Val Epoch 11 | Batch 120/210 | RMSE: 1.2374 | F1: 1.0000
+Val Epoch 11 | Batch 130/210 | RMSE: 24.2661 | F1: 0.6667
+Val Epoch 11 | Batch 140/210 | RMSE: 1.2173 | F1: 1.0000
+Val Epoch 11 | Batch 150/210 | RMSE: 77.1105 | F1: 0.0000
+Val Epoch 11 | Batch 160/210 | RMSE: 2.5292 | F1: 0.6667
+Val Epoch 11 | Batch 170/210 | RMSE: 26.2510 | F1: 0.6667
+Val Epoch 11 | Batch 180/210 | RMSE: 0.7488 | F1: 1.0000
+Val Epoch 11 | Batch 190/210 | RMSE: 1.9855 | F1: 0.8571
+Val Epoch 11 | Batch 200/210 | RMSE: 0.7803 | F1: 1.0000
+
+Val Epoch 11 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.7892 │
+│ RMSE      │ 16.6694 │
+│ Precision │  0.6679 │
+│ Recall    │  0.9667 │
+│ F1        │  0.7604 │
+│ Accuracy  │  0.6679 │
+╰───────────┴─────────╯
+Epoch 11 | Train Loss: 3.6147 | F1: 0.7604 | RMSE: 16.6694 | LR: 0.000897
+New best checkpoint saved — F1: 0.7604 at epoch 11
+Val Epoch 12 | Batch 0/210 | RMSE: 44.8807 | F1: 0.4000
+Val Epoch 12 | Batch 10/210 | RMSE: 40.6425 | F1: 0.4000
+Val Epoch 12 | Batch 20/210 | RMSE: 4.1766 | F1: 0.6667
+Val Epoch 12 | Batch 30/210 | RMSE: 1.9716 | F1: 0.6667
+Val Epoch 12 | Batch 40/210 | RMSE: 5.4134 | F1: 0.4000
+Val Epoch 12 | Batch 50/210 | RMSE: 1.9445 | F1: 0.8571
+Val Epoch 12 | Batch 60/210 | RMSE: 4.0653 | F1: 0.6667
+Val Epoch 12 | Batch 70/210 | RMSE: 70.7054 | F1: 0.6667
+Val Epoch 12 | Batch 80/210 | RMSE: 1.3941 | F1: 1.0000
+Val Epoch 12 | Batch 90/210 | RMSE: 0.9988 | F1: 1.0000
+Val Epoch 12 | Batch 100/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 12 | Batch 110/210 | RMSE: 2.8001 | F1: 0.6667
+Val Epoch 12 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 12 | Batch 130/210 | RMSE: 24.1847 | F1: 0.8571
+Val Epoch 12 | Batch 140/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 12 | Batch 150/210 | RMSE: 76.1109 | F1: 0.0000
+Val Epoch 12 | Batch 160/210 | RMSE: 2.5146 | F1: 0.6667
+Val Epoch 12 | Batch 170/210 | RMSE: 27.1305 | F1: 0.4000
+Val Epoch 12 | Batch 180/210 | RMSE: 0.8090 | F1: 0.8571
+Val Epoch 12 | Batch 190/210 | RMSE: 2.0587 | F1: 0.8571
+Val Epoch 12 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 12 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 12.2655 │
+│ RMSE      │ 18.3338 │
+│ Precision │  0.656  │
+│ Recall    │  0.9524 │
+│ F1        │  0.746  │
+│ Accuracy  │  0.656  │
+╰───────────┴─────────╯
+Epoch 12 | Train Loss: 3.6252 | F1: 0.7460 | RMSE: 18.3338 | LR: 0.000878
+Val Epoch 13 | Batch 0/210 | RMSE: 1.8241 | F1: 0.8571
+Val Epoch 13 | Batch 10/210 | RMSE: 7.3831 | F1: 0.4000
+Val Epoch 13 | Batch 20/210 | RMSE: 3.6419 | F1: 0.8571
+Val Epoch 13 | Batch 30/210 | RMSE: 1.7803 | F1: 0.8571
+Val Epoch 13 | Batch 40/210 | RMSE: 5.2026 | F1: 0.4000
+Val Epoch 13 | Batch 50/210 | RMSE: 2.3616 | F1: 0.6667
+Val Epoch 13 | Batch 60/210 | RMSE: 4.4877 | F1: 0.4000
+Val Epoch 13 | Batch 70/210 | RMSE: 1.5021 | F1: 0.8571
+Val Epoch 13 | Batch 80/210 | RMSE: 1.3524 | F1: 1.0000
+Val Epoch 13 | Batch 90/210 | RMSE: 0.9988 | F1: 1.0000
+Val Epoch 13 | Batch 100/210 | RMSE: 0.9256 | F1: 1.0000
+Val Epoch 13 | Batch 110/210 | RMSE: 1.1626 | F1: 0.8571
+Val Epoch 13 | Batch 120/210 | RMSE: 1.0607 | F1: 1.0000
+Val Epoch 13 | Batch 130/210 | RMSE: 24.1704 | F1: 0.8571
+Val Epoch 13 | Batch 140/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 13 | Batch 150/210 | RMSE: 63.7248 | F1: 0.0000
+Val Epoch 13 | Batch 160/210 | RMSE: 2.8382 | F1: 0.6667
+Val Epoch 13 | Batch 170/210 | RMSE: 26.2510 | F1: 0.6667
+Val Epoch 13 | Batch 180/210 | RMSE: 0.5721 | F1: 1.0000
+Val Epoch 13 | Batch 190/210 | RMSE: 2.8352 | F1: 0.8571
+Val Epoch 13 | Batch 200/210 | RMSE: 0.6036 | F1: 1.0000
+
+Val Epoch 13 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.2038 │
+│ RMSE      │ 14.3957 │
+│ Precision │  0.6917 │
+│ Recall    │  0.9714 │
+│ F1        │  0.7788 │
+│ Accuracy  │  0.6917 │
+╰───────────┴─────────╯
+Epoch 13 | Train Loss: 3.5958 | F1: 0.7788 | RMSE: 14.3957 | LR: 0.000858
+New best checkpoint saved — F1: 0.7788 at epoch 13
+Val Epoch 14 | Batch 0/210 | RMSE: 2.1741 | F1: 0.8571
+Val Epoch 14 | Batch 10/210 | RMSE: 7.1562 | F1: 0.4000
+Val Epoch 14 | Batch 20/210 | RMSE: 3.5229 | F1: 0.8571
+Val Epoch 14 | Batch 30/210 | RMSE: 1.8410 | F1: 0.8571
+Val Epoch 14 | Batch 40/210 | RMSE: 5.2398 | F1: 0.4000
+Val Epoch 14 | Batch 50/210 | RMSE: 2.1848 | F1: 0.8571
+Val Epoch 14 | Batch 60/210 | RMSE: 3.4385 | F1: 0.4000
+Val Epoch 14 | Batch 70/210 | RMSE: 38.3823 | F1: 0.8571
+Val Epoch 14 | Batch 80/210 | RMSE: 1.3941 | F1: 1.0000
+Val Epoch 14 | Batch 90/210 | RMSE: 1.0721 | F1: 1.0000
+Val Epoch 14 | Batch 100/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 14 | Batch 110/210 | RMSE: 1.2358 | F1: 0.8571
+Val Epoch 14 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 14 | Batch 130/210 | RMSE: 24.5986 | F1: 0.6667
+Val Epoch 14 | Batch 140/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 14 | Batch 150/210 | RMSE: 64.5951 | F1: 0.0000
+Val Epoch 14 | Batch 160/210 | RMSE: 2.3839 | F1: 0.6667
+Val Epoch 14 | Batch 170/210 | RMSE: 26.3242 | F1: 0.6667
+Val Epoch 14 | Batch 180/210 | RMSE: 0.9256 | F1: 1.0000
+Val Epoch 14 | Batch 190/210 | RMSE: 0.6036 | F1: 1.0000
+Val Epoch 14 | Batch 200/210 | RMSE: 0.7803 | F1: 1.0000
+
+Val Epoch 14 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.6739 │
+│ RMSE      │ 14.1653 │
+│ Precision │  0.6738 │
+│ Recall    │  0.9571 │
+│ F1        │  0.7616 │
+│ Accuracy  │  0.6738 │
+╰───────────┴─────────╯
+Epoch 14 | Train Loss: 3.5796 | F1: 0.7616 | RMSE: 14.1653 | LR: 0.000837
+Val Epoch 15 | Batch 0/210 | RMSE: 2.2066 | F1: 0.8571
+Val Epoch 15 | Batch 10/210 | RMSE: 6.5142 | F1: 0.4000
+Val Epoch 15 | Batch 20/210 | RMSE: 4.5217 | F1: 0.6667
+Val Epoch 15 | Batch 30/210 | RMSE: 2.3221 | F1: 0.8571
+Val Epoch 15 | Batch 40/210 | RMSE: 5.3115 | F1: 0.6667
+Val Epoch 15 | Batch 50/210 | RMSE: 2.0280 | F1: 0.8571
+Val Epoch 15 | Batch 60/210 | RMSE: 3.3585 | F1: 0.4000
+Val Epoch 15 | Batch 70/210 | RMSE: 71.8364 | F1: 0.6667
+Val Epoch 15 | Batch 80/210 | RMSE: 1.3941 | F1: 1.0000
+Val Epoch 15 | Batch 90/210 | RMSE: 0.7803 | F1: 1.0000
+Val Epoch 15 | Batch 100/210 | RMSE: 0.6768 | F1: 1.0000
+Val Epoch 15 | Batch 110/210 | RMSE: 3.4515 | F1: 0.4000
+Val Epoch 15 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 15 | Batch 130/210 | RMSE: 24.0419 | F1: 0.8571
+Val Epoch 15 | Batch 140/210 | RMSE: 1.2173 | F1: 1.0000
+Val Epoch 15 | Batch 150/210 | RMSE: 64.3442 | F1: 0.0000
+Val Epoch 15 | Batch 160/210 | RMSE: 2.5895 | F1: 0.6667
+Val Epoch 15 | Batch 170/210 | RMSE: 1.8645 | F1: 0.6667
+Val Epoch 15 | Batch 180/210 | RMSE: 0.9858 | F1: 0.8571
+Val Epoch 15 | Batch 190/210 | RMSE: 0.4268 | F1: 1.0000
+Val Epoch 15 | Batch 200/210 | RMSE: 0.8221 | F1: 1.0000
+
+Val Epoch 15 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.5875 │
+│ RMSE      │ 13.2342 │
+│ Precision │  0.7083 │
+│ Recall    │  0.9667 │
+│ F1        │  0.789  │
+│ Accuracy  │  0.7083 │
+╰───────────┴─────────╯
+Epoch 15 | Train Loss: 3.5637 | F1: 0.7890 | RMSE: 13.2342 | LR: 0.000815
+New best checkpoint saved — F1: 0.7890 at epoch 15
+Val Epoch 16 | Batch 0/210 | RMSE: 2.0705 | F1: 0.8571
+Val Epoch 16 | Batch 10/210 | RMSE: 6.0381 | F1: 0.4000
+Val Epoch 16 | Batch 20/210 | RMSE: 1.2374 | F1: 1.0000
+Val Epoch 16 | Batch 30/210 | RMSE: 2.5890 | F1: 0.6667
+Val Epoch 16 | Batch 40/210 | RMSE: 4.9233 | F1: 0.6667
+Val Epoch 16 | Batch 50/210 | RMSE: 2.3685 | F1: 0.4000
+Val Epoch 16 | Batch 60/210 | RMSE: 4.5412 | F1: 0.4000
+Val Epoch 16 | Batch 70/210 | RMSE: 35.5153 | F1: 0.6667
+Val Epoch 16 | Batch 80/210 | RMSE: 1.3941 | F1: 1.0000
+Val Epoch 16 | Batch 90/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 16 | Batch 100/210 | RMSE: 0.8221 | F1: 1.0000
+Val Epoch 16 | Batch 110/210 | RMSE: 3.6254 | F1: 0.4000
+Val Epoch 16 | Batch 120/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 16 | Batch 130/210 | RMSE: 23.7322 | F1: 0.8571
+Val Epoch 16 | Batch 140/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 16 | Batch 150/210 | RMSE: 59.5718 | F1: 0.0000
+Val Epoch 16 | Batch 160/210 | RMSE: 2.5308 | F1: 0.6667
+Val Epoch 16 | Batch 170/210 | RMSE: 25.5738 | F1: 0.8571
+Val Epoch 16 | Batch 180/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 16 | Batch 190/210 | RMSE: 0.5303 | F1: 1.0000
+Val Epoch 16 | Batch 200/210 | RMSE: 0.9988 | F1: 1.0000
+
+Val Epoch 16 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.4496 │
+│ RMSE      │ 10.9122 │
+│ Precision │  0.7095 │
+│ Recall    │  0.9762 │
+│ F1        │  0.7936 │
+│ Accuracy  │  0.7095 │
+╰───────────┴─────────╯
+Epoch 16 | Train Loss: 3.5608 | F1: 0.7936 | RMSE: 10.9122 | LR: 0.000791
+New best checkpoint saved — F1: 0.7936 at epoch 16
+Val Epoch 17 | Batch 0/210 | RMSE: 1.9973 | F1: 0.8571
+Val Epoch 17 | Batch 10/210 | RMSE: 22.6536 | F1: 0.4000
+Val Epoch 17 | Batch 20/210 | RMSE: 1.4142 | F1: 1.0000
+Val Epoch 17 | Batch 30/210 | RMSE: 49.0863 | F1: 0.6667
+Val Epoch 17 | Batch 40/210 | RMSE: 38.9974 | F1: 0.4000
+Val Epoch 17 | Batch 50/210 | RMSE: 42.6681 | F1: 0.6667
+Val Epoch 17 | Batch 60/210 | RMSE: 4.6589 | F1: 0.4000
+Val Epoch 17 | Batch 70/210 | RMSE: 34.9855 | F1: 0.6667
+Val Epoch 17 | Batch 80/210 | RMSE: 1.2488 | F1: 1.0000
+Val Epoch 17 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 17 | Batch 100/210 | RMSE: 0.6768 | F1: 1.0000
+Val Epoch 17 | Batch 110/210 | RMSE: 3.6254 | F1: 0.4000
+Val Epoch 17 | Batch 120/210 | RMSE: 1.2071 | F1: 1.0000
+Val Epoch 17 | Batch 130/210 | RMSE: 24.1337 | F1: 0.8571
+Val Epoch 17 | Batch 140/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 17 | Batch 150/210 | RMSE: 63.4144 | F1: 0.0000
+Val Epoch 17 | Batch 160/210 | RMSE: 1.7355 | F1: 0.8571
+Val Epoch 17 | Batch 170/210 | RMSE: 26.0213 | F1: 0.4000
+Val Epoch 17 | Batch 180/210 | RMSE: 0.7488 | F1: 1.0000
+Val Epoch 17 | Batch 190/210 | RMSE: 0.5303 | F1: 1.0000
+Val Epoch 17 | Batch 200/210 | RMSE: 0.8536 | F1: 1.0000
+
+Val Epoch 17 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.7289 │
+│ RMSE      │ 16.8124 │
+│ Precision │  0.6726 │
+│ Recall    │  0.9619 │
+│ F1        │  0.7599 │
+│ Accuracy  │  0.6726 │
+╰───────────┴─────────╯
+Epoch 17 | Train Loss: 3.5304 | F1: 0.7599 | RMSE: 16.8124 | LR: 0.000767
+Val Epoch 18 | Batch 0/210 | RMSE: 1.9988 | F1: 0.8571
+Val Epoch 18 | Batch 10/210 | RMSE: 7.5745 | F1: 0.4000
+Val Epoch 18 | Batch 20/210 | RMSE: 41.4816 | F1: 0.8571
+Val Epoch 18 | Batch 30/210 | RMSE: 48.8450 | F1: 0.6667
+Val Epoch 18 | Batch 40/210 | RMSE: 2.5814 | F1: 0.6667
+Val Epoch 18 | Batch 50/210 | RMSE: 2.1787 | F1: 0.6667
+Val Epoch 18 | Batch 60/210 | RMSE: 4.2969 | F1: 0.4000
+Val Epoch 18 | Batch 70/210 | RMSE: 2.0303 | F1: 0.8571
+Val Epoch 18 | Batch 80/210 | RMSE: 1.2906 | F1: 1.0000
+Val Epoch 18 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 18 | Batch 100/210 | RMSE: 1.3626 | F1: 1.0000
+Val Epoch 18 | Batch 110/210 | RMSE: 3.3947 | F1: 0.4000
+Val Epoch 18 | Batch 120/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 18 | Batch 130/210 | RMSE: 24.1847 | F1: 0.8571
+Val Epoch 18 | Batch 140/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 18 | Batch 150/210 | RMSE: 59.0365 | F1: 0.0000
+Val Epoch 18 | Batch 160/210 | RMSE: 2.4874 | F1: 0.6667
+Val Epoch 18 | Batch 170/210 | RMSE: 54.9924 | F1: 0.4000
+Val Epoch 18 | Batch 180/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 18 | Batch 190/210 | RMSE: 3.5423 | F1: 0.6667
+Val Epoch 18 | Batch 200/210 | RMSE: 0.9988 | F1: 1.0000
+
+Val Epoch 18 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.1761 │
+│ RMSE      │  8.9068 │
+│ Precision │  0.7083 │
+│ Recall    │  0.9714 │
+│ F1        │  0.79   │
+│ Accuracy  │  0.7083 │
+╰───────────┴─────────╯
+Epoch 18 | Train Loss: 3.5320 | F1: 0.7900 | RMSE: 8.9068 | LR: 0.000742
+Val Epoch 19 | Batch 0/210 | RMSE: 1.8221 | F1: 0.8571
+Val Epoch 19 | Batch 10/210 | RMSE: 23.2601 | F1: 0.4000
+Val Epoch 19 | Batch 20/210 | RMSE: 1.4559 | F1: 1.0000
+Val Epoch 19 | Batch 30/210 | RMSE: 2.2071 | F1: 0.8571
+Val Epoch 19 | Batch 40/210 | RMSE: 5.2026 | F1: 0.4000
+Val Epoch 19 | Batch 50/210 | RMSE: 2.0150 | F1: 0.6667
+Val Epoch 19 | Batch 60/210 | RMSE: 3.3585 | F1: 0.4000
+Val Epoch 19 | Batch 70/210 | RMSE: 6.1084 | F1: 0.8571
+Val Epoch 19 | Batch 80/210 | RMSE: 1.3941 | F1: 1.0000
+Val Epoch 19 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 19 | Batch 100/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 19 | Batch 110/210 | RMSE: 3.3875 | F1: 0.4000
+Val Epoch 19 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 19 | Batch 130/210 | RMSE: 24.2579 | F1: 0.8571
+Val Epoch 19 | Batch 140/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 19 | Batch 150/210 | RMSE: 63.2694 | F1: 0.0000
+Val Epoch 19 | Batch 160/210 | RMSE: 2.5607 | F1: 0.6667
+Val Epoch 19 | Batch 170/210 | RMSE: 1.7666 | F1: 0.6667
+Val Epoch 19 | Batch 180/210 | RMSE: 0.7488 | F1: 1.0000
+Val Epoch 19 | Batch 190/210 | RMSE: 3.4388 | F1: 0.6667
+Val Epoch 19 | Batch 200/210 | RMSE: 1.1756 | F1: 1.0000
+
+Val Epoch 19 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.0672 │
+│ RMSE      │ 10.5703 │
+│ Precision │  0.719  │
+│ Recall    │  0.981  │
+│ F1        │  0.8015 │
+│ Accuracy  │  0.719  │
+╰───────────┴─────────╯
+Epoch 19 | Train Loss: 3.5430 | F1: 0.8015 | RMSE: 10.5703 | LR: 0.000716
+New best checkpoint saved — F1: 0.8015 at epoch 19
+Val Epoch 20 | Batch 0/210 | RMSE: 1.5021 | F1: 0.8571
+Val Epoch 20 | Batch 10/210 | RMSE: 2.1220 | F1: 0.6667
+Val Epoch 20 | Batch 20/210 | RMSE: 3.4651 | F1: 0.8571
+Val Epoch 20 | Batch 30/210 | RMSE: 1.6642 | F1: 0.8571
+Val Epoch 20 | Batch 40/210 | RMSE: 2.4177 | F1: 0.8571
+Val Epoch 20 | Batch 50/210 | RMSE: 1.9863 | F1: 0.8571
+Val Epoch 20 | Batch 60/210 | RMSE: 2.6665 | F1: 0.8571
+Val Epoch 20 | Batch 70/210 | RMSE: 1.9268 | F1: 0.8571
+Val Epoch 20 | Batch 80/210 | RMSE: 1.2488 | F1: 1.0000
+Val Epoch 20 | Batch 90/210 | RMSE: 1.0721 | F1: 1.0000
+Val Epoch 20 | Batch 100/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 20 | Batch 110/210 | RMSE: 1.2358 | F1: 0.8571
+Val Epoch 20 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 20 | Batch 130/210 | RMSE: 2.4425 | F1: 0.6667
+Val Epoch 20 | Batch 140/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 20 | Batch 150/210 | RMSE: 63.7062 | F1: 0.0000
+Val Epoch 20 | Batch 160/210 | RMSE: 2.3839 | F1: 0.6667
+Val Epoch 20 | Batch 170/210 | RMSE: 1.7796 | F1: 0.8571
+Val Epoch 20 | Batch 180/210 | RMSE: 0.5303 | F1: 1.0000
+Val Epoch 20 | Batch 190/210 | RMSE: 0.4268 | F1: 1.0000
+Val Epoch 20 | Batch 200/210 | RMSE: 0.9256 | F1: 1.0000
+
+Val Epoch 20 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.98   │
+│ RMSE      │ 10.4091 │
+│ Precision │  0.7286 │
+│ Recall    │  0.9857 │
+│ F1        │  0.8133 │
+│ Accuracy  │  0.7286 │
+╰───────────┴─────────╯
+Epoch 20 | Train Loss: 3.5170 | F1: 0.8133 | RMSE: 10.4091 | LR: 0.000689
+New best checkpoint saved — F1: 0.8133 at epoch 20
+Val Epoch 21 | Batch 0/210 | RMSE: 1.5021 | F1: 0.8571
+Val Epoch 21 | Batch 10/210 | RMSE: 2.2291 | F1: 0.4000
+Val Epoch 21 | Batch 20/210 | RMSE: 1.4142 | F1: 1.0000
+Val Epoch 21 | Batch 30/210 | RMSE: 2.2358 | F1: 0.6667
+Val Epoch 21 | Batch 40/210 | RMSE: 2.3759 | F1: 0.8571
+Val Epoch 21 | Batch 50/210 | RMSE: 2.1848 | F1: 0.6667
+Val Epoch 21 | Batch 60/210 | RMSE: 4.2968 | F1: 0.4000
+Val Epoch 21 | Batch 70/210 | RMSE: 1.8845 | F1: 0.8571
+Val Epoch 21 | Batch 80/210 | RMSE: 1.3524 | F1: 1.0000
+Val Epoch 21 | Batch 90/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 21 | Batch 100/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 21 | Batch 110/210 | RMSE: 3.8844 | F1: 0.6667
+Val Epoch 21 | Batch 120/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 21 | Batch 130/210 | RMSE: 24.1704 | F1: 0.8571
+Val Epoch 21 | Batch 140/210 | RMSE: 1.2173 | F1: 1.0000
+Val Epoch 21 | Batch 150/210 | RMSE: 63.9991 | F1: 0.0000
+Val Epoch 21 | Batch 160/210 | RMSE: 3.2040 | F1: 0.6667
+Val Epoch 21 | Batch 170/210 | RMSE: 1.3524 | F1: 1.0000
+Val Epoch 21 | Batch 180/210 | RMSE: 0.8221 | F1: 1.0000
+Val Epoch 21 | Batch 190/210 | RMSE: 3.4763 | F1: 0.8571
+Val Epoch 21 | Batch 200/210 | RMSE: 1.2906 | F1: 1.0000
+
+Val Epoch 21 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.0379 │
+│ RMSE      │  8.3933 │
+│ Precision │  0.7369 │
+│ Recall    │  0.9905 │
+│ F1        │  0.8176 │
+│ Accuracy  │  0.7369 │
+╰───────────┴─────────╯
+Epoch 21 | Train Loss: 3.4888 | F1: 0.8176 | RMSE: 8.3933 | LR: 0.000662
+New best checkpoint saved — F1: 0.8176 at epoch 21
+Val Epoch 22 | Batch 0/210 | RMSE: 3.4048 | F1: 0.6667
+Val Epoch 22 | Batch 10/210 | RMSE: 2.4398 | F1: 0.6667
+Val Epoch 22 | Batch 20/210 | RMSE: 1.2374 | F1: 1.0000
+Val Epoch 22 | Batch 30/210 | RMSE: 48.8363 | F1: 0.4000
+Val Epoch 22 | Batch 40/210 | RMSE: 2.6529 | F1: 0.6667
+Val Epoch 22 | Batch 50/210 | RMSE: 2.0465 | F1: 0.6667
+Val Epoch 22 | Batch 60/210 | RMSE: 3.2853 | F1: 0.4000
+Val Epoch 22 | Batch 70/210 | RMSE: 1.7500 | F1: 0.8571
+Val Epoch 22 | Batch 80/210 | RMSE: 1.3941 | F1: 1.0000
+Val Epoch 22 | Batch 90/210 | RMSE: 1.1626 | F1: 0.8571
+Val Epoch 22 | Batch 100/210 | RMSE: 36.8101 | F1: 0.6667
+Val Epoch 22 | Batch 110/210 | RMSE: 2.2064 | F1: 0.6667
+Val Epoch 22 | Batch 120/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 22 | Batch 130/210 | RMSE: 23.9570 | F1: 0.8571
+Val Epoch 22 | Batch 140/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 22 | Batch 150/210 | RMSE: 47.2936 | F1: 0.0000
+Val Epoch 22 | Batch 160/210 | RMSE: 42.0705 | F1: 0.6667
+Val Epoch 22 | Batch 170/210 | RMSE: 26.2347 | F1: 0.6667
+Val Epoch 22 | Batch 180/210 | RMSE: 1.0893 | F1: 0.8571
+Val Epoch 22 | Batch 190/210 | RMSE: 0.3536 | F1: 1.0000
+Val Epoch 22 | Batch 200/210 | RMSE: 0.6036 | F1: 1.0000
+
+Val Epoch 22 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.3621 │
+│ RMSE      │ 10.1739 │
+│ Precision │  0.7238 │
+│ Recall    │  0.9762 │
+│ F1        │  0.807  │
+│ Accuracy  │  0.7238 │
+╰───────────┴─────────╯
+Epoch 22 | Train Loss: 3.4896 | F1: 0.8070 | RMSE: 10.1739 | LR: 0.000634
+Val Epoch 23 | Batch 0/210 | RMSE: 3.9339 | F1: 0.6667
+Val Epoch 23 | Batch 10/210 | RMSE: 103.3315 | F1: 0.4000
+Val Epoch 23 | Batch 20/210 | RMSE: 41.9206 | F1: 0.8571
+Val Epoch 23 | Batch 30/210 | RMSE: 1.9571 | F1: 0.8571
+Val Epoch 23 | Batch 40/210 | RMSE: 2.5746 | F1: 0.6667
+Val Epoch 23 | Batch 50/210 | RMSE: 2.0280 | F1: 0.8571
+Val Epoch 23 | Batch 60/210 | RMSE: 3.1141 | F1: 0.4000
+Val Epoch 23 | Batch 70/210 | RMSE: 32.6387 | F1: 0.8571
+Val Epoch 23 | Batch 80/210 | RMSE: 1.2374 | F1: 1.0000
+Val Epoch 23 | Batch 90/210 | RMSE: 1.0721 | F1: 1.0000
+Val Epoch 23 | Batch 100/210 | RMSE: 0.9256 | F1: 1.0000
+Val Epoch 23 | Batch 110/210 | RMSE: 2.1343 | F1: 0.6667
+Val Epoch 23 | Batch 120/210 | RMSE: 1.0607 | F1: 1.0000
+Val Epoch 23 | Batch 130/210 | RMSE: 24.1049 | F1: 0.8571
+Val Epoch 23 | Batch 140/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 23 | Batch 150/210 | RMSE: 46.3542 | F1: 0.0000
+Val Epoch 23 | Batch 160/210 | RMSE: 2.9079 | F1: 0.6667
+Val Epoch 23 | Batch 170/210 | RMSE: 1.8528 | F1: 0.8571
+Val Epoch 23 | Batch 180/210 | RMSE: 0.7488 | F1: 1.0000
+Val Epoch 23 | Batch 190/210 | RMSE: 2.6584 | F1: 0.8571
+Val Epoch 23 | Batch 200/210 | RMSE: 0.9988 | F1: 1.0000
+
+Val Epoch 23 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.3643 │
+│ RMSE      │ 14.167  │
+│ Precision │  0.7095 │
+│ Recall    │  0.981  │
+│ F1        │  0.7939 │
+│ Accuracy  │  0.7095 │
+╰───────────┴─────────╯
+Epoch 23 | Train Loss: 3.5259 | F1: 0.7939 | RMSE: 14.1670 | LR: 0.000606
+Val Epoch 24 | Batch 0/210 | RMSE: 1.6474 | F1: 0.8571
+Val Epoch 24 | Batch 10/210 | RMSE: 6.8734 | F1: 0.0000
+Val Epoch 24 | Batch 20/210 | RMSE: 1.5910 | F1: 1.0000
+Val Epoch 24 | Batch 30/210 | RMSE: 46.8323 | F1: 0.6667
+Val Epoch 24 | Batch 40/210 | RMSE: 2.2409 | F1: 0.8571
+Val Epoch 24 | Batch 50/210 | RMSE: 1.8930 | F1: 0.8571
+Val Epoch 24 | Batch 60/210 | RMSE: 4.4680 | F1: 0.4000
+Val Epoch 24 | Batch 70/210 | RMSE: 1.6768 | F1: 0.8571
+Val Epoch 24 | Batch 80/210 | RMSE: 1.4359 | F1: 1.0000
+Val Epoch 24 | Batch 90/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 24 | Batch 100/210 | RMSE: 0.6036 | F1: 1.0000
+Val Epoch 24 | Batch 110/210 | RMSE: 2.8396 | F1: 0.6667
+Val Epoch 24 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 24 | Batch 130/210 | RMSE: 24.2802 | F1: 0.8571
+Val Epoch 24 | Batch 140/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 24 | Batch 150/210 | RMSE: 61.9048 | F1: 0.4000
+Val Epoch 24 | Batch 160/210 | RMSE: 1.4874 | F1: 0.8571
+Val Epoch 24 | Batch 170/210 | RMSE: 26.2510 | F1: 0.6667
+Val Epoch 24 | Batch 180/210 | RMSE: 0.8221 | F1: 1.0000
+Val Epoch 24 | Batch 190/210 | RMSE: 0.5303 | F1: 1.0000
+Val Epoch 24 | Batch 200/210 | RMSE: 0.9571 | F1: 1.0000
+
+Val Epoch 24 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.9317 │
+│ RMSE      │  8.6918 │
+│ Precision │  0.7643 │
+│ Recall    │  0.9905 │
+│ F1        │  0.8392 │
+│ Accuracy  │  0.7643 │
+╰───────────┴─────────╯
+Epoch 24 | Train Loss: 3.5105 | F1: 0.8392 | RMSE: 8.6918 | LR: 0.000578
+New best checkpoint saved — F1: 0.8392 at epoch 24
+Val Epoch 25 | Batch 0/210 | RMSE: 1.6642 | F1: 0.8571
+Val Epoch 25 | Batch 10/210 | RMSE: 4.1412 | F1: 0.4000
+Val Epoch 25 | Batch 20/210 | RMSE: 1.4559 | F1: 1.0000
+Val Epoch 25 | Batch 30/210 | RMSE: 1.4571 | F1: 0.8571
+Val Epoch 25 | Batch 40/210 | RMSE: 2.7153 | F1: 0.6667
+Val Epoch 25 | Batch 50/210 | RMSE: 2.1917 | F1: 0.6667
+Val Epoch 25 | Batch 60/210 | RMSE: 3.3585 | F1: 0.4000
+Val Epoch 25 | Batch 70/210 | RMSE: 1.7206 | F1: 0.8571
+Val Epoch 25 | Batch 80/210 | RMSE: 1.2906 | F1: 1.0000
+Val Epoch 25 | Batch 90/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 25 | Batch 100/210 | RMSE: 0.4268 | F1: 1.0000
+Val Epoch 25 | Batch 110/210 | RMSE: 2.6314 | F1: 0.6667
+Val Epoch 25 | Batch 120/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 25 | Batch 130/210 | RMSE: 24.0240 | F1: 0.8571
+Val Epoch 25 | Batch 140/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 25 | Batch 150/210 | RMSE: 63.1618 | F1: 0.0000
+Val Epoch 25 | Batch 160/210 | RMSE: 1.8111 | F1: 0.8571
+Val Epoch 25 | Batch 170/210 | RMSE: 1.6591 | F1: 0.8571
+Val Epoch 25 | Batch 180/210 | RMSE: 1.1441 | F1: 1.0000
+Val Epoch 25 | Batch 190/210 | RMSE: 3.1326 | F1: 0.8571
+Val Epoch 25 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 25 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.0707 │
+│ RMSE      │  9.5269 │
+│ Precision │  0.7607 │
+│ Recall    │  0.9905 │
+│ F1        │  0.8391 │
+│ Accuracy  │  0.7607 │
+╰───────────┴─────────╯
+Epoch 25 | Train Loss: 3.4609 | F1: 0.8391 | RMSE: 9.5269 | LR: 0.000550
+Val Epoch 26 | Batch 0/210 | RMSE: 1.9973 | F1: 0.8571
+Val Epoch 26 | Batch 10/210 | RMSE: 4.0603 | F1: 0.0000
+Val Epoch 26 | Batch 20/210 | RMSE: 3.5229 | F1: 0.8571
+Val Epoch 26 | Batch 30/210 | RMSE: 2.3732 | F1: 0.4000
+Val Epoch 26 | Batch 40/210 | RMSE: 2.0956 | F1: 0.8571
+Val Epoch 26 | Batch 50/210 | RMSE: 2.0150 | F1: 0.6667
+Val Epoch 26 | Batch 60/210 | RMSE: 3.2142 | F1: 0.4000
+Val Epoch 26 | Batch 70/210 | RMSE: 35.2459 | F1: 0.6667
+Val Epoch 26 | Batch 80/210 | RMSE: 1.5709 | F1: 1.0000
+Val Epoch 26 | Batch 90/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 26 | Batch 100/210 | RMSE: 0.6036 | F1: 1.0000
+Val Epoch 26 | Batch 110/210 | RMSE: 3.4881 | F1: 0.4000
+Val Epoch 26 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 26 | Batch 130/210 | RMSE: 24.1991 | F1: 0.8571
+Val Epoch 26 | Batch 140/210 | RMSE: 1.2173 | F1: 1.0000
+Val Epoch 26 | Batch 150/210 | RMSE: 46.1578 | F1: 0.0000
+Val Epoch 26 | Batch 160/210 | RMSE: 1.6343 | F1: 0.8571
+Val Epoch 26 | Batch 170/210 | RMSE: 26.0678 | F1: 0.6667
+Val Epoch 26 | Batch 180/210 | RMSE: 1.1311 | F1: 0.8571
+Val Epoch 26 | Batch 190/210 | RMSE: 0.4268 | F1: 1.0000
+Val Epoch 26 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 26 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.1617 │
+│ RMSE      │ 11.8618 │
+│ Precision │  0.7417 │
+│ Recall    │  0.981  │
+│ F1        │  0.819  │
+│ Accuracy  │  0.7417 │
+╰───────────┴─────────╯
+Epoch 26 | Train Loss: 3.4739 | F1: 0.8190 | RMSE: 11.8618 | LR: 0.000522
+Val Epoch 27 | Batch 0/210 | RMSE: 1.4874 | F1: 0.8571
+Val Epoch 27 | Batch 10/210 | RMSE: 3.8966 | F1: 0.4000
+Val Epoch 27 | Batch 20/210 | RMSE: 3.4192 | F1: 0.8571
+Val Epoch 27 | Batch 30/210 | RMSE: 2.4858 | F1: 0.4000
+Val Epoch 27 | Batch 40/210 | RMSE: 3.0065 | F1: 0.6667
+Val Epoch 27 | Batch 50/210 | RMSE: 2.0567 | F1: 0.6667
+Val Epoch 27 | Batch 60/210 | RMSE: 4.4680 | F1: 0.4000
+Val Epoch 27 | Batch 70/210 | RMSE: 2.0595 | F1: 0.8571
+Val Epoch 27 | Batch 80/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 27 | Batch 90/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 27 | Batch 100/210 | RMSE: 0.5303 | F1: 1.0000
+Val Epoch 27 | Batch 110/210 | RMSE: 3.4881 | F1: 0.4000
+Val Epoch 27 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 27 | Batch 130/210 | RMSE: 1.4988 | F1: 1.0000
+Val Epoch 27 | Batch 140/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 27 | Batch 150/210 | RMSE: 63.4144 | F1: 0.0000
+Val Epoch 27 | Batch 160/210 | RMSE: 2.9394 | F1: 0.6667
+Val Epoch 27 | Batch 170/210 | RMSE: 26.2769 | F1: 0.6667
+Val Epoch 27 | Batch 180/210 | RMSE: 0.7488 | F1: 1.0000
+Val Epoch 27 | Batch 190/210 | RMSE: 3.1948 | F1: 0.8571
+Val Epoch 27 | Batch 200/210 | RMSE: 0.9988 | F1: 1.0000
+
+Val Epoch 27 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.8477 │
+│ RMSE      │ 10.2951 │
+│ Precision │  0.7655 │
+│ Recall    │  0.9857 │
+│ F1        │  0.837  │
+│ Accuracy  │  0.7655 │
+╰───────────┴─────────╯
+Epoch 27 | Train Loss: 3.4802 | F1: 0.8370 | RMSE: 10.2951 | LR: 0.000494
+Val Epoch 28 | Batch 0/210 | RMSE: 2.0276 | F1: 0.8571
+Val Epoch 28 | Batch 10/210 | RMSE: 6.2153 | F1: 0.4000
+Val Epoch 28 | Batch 20/210 | RMSE: 3.1200 | F1: 0.8571
+Val Epoch 28 | Batch 30/210 | RMSE: 20.3325 | F1: 0.6667
+Val Epoch 28 | Batch 40/210 | RMSE: 2.5814 | F1: 0.6667
+Val Epoch 28 | Batch 50/210 | RMSE: 1.6327 | F1: 1.0000
+Val Epoch 28 | Batch 60/210 | RMSE: 3.2853 | F1: 0.4000
+Val Epoch 28 | Batch 70/210 | RMSE: 2.0613 | F1: 0.8571
+Val Epoch 28 | Batch 80/210 | RMSE: 1.1453 | F1: 1.0000
+Val Epoch 28 | Batch 90/210 | RMSE: 1.0721 | F1: 1.0000
+Val Epoch 28 | Batch 100/210 | RMSE: 0.7071 | F1: 1.0000
+Val Epoch 28 | Batch 110/210 | RMSE: 3.4881 | F1: 0.4000
+Val Epoch 28 | Batch 120/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 28 | Batch 130/210 | RMSE: 1.4988 | F1: 1.0000
+Val Epoch 28 | Batch 140/210 | RMSE: 1.0607 | F1: 1.0000
+Val Epoch 28 | Batch 150/210 | RMSE: 62.9133 | F1: 0.0000
+Val Epoch 28 | Batch 160/210 | RMSE: 2.5146 | F1: 0.6667
+Val Epoch 28 | Batch 170/210 | RMSE: 82.6374 | F1: 0.4000
+Val Epoch 28 | Batch 180/210 | RMSE: 0.7488 | F1: 1.0000
+Val Epoch 28 | Batch 190/210 | RMSE: 2.8352 | F1: 0.8571
+Val Epoch 28 | Batch 200/210 | RMSE: 0.8536 | F1: 1.0000
+
+Val Epoch 28 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.0101 │
+│ RMSE      │  7.915  │
+│ Precision │  0.7714 │
+│ Recall    │  0.9857 │
+│ F1        │  0.8421 │
+│ Accuracy  │  0.7714 │
+╰───────────┴─────────╯
+Epoch 28 | Train Loss: 3.4303 | F1: 0.8421 | RMSE: 7.9150 | LR: 0.000466
+New best checkpoint saved — F1: 0.8421 at epoch 28
+Val Epoch 29 | Batch 0/210 | RMSE: 1.5021 | F1: 0.8571
+Val Epoch 29 | Batch 10/210 | RMSE: 4.3709 | F1: 0.6667
+Val Epoch 29 | Batch 20/210 | RMSE: 1.5910 | F1: 1.0000
+Val Epoch 29 | Batch 30/210 | RMSE: 48.8649 | F1: 0.4000
+Val Epoch 29 | Batch 40/210 | RMSE: 2.2296 | F1: 0.8571
+Val Epoch 29 | Batch 50/210 | RMSE: 2.0150 | F1: 0.6667
+Val Epoch 29 | Batch 60/210 | RMSE: 4.4680 | F1: 0.4000
+Val Epoch 29 | Batch 70/210 | RMSE: 1.9577 | F1: 0.8571
+Val Epoch 29 | Batch 80/210 | RMSE: 1.5394 | F1: 1.0000
+Val Epoch 29 | Batch 90/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 29 | Batch 100/210 | RMSE: 0.7071 | F1: 1.0000
+Val Epoch 29 | Batch 110/210 | RMSE: 3.4339 | F1: 0.4000
+Val Epoch 29 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 29 | Batch 130/210 | RMSE: 23.9570 | F1: 0.8571
+Val Epoch 29 | Batch 140/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 29 | Batch 150/210 | RMSE: 63.9319 | F1: 0.0000
+Val Epoch 29 | Batch 160/210 | RMSE: 2.9394 | F1: 0.6667
+Val Epoch 29 | Batch 170/210 | RMSE: 2.3780 | F1: 0.6667
+Val Epoch 29 | Batch 180/210 | RMSE: 1.1441 | F1: 1.0000
+Val Epoch 29 | Batch 190/210 | RMSE: 0.7803 | F1: 1.0000
+Val Epoch 29 | Batch 200/210 | RMSE: 0.9988 | F1: 1.0000
+
+Val Epoch 29 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.9657 │
+│ RMSE      │  8.7878 │
+│ Precision │  0.7821 │
+│ Recall    │  0.981  │
+│ F1        │  0.8506 │
+│ Accuracy  │  0.7821 │
+╰───────────┴─────────╯
+Epoch 29 | Train Loss: 3.4773 | F1: 0.8506 | RMSE: 8.7878 | LR: 0.000438
+New best checkpoint saved — F1: 0.8506 at epoch 29
+Val Epoch 30 | Batch 0/210 | RMSE: 1.8221 | F1: 0.8571
+Val Epoch 30 | Batch 10/210 | RMSE: 6.3815 | F1: 0.4000
+Val Epoch 30 | Batch 20/210 | RMSE: 3.4609 | F1: 0.8571
+Val Epoch 30 | Batch 30/210 | RMSE: 21.5190 | F1: 0.4000
+Val Epoch 30 | Batch 40/210 | RMSE: 5.1665 | F1: 0.4000
+Val Epoch 30 | Batch 50/210 | RMSE: 2.0150 | F1: 0.6667
+Val Epoch 30 | Batch 60/210 | RMSE: 4.4680 | F1: 0.4000
+Val Epoch 30 | Batch 70/210 | RMSE: 1.8520 | F1: 0.8571
+Val Epoch 30 | Batch 80/210 | RMSE: 1.7162 | F1: 1.0000
+Val Epoch 30 | Batch 90/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 30 | Batch 100/210 | RMSE: 0.7071 | F1: 1.0000
+Val Epoch 30 | Batch 110/210 | RMSE: 3.5614 | F1: 0.4000
+Val Epoch 30 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 30 | Batch 130/210 | RMSE: 24.2802 | F1: 0.8571
+Val Epoch 30 | Batch 140/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 30 | Batch 150/210 | RMSE: 48.8964 | F1: 0.4000
+Val Epoch 30 | Batch 160/210 | RMSE: 2.9394 | F1: 0.6667
+Val Epoch 30 | Batch 170/210 | RMSE: 26.1722 | F1: 0.6667
+Val Epoch 30 | Batch 180/210 | RMSE: 0.9126 | F1: 0.8571
+Val Epoch 30 | Batch 190/210 | RMSE: 0.7071 | F1: 1.0000
+Val Epoch 30 | Batch 200/210 | RMSE: 0.9256 | F1: 1.0000
+
+Val Epoch 30 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.1419 │
+│ RMSE      │  8.6951 │
+│ Precision │  0.7464 │
+│ Recall    │  0.9905 │
+│ F1        │  0.8252 │
+│ Accuracy  │  0.7464 │
+╰───────────┴─────────╯
+Epoch 30 | Train Loss: 3.4226 | F1: 0.8252 | RMSE: 8.6951 | LR: 0.000411
+Val Epoch 31 | Batch 0/210 | RMSE: 1.8221 | F1: 0.8571
+Val Epoch 31 | Batch 10/210 | RMSE: 2.0723 | F1: 0.4000
+Val Epoch 31 | Batch 20/210 | RMSE: 3.5646 | F1: 0.8571
+Val Epoch 31 | Batch 30/210 | RMSE: 2.3628 | F1: 0.4000
+Val Epoch 31 | Batch 40/210 | RMSE: 2.3748 | F1: 0.8571
+Val Epoch 31 | Batch 50/210 | RMSE: 1.8512 | F1: 0.8571
+Val Epoch 31 | Batch 60/210 | RMSE: 2.8771 | F1: 0.6667
+Val Epoch 31 | Batch 70/210 | RMSE: 2.1345 | F1: 0.8571
+Val Epoch 31 | Batch 80/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 31 | Batch 90/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 31 | Batch 100/210 | RMSE: 0.7071 | F1: 1.0000
+Val Epoch 31 | Batch 110/210 | RMSE: 2.3831 | F1: 0.6667
+Val Epoch 31 | Batch 120/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 31 | Batch 130/210 | RMSE: 24.1755 | F1: 0.8571
+Val Epoch 31 | Batch 140/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 31 | Batch 150/210 | RMSE: 60.3693 | F1: 0.0000
+Val Epoch 31 | Batch 160/210 | RMSE: 1.7772 | F1: 0.8571
+Val Epoch 31 | Batch 170/210 | RMSE: 1.9981 | F1: 0.8571
+Val Epoch 31 | Batch 180/210 | RMSE: 0.9256 | F1: 1.0000
+Val Epoch 31 | Batch 190/210 | RMSE: 2.9084 | F1: 0.8571
+Val Epoch 31 | Batch 200/210 | RMSE: 0.9256 | F1: 1.0000
+
+Val Epoch 31 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.1638 │
+│ RMSE      │ 13.1871 │
+│ Precision │  0.725  │
+│ Recall    │  0.9762 │
+│ F1        │  0.8065 │
+│ Accuracy  │  0.725  │
+╰───────────┴─────────╯
+Epoch 31 | Train Loss: 3.4370 | F1: 0.8065 | RMSE: 13.1871 | LR: 0.000384
+Val Epoch 32 | Batch 0/210 | RMSE: 2.3496 | F1: 0.8571
+Val Epoch 32 | Batch 10/210 | RMSE: 3.0233 | F1: 0.8571
+Val Epoch 32 | Batch 20/210 | RMSE: 3.2090 | F1: 0.8571
+Val Epoch 32 | Batch 30/210 | RMSE: 48.5863 | F1: 0.6667
+Val Epoch 32 | Batch 40/210 | RMSE: 2.2462 | F1: 0.6667
+Val Epoch 32 | Batch 50/210 | RMSE: 1.8697 | F1: 0.6667
+Val Epoch 32 | Batch 60/210 | RMSE: 3.0409 | F1: 0.4000
+Val Epoch 32 | Batch 70/210 | RMSE: 1.8536 | F1: 0.8571
+Val Epoch 32 | Batch 80/210 | RMSE: 1.2906 | F1: 1.0000
+Val Epoch 32 | Batch 90/210 | RMSE: 0.7803 | F1: 1.0000
+Val Epoch 32 | Batch 100/210 | RMSE: 0.7071 | F1: 1.0000
+Val Epoch 32 | Batch 110/210 | RMSE: 2.2064 | F1: 0.6667
+Val Epoch 32 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 32 | Batch 130/210 | RMSE: 1.3941 | F1: 1.0000
+Val Epoch 32 | Batch 140/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 32 | Batch 150/210 | RMSE: 110.0108 | F1: 0.0000
+Val Epoch 32 | Batch 160/210 | RMSE: 0.6768 | F1: 1.0000
+Val Epoch 32 | Batch 170/210 | RMSE: 2.8080 | F1: 0.6667
+Val Epoch 32 | Batch 180/210 | RMSE: 0.9673 | F1: 1.0000
+Val Epoch 32 | Batch 190/210 | RMSE: 1.0000 | F1: 1.0000
+Val Epoch 32 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 32 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.8307 │
+│ RMSE      │  9.0525 │
+│ Precision │  0.781  │
+│ Recall    │  0.9905 │
+│ F1        │  0.8529 │
+│ Accuracy  │  0.781  │
+╰───────────┴─────────╯
+Epoch 32 | Train Loss: 3.4249 | F1: 0.8529 | RMSE: 9.0525 | LR: 0.000358
+New best checkpoint saved — F1: 0.8529 at epoch 32
+Val Epoch 33 | Batch 0/210 | RMSE: 1.5000 | F1: 0.8571
+Val Epoch 33 | Batch 10/210 | RMSE: 3.2728 | F1: 0.8571
+Val Epoch 33 | Batch 20/210 | RMSE: 3.3858 | F1: 0.8571
+Val Epoch 33 | Batch 30/210 | RMSE: 48.6150 | F1: 0.4000
+Val Epoch 33 | Batch 40/210 | RMSE: 2.5944 | F1: 0.8571
+Val Epoch 33 | Batch 50/210 | RMSE: 1.8410 | F1: 0.8571
+Val Epoch 33 | Batch 60/210 | RMSE: 4.2235 | F1: 0.4000
+Val Epoch 33 | Batch 70/210 | RMSE: 1.7521 | F1: 0.8571
+Val Epoch 33 | Batch 80/210 | RMSE: 1.3524 | F1: 1.0000
+Val Epoch 33 | Batch 90/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 33 | Batch 100/210 | RMSE: 22.8948 | F1: 0.8571
+Val Epoch 33 | Batch 110/210 | RMSE: 2.2064 | F1: 0.6667
+Val Epoch 33 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 33 | Batch 130/210 | RMSE: 1.3209 | F1: 1.0000
+Val Epoch 33 | Batch 140/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 33 | Batch 150/210 | RMSE: 58.8842 | F1: 0.0000
+Val Epoch 33 | Batch 160/210 | RMSE: 1.5308 | F1: 0.8571
+Val Epoch 33 | Batch 170/210 | RMSE: 26.3242 | F1: 0.6667
+Val Epoch 33 | Batch 180/210 | RMSE: 0.7488 | F1: 1.0000
+Val Epoch 33 | Batch 190/210 | RMSE: 0.8221 | F1: 1.0000
+Val Epoch 33 | Batch 200/210 | RMSE: 0.9571 | F1: 1.0000
+
+Val Epoch 33 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.8201 │
+│ RMSE      │  8.9698 │
+│ Precision │  0.769  │
+│ Recall    │  0.9905 │
+│ F1        │  0.8431 │
+│ Accuracy  │  0.769  │
+╰───────────┴─────────╯
+Epoch 33 | Train Loss: 3.4322 | F1: 0.8431 | RMSE: 8.9698 | LR: 0.000333
+Val Epoch 34 | Batch 0/210 | RMSE: 1.8221 | F1: 0.8571
+Val Epoch 34 | Batch 10/210 | RMSE: 3.8138 | F1: 0.8571
+Val Epoch 34 | Batch 20/210 | RMSE: 3.3858 | F1: 0.8571
+Val Epoch 34 | Batch 30/210 | RMSE: 48.6469 | F1: 0.4000
+Val Epoch 34 | Batch 40/210 | RMSE: 2.2491 | F1: 0.8571
+Val Epoch 34 | Batch 50/210 | RMSE: 1.8697 | F1: 0.6667
+Val Epoch 34 | Batch 60/210 | RMSE: 3.1141 | F1: 0.4000
+Val Epoch 34 | Batch 70/210 | RMSE: 1.7521 | F1: 0.8571
+Val Epoch 34 | Batch 80/210 | RMSE: 1.2488 | F1: 1.0000
+Val Epoch 34 | Batch 90/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 34 | Batch 100/210 | RMSE: 0.7803 | F1: 1.0000
+Val Epoch 34 | Batch 110/210 | RMSE: 2.2064 | F1: 0.6667
+Val Epoch 34 | Batch 120/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 34 | Batch 130/210 | RMSE: 24.1022 | F1: 0.8571
+Val Epoch 34 | Batch 140/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 34 | Batch 150/210 | RMSE: 58.5939 | F1: 0.0000
+Val Epoch 34 | Batch 160/210 | RMSE: 1.6319 | F1: 0.8571
+Val Epoch 34 | Batch 170/210 | RMSE: 2.5331 | F1: 0.6667
+Val Epoch 34 | Batch 180/210 | RMSE: 0.9256 | F1: 1.0000
+Val Epoch 34 | Batch 190/210 | RMSE: 2.7317 | F1: 0.8571
+Val Epoch 34 | Batch 200/210 | RMSE: 0.9256 | F1: 1.0000
+
+Val Epoch 34 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.831  │
+│ RMSE      │  8.9611 │
+│ Precision │  0.781  │
+│ Recall    │  0.9905 │
+│ F1        │  0.8521 │
+│ Accuracy  │  0.781  │
+╰───────────┴─────────╯
+Epoch 34 | Train Loss: 3.4539 | F1: 0.8521 | RMSE: 8.9611 | LR: 0.000309
+Val Epoch 35 | Batch 0/210 | RMSE: 1.9973 | F1: 0.8571
+Val Epoch 35 | Batch 10/210 | RMSE: 4.0636 | F1: 0.8571
+Val Epoch 35 | Batch 20/210 | RMSE: 1.4142 | F1: 1.0000
+Val Epoch 35 | Batch 30/210 | RMSE: 5.6862 | F1: 0.4000
+Val Epoch 35 | Batch 40/210 | RMSE: 2.7582 | F1: 0.6667
+Val Epoch 35 | Batch 50/210 | RMSE: 2.0465 | F1: 0.6667
+Val Epoch 35 | Batch 60/210 | RMSE: 4.4680 | F1: 0.4000
+Val Epoch 35 | Batch 70/210 | RMSE: 1.5021 | F1: 0.8571
+Val Epoch 35 | Batch 80/210 | RMSE: 1.5394 | F1: 1.0000
+Val Epoch 35 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 35 | Batch 100/210 | RMSE: 0.7071 | F1: 1.0000
+Val Epoch 35 | Batch 110/210 | RMSE: 2.0325 | F1: 0.6667
+Val Epoch 35 | Batch 120/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 35 | Batch 130/210 | RMSE: 1.4256 | F1: 1.0000
+Val Epoch 35 | Batch 140/210 | RMSE: 1.2173 | F1: 1.0000
+Val Epoch 35 | Batch 150/210 | RMSE: 45.6299 | F1: 0.0000
+Val Epoch 35 | Batch 160/210 | RMSE: 2.7626 | F1: 0.6667
+Val Epoch 35 | Batch 170/210 | RMSE: 26.0033 | F1: 0.6667
+Val Epoch 35 | Batch 180/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 35 | Batch 190/210 | RMSE: 2.9763 | F1: 0.8571
+Val Epoch 35 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 35 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 11.0203 │
+│ RMSE      │  7.867  │
+│ Precision │  0.7643 │
+│ Recall    │  0.9857 │
+│ F1        │  0.8375 │
+│ Accuracy  │  0.7643 │
+╰───────────┴─────────╯
+Epoch 35 | Train Loss: 3.4179 | F1: 0.8375 | RMSE: 7.8670 | LR: 0.000285
+Val Epoch 36 | Batch 0/210 | RMSE: 1.3282 | F1: 0.8571
+Val Epoch 36 | Batch 10/210 | RMSE: 2.5665 | F1: 0.8571
+Val Epoch 36 | Batch 20/210 | RMSE: 1.4142 | F1: 1.0000
+Val Epoch 36 | Batch 30/210 | RMSE: 1.3445 | F1: 0.8571
+Val Epoch 36 | Batch 40/210 | RMSE: 2.6248 | F1: 0.8571
+Val Epoch 36 | Batch 50/210 | RMSE: 2.0178 | F1: 0.8571
+Val Epoch 36 | Batch 60/210 | RMSE: 1.5406 | F1: 1.0000
+Val Epoch 36 | Batch 70/210 | RMSE: 2.3845 | F1: 0.8571
+Val Epoch 36 | Batch 80/210 | RMSE: 1.2792 | F1: 1.0000
+Val Epoch 36 | Batch 90/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 36 | Batch 100/210 | RMSE: 1.0607 | F1: 1.0000
+Val Epoch 36 | Batch 110/210 | RMSE: 2.2064 | F1: 0.6667
+Val Epoch 36 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 36 | Batch 130/210 | RMSE: 23.9570 | F1: 0.8571
+Val Epoch 36 | Batch 140/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 36 | Batch 150/210 | RMSE: 44.6333 | F1: 0.4000
+Val Epoch 36 | Batch 160/210 | RMSE: 1.5587 | F1: 0.8571
+Val Epoch 36 | Batch 170/210 | RMSE: 25.6610 | F1: 0.8571
+Val Epoch 36 | Batch 180/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 36 | Batch 190/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 36 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 36 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.8273 │
+│ RMSE      │ 11.9245 │
+│ Precision │  0.7774 │
+│ Recall    │  0.9857 │
+│ F1        │  0.8475 │
+│ Accuracy  │  0.7774 │
+╰───────────┴─────────╯
+Epoch 36 | Train Loss: 3.4183 | F1: 0.8475 | RMSE: 11.9245 | LR: 0.000263
+Val Epoch 37 | Batch 0/210 | RMSE: 1.6474 | F1: 0.8571
+Val Epoch 37 | Batch 10/210 | RMSE: 2.3178 | F1: 0.8571
+Val Epoch 37 | Batch 20/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 37 | Batch 30/210 | RMSE: 1.5499 | F1: 0.6667
+Val Epoch 37 | Batch 40/210 | RMSE: 1.3009 | F1: 0.8571
+Val Epoch 37 | Batch 50/210 | RMSE: 43.0087 | F1: 0.4000
+Val Epoch 37 | Batch 60/210 | RMSE: 1.8417 | F1: 0.6667
+Val Epoch 37 | Batch 70/210 | RMSE: 1.7500 | F1: 0.8571
+Val Epoch 37 | Batch 80/210 | RMSE: 1.3209 | F1: 1.0000
+Val Epoch 37 | Batch 90/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 37 | Batch 100/210 | RMSE: 0.7803 | F1: 1.0000
+Val Epoch 37 | Batch 110/210 | RMSE: 2.0465 | F1: 0.6667
+Val Epoch 37 | Batch 120/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 37 | Batch 130/210 | RMSE: 1.3209 | F1: 1.0000
+Val Epoch 37 | Batch 140/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 37 | Batch 150/210 | RMSE: 44.3292 | F1: 0.4000
+Val Epoch 37 | Batch 160/210 | RMSE: 1.6319 | F1: 0.8571
+Val Epoch 37 | Batch 170/210 | RMSE: 26.2454 | F1: 0.6667
+Val Epoch 37 | Batch 180/210 | RMSE: 1.1441 | F1: 1.0000
+Val Epoch 37 | Batch 190/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 37 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 37 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.6627 │
+│ RMSE      │  7.2468 │
+│ Precision │  0.8071 │
+│ Recall    │  0.9952 │
+│ F1        │  0.8714 │
+│ Accuracy  │  0.8071 │
+╰───────────┴─────────╯
+Epoch 37 | Train Loss: 3.4166 | F1: 0.8714 | RMSE: 7.2468 | LR: 0.000242
+New best checkpoint saved — F1: 0.8714 at epoch 37
+Val Epoch 38 | Batch 0/210 | RMSE: 1.1556 | F1: 0.8571
+Val Epoch 38 | Batch 10/210 | RMSE: 2.0697 | F1: 0.8571
+Val Epoch 38 | Batch 20/210 | RMSE: 1.4142 | F1: 1.0000
+Val Epoch 38 | Batch 30/210 | RMSE: 1.1626 | F1: 0.8571
+Val Epoch 38 | Batch 40/210 | RMSE: 1.6901 | F1: 0.8571
+Val Epoch 38 | Batch 50/210 | RMSE: 42.8319 | F1: 0.4000
+Val Epoch 38 | Batch 60/210 | RMSE: 3.1148 | F1: 0.4000
+Val Epoch 38 | Batch 70/210 | RMSE: 1.5753 | F1: 0.8571
+Val Epoch 38 | Batch 80/210 | RMSE: 1.3941 | F1: 1.0000
+Val Epoch 38 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 38 | Batch 100/210 | RMSE: 0.8839 | F1: 1.0000
+Val Epoch 38 | Batch 110/210 | RMSE: 2.0296 | F1: 0.6667
+Val Epoch 38 | Batch 120/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 38 | Batch 130/210 | RMSE: 1.3209 | F1: 1.0000
+Val Epoch 38 | Batch 140/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 38 | Batch 150/210 | RMSE: 30.0398 | F1: 0.6667
+Val Epoch 38 | Batch 160/210 | RMSE: 1.6319 | F1: 0.8571
+Val Epoch 38 | Batch 170/210 | RMSE: 2.9047 | F1: 0.6667
+Val Epoch 38 | Batch 180/210 | RMSE: 0.9256 | F1: 1.0000
+Val Epoch 38 | Batch 190/210 | RMSE: 3.0080 | F1: 0.8571
+Val Epoch 38 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 38 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.6786 │
+│ RMSE      │  8.265  │
+│ Precision │  0.7976 │
+│ Recall    │  0.9952 │
+│ F1        │  0.8653 │
+│ Accuracy  │  0.7976 │
+╰───────────┴─────────╯
+Epoch 38 | Train Loss: 3.3943 | F1: 0.8653 | RMSE: 8.2650 | LR: 0.000222
+Val Epoch 39 | Batch 0/210 | RMSE: 1.3107 | F1: 0.8571
+Val Epoch 39 | Batch 10/210 | RMSE: 1.9863 | F1: 0.8571
+Val Epoch 39 | Batch 20/210 | RMSE: 1.0607 | F1: 1.0000
+Val Epoch 39 | Batch 30/210 | RMSE: 1.9819 | F1: 0.4000
+Val Epoch 39 | Batch 40/210 | RMSE: 2.3639 | F1: 0.8571
+Val Epoch 39 | Batch 50/210 | RMSE: 2.1787 | F1: 0.4000
+Val Epoch 39 | Batch 60/210 | RMSE: 1.9322 | F1: 0.4000
+Val Epoch 39 | Batch 70/210 | RMSE: 2.3205 | F1: 0.8571
+Val Epoch 39 | Batch 80/210 | RMSE: 1.3941 | F1: 1.0000
+Val Epoch 39 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 39 | Batch 100/210 | RMSE: 0.6036 | F1: 1.0000
+Val Epoch 39 | Batch 110/210 | RMSE: 2.0296 | F1: 0.6667
+Val Epoch 39 | Batch 120/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 39 | Batch 130/210 | RMSE: 1.1441 | F1: 1.0000
+Val Epoch 39 | Batch 140/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 39 | Batch 150/210 | RMSE: 0.7803 | F1: 1.0000
+Val Epoch 39 | Batch 160/210 | RMSE: 1.6319 | F1: 0.8571
+Val Epoch 39 | Batch 170/210 | RMSE: 3.0826 | F1: 0.6667
+Val Epoch 39 | Batch 180/210 | RMSE: 0.9256 | F1: 1.0000
+Val Epoch 39 | Batch 190/210 | RMSE: 2.9817 | F1: 0.8571
+Val Epoch 39 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 39 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.7036 │
+│ RMSE      │  6.8987 │
+│ Precision │  0.7881 │
+│ Recall    │  0.9905 │
+│ F1        │  0.8572 │
+│ Accuracy  │  0.7881 │
+╰───────────┴─────────╯
+Epoch 39 | Train Loss: 3.4239 | F1: 0.8572 | RMSE: 6.8987 | LR: 0.000203
+Val Epoch 40 | Batch 0/210 | RMSE: 1.6642 | F1: 0.8571
+Val Epoch 40 | Batch 10/210 | RMSE: 2.5248 | F1: 0.8571
+Val Epoch 40 | Batch 20/210 | RMSE: 1.5910 | F1: 1.0000
+Val Epoch 40 | Batch 30/210 | RMSE: 47.7631 | F1: 0.6667
+Val Epoch 40 | Batch 40/210 | RMSE: 2.5944 | F1: 0.8571
+Val Epoch 40 | Batch 50/210 | RMSE: 1.8697 | F1: 0.6667
+Val Epoch 40 | Batch 60/210 | RMSE: 1.9322 | F1: 0.4000
+Val Epoch 40 | Batch 70/210 | RMSE: 2.2798 | F1: 0.8571
+Val Epoch 40 | Batch 80/210 | RMSE: 1.3941 | F1: 1.0000
+Val Epoch 40 | Batch 90/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 40 | Batch 100/210 | RMSE: 23.0745 | F1: 0.8571
+Val Epoch 40 | Batch 110/210 | RMSE: 2.2064 | F1: 0.6667
+Val Epoch 40 | Batch 120/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 40 | Batch 130/210 | RMSE: 0.9988 | F1: 1.0000
+Val Epoch 40 | Batch 140/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 40 | Batch 150/210 | RMSE: 54.0498 | F1: 0.8571
+Val Epoch 40 | Batch 160/210 | RMSE: 1.7355 | F1: 0.8571
+Val Epoch 40 | Batch 170/210 | RMSE: 2.8595 | F1: 0.6667
+Val Epoch 40 | Batch 180/210 | RMSE: 0.8221 | F1: 1.0000
+Val Epoch 40 | Batch 190/210 | RMSE: 3.0549 | F1: 0.8571
+Val Epoch 40 | Batch 200/210 | RMSE: 1.1756 | F1: 1.0000
+
+Val Epoch 40 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.7494 │
+│ RMSE      │  8.3104 │
+│ Precision │  0.7964 │
+│ Recall    │  0.9952 │
+│ F1        │  0.8655 │
+│ Accuracy  │  0.7964 │
+╰───────────┴─────────╯
+Epoch 40 | Train Loss: 3.3927 | F1: 0.8655 | RMSE: 8.3104 | LR: 0.000186
+Val Epoch 41 | Batch 0/210 | RMSE: 1.5021 | F1: 0.8571
+Val Epoch 41 | Batch 10/210 | RMSE: 2.1917 | F1: 0.6667
+Val Epoch 41 | Batch 20/210 | RMSE: 1.2374 | F1: 1.0000
+Val Epoch 41 | Batch 30/210 | RMSE: 1.4559 | F1: 0.8571
+Val Epoch 41 | Batch 40/210 | RMSE: 2.4177 | F1: 0.8571
+Val Epoch 41 | Batch 50/210 | RMSE: 1.4874 | F1: 1.0000
+Val Epoch 41 | Batch 60/210 | RMSE: 1.7685 | F1: 0.6667
+Val Epoch 41 | Batch 70/210 | RMSE: 2.1020 | F1: 0.8571
+Val Epoch 41 | Batch 80/210 | RMSE: 0.9256 | F1: 1.0000
+Val Epoch 41 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 41 | Batch 100/210 | RMSE: 0.7803 | F1: 1.0000
+Val Epoch 41 | Batch 110/210 | RMSE: 1.5264 | F1: 0.8571
+Val Epoch 41 | Batch 120/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 41 | Batch 130/210 | RMSE: 0.9988 | F1: 1.0000
+Val Epoch 41 | Batch 140/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 41 | Batch 150/210 | RMSE: 29.7226 | F1: 0.6667
+Val Epoch 41 | Batch 160/210 | RMSE: 1.7355 | F1: 0.8571
+Val Epoch 41 | Batch 170/210 | RMSE: 86.3028 | F1: 0.6667
+Val Epoch 41 | Batch 180/210 | RMSE: 0.6768 | F1: 1.0000
+Val Epoch 41 | Batch 190/210 | RMSE: 3.0812 | F1: 0.8571
+Val Epoch 41 | Batch 200/210 | RMSE: 0.7488 | F1: 1.0000
+
+Val Epoch 41 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.6313 │
+│ RMSE      │  8.2577 │
+│ Precision │  0.8143 │
+│ Recall    │  0.9952 │
+│ F1        │  0.8783 │
+│ Accuracy  │  0.8143 │
+╰───────────┴─────────╯
+Epoch 41 | Train Loss: 3.4151 | F1: 0.8783 | RMSE: 8.2577 | LR: 0.000170
+New best checkpoint saved — F1: 0.8783 at epoch 41
+Val Epoch 42 | Batch 0/210 | RMSE: 1.4874 | F1: 0.8571
+Val Epoch 42 | Batch 10/210 | RMSE: 2.1220 | F1: 0.6667
+Val Epoch 42 | Batch 20/210 | RMSE: 3.2424 | F1: 0.8571
+Val Epoch 42 | Batch 30/210 | RMSE: 1.5213 | F1: 0.6667
+Val Epoch 42 | Batch 40/210 | RMSE: 1.9716 | F1: 0.8571
+Val Epoch 42 | Batch 50/210 | RMSE: 42.8319 | F1: 0.4000
+Val Epoch 42 | Batch 60/210 | RMSE: 1.9322 | F1: 0.4000
+Val Epoch 42 | Batch 70/210 | RMSE: 1.8827 | F1: 0.8571
+Val Epoch 42 | Batch 80/210 | RMSE: 1.0721 | F1: 1.0000
+Val Epoch 42 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 42 | Batch 100/210 | RMSE: 0.8839 | F1: 1.0000
+Val Epoch 42 | Batch 110/210 | RMSE: 1.4846 | F1: 0.8571
+Val Epoch 42 | Batch 120/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 42 | Batch 130/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 42 | Batch 140/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 42 | Batch 150/210 | RMSE: 31.1420 | F1: 0.4000
+Val Epoch 42 | Batch 160/210 | RMSE: 1.6319 | F1: 0.8571
+Val Epoch 42 | Batch 170/210 | RMSE: 26.3242 | F1: 0.6667
+Val Epoch 42 | Batch 180/210 | RMSE: 0.9256 | F1: 1.0000
+Val Epoch 42 | Batch 190/210 | RMSE: 2.9817 | F1: 0.8571
+Val Epoch 42 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 42 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.7093 │
+│ RMSE      │  9.7462 │
+│ Precision │  0.7798 │
+│ Recall    │  0.9905 │
+│ F1        │  0.851  │
+│ Accuracy  │  0.7798 │
+╰───────────┴─────────╯
+Epoch 42 | Train Loss: 3.3951 | F1: 0.8510 | RMSE: 9.7462 | LR: 0.000156
+Val Epoch 43 | Batch 0/210 | RMSE: 1.6788 | F1: 0.8571
+Val Epoch 43 | Batch 10/210 | RMSE: 1.9165 | F1: 0.8571
+Val Epoch 43 | Batch 20/210 | RMSE: 3.2424 | F1: 0.8571
+Val Epoch 43 | Batch 30/210 | RMSE: 1.5213 | F1: 0.6667
+Val Epoch 43 | Batch 40/210 | RMSE: 1.5394 | F1: 0.8571
+Val Epoch 43 | Batch 50/210 | RMSE: 2.0751 | F1: 0.4000
+Val Epoch 43 | Batch 60/210 | RMSE: 1.8680 | F1: 0.6667
+Val Epoch 43 | Batch 70/210 | RMSE: 2.2798 | F1: 0.8571
+Val Epoch 43 | Batch 80/210 | RMSE: 1.5811 | F1: 1.0000
+Val Epoch 43 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 43 | Batch 100/210 | RMSE: 0.7803 | F1: 1.0000
+Val Epoch 43 | Batch 110/210 | RMSE: 1.8557 | F1: 0.6667
+Val Epoch 43 | Batch 120/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 43 | Batch 130/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 43 | Batch 140/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 43 | Batch 150/210 | RMSE: 31.2084 | F1: 0.4000
+Val Epoch 43 | Batch 160/210 | RMSE: 0.5000 | F1: 1.0000
+Val Epoch 43 | Batch 170/210 | RMSE: 26.5325 | F1: 0.6667
+Val Epoch 43 | Batch 180/210 | RMSE: 1.1441 | F1: 1.0000
+Val Epoch 43 | Batch 190/210 | RMSE: 3.1531 | F1: 0.8571
+Val Epoch 43 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 43 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.7714 │
+│ RMSE      │  8.9663 │
+│ Precision │  0.7833 │
+│ Recall    │  0.9952 │
+│ F1        │  0.8549 │
+│ Accuracy  │  0.7833 │
+╰───────────┴─────────╯
+Epoch 43 | Train Loss: 3.4145 | F1: 0.8549 | RMSE: 8.9663 | LR: 0.000143
+Val Epoch 44 | Batch 0/210 | RMSE: 1.4874 | F1: 0.8571
+Val Epoch 44 | Batch 10/210 | RMSE: 2.1631 | F1: 0.8571
+Val Epoch 44 | Batch 20/210 | RMSE: 1.4142 | F1: 1.0000
+Val Epoch 44 | Batch 30/210 | RMSE: 1.5213 | F1: 0.6667
+Val Epoch 44 | Batch 40/210 | RMSE: 1.5394 | F1: 0.8571
+Val Epoch 44 | Batch 50/210 | RMSE: 1.6929 | F1: 0.8571
+Val Epoch 44 | Batch 60/210 | RMSE: 1.7685 | F1: 0.6667
+Val Epoch 44 | Batch 70/210 | RMSE: 2.2798 | F1: 0.8571
+Val Epoch 44 | Batch 80/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 44 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 44 | Batch 100/210 | RMSE: 0.7803 | F1: 1.0000
+Val Epoch 44 | Batch 110/210 | RMSE: 1.4846 | F1: 0.8571
+Val Epoch 44 | Batch 120/210 | RMSE: 1.0607 | F1: 1.0000
+Val Epoch 44 | Batch 130/210 | RMSE: 1.0721 | F1: 1.0000
+Val Epoch 44 | Batch 140/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 44 | Batch 150/210 | RMSE: 15.8935 | F1: 0.8571
+Val Epoch 44 | Batch 160/210 | RMSE: 0.4268 | F1: 1.0000
+Val Epoch 44 | Batch 170/210 | RMSE: 54.7435 | F1: 0.6667
+Val Epoch 44 | Batch 180/210 | RMSE: 0.8221 | F1: 1.0000
+Val Epoch 44 | Batch 190/210 | RMSE: 3.0812 | F1: 0.8571
+Val Epoch 44 | Batch 200/210 | RMSE: 0.8536 | F1: 1.0000
+
+Val Epoch 44 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.6315 │
+│ RMSE      │  7.1867 │
+│ Precision │  0.8048 │
+│ Recall    │  0.9857 │
+│ F1        │  0.8688 │
+│ Accuracy  │  0.8048 │
+╰───────────┴─────────╯
+Epoch 44 | Train Loss: 3.3981 | F1: 0.8688 | RMSE: 7.1867 | LR: 0.000132
+Val Epoch 45 | Batch 0/210 | RMSE: 1.6788 | F1: 0.8571
+Val Epoch 45 | Batch 10/210 | RMSE: 3.0233 | F1: 0.8571
+Val Epoch 45 | Batch 20/210 | RMSE: 1.0607 | F1: 1.0000
+Val Epoch 45 | Batch 30/210 | RMSE: 1.5213 | F1: 0.6667
+Val Epoch 45 | Batch 40/210 | RMSE: 2.5944 | F1: 0.8571
+Val Epoch 45 | Batch 50/210 | RMSE: 42.8319 | F1: 0.4000
+Val Epoch 45 | Batch 60/210 | RMSE: 1.7685 | F1: 0.6667
+Val Epoch 45 | Batch 70/210 | RMSE: 1.9559 | F1: 0.8571
+Val Epoch 45 | Batch 80/210 | RMSE: 1.3107 | F1: 1.0000
+Val Epoch 45 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 45 | Batch 100/210 | RMSE: 0.7071 | F1: 1.0000
+Val Epoch 45 | Batch 110/210 | RMSE: 2.2064 | F1: 0.6667
+Val Epoch 45 | Batch 120/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 45 | Batch 130/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 45 | Batch 140/210 | RMSE: 1.1339 | F1: 1.0000
+Val Epoch 45 | Batch 150/210 | RMSE: 17.5961 | F1: 0.6667
+Val Epoch 45 | Batch 160/210 | RMSE: 1.6319 | F1: 0.8571
+Val Epoch 45 | Batch 170/210 | RMSE: 85.8134 | F1: 0.6667
+Val Epoch 45 | Batch 180/210 | RMSE: 1.1441 | F1: 1.0000
+Val Epoch 45 | Batch 190/210 | RMSE: 2.9084 | F1: 0.8571
+Val Epoch 45 | Batch 200/210 | RMSE: 0.9256 | F1: 1.0000
+
+Val Epoch 45 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.7075 │
+│ RMSE      │  8.1088 │
+│ Precision │  0.7964 │
+│ Recall    │  0.9952 │
+│ F1        │  0.8649 │
+│ Accuracy  │  0.7964 │
+╰───────────┴─────────╯
+Epoch 45 | Train Loss: 3.4067 | F1: 0.8649 | RMSE: 8.1088 | LR: 0.000122
+Val Epoch 46 | Batch 0/210 | RMSE: 1.6788 | F1: 0.8571
+Val Epoch 46 | Batch 10/210 | RMSE: 1.8232 | F1: 0.8571
+Val Epoch 46 | Batch 20/210 | RMSE: 1.2374 | F1: 1.0000
+Val Epoch 46 | Batch 30/210 | RMSE: 1.1339 | F1: 0.8571
+Val Epoch 46 | Batch 40/210 | RMSE: 2.5944 | F1: 0.8571
+Val Epoch 46 | Batch 50/210 | RMSE: 2.0178 | F1: 0.8571
+Val Epoch 46 | Batch 60/210 | RMSE: 1.8417 | F1: 0.6667
+Val Epoch 46 | Batch 70/210 | RMSE: 2.2473 | F1: 0.8571
+Val Epoch 46 | Batch 80/210 | RMSE: 1.4977 | F1: 1.0000
+Val Epoch 46 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 46 | Batch 100/210 | RMSE: 0.5303 | F1: 1.0000
+Val Epoch 46 | Batch 110/210 | RMSE: 2.0325 | F1: 0.6667
+Val Epoch 46 | Batch 120/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 46 | Batch 130/210 | RMSE: 1.3536 | F1: 1.0000
+Val Epoch 46 | Batch 140/210 | RMSE: 1.3524 | F1: 1.0000
+Val Epoch 46 | Batch 150/210 | RMSE: 3.8328 | F1: 0.8571
+Val Epoch 46 | Batch 160/210 | RMSE: 1.6319 | F1: 0.8571
+Val Epoch 46 | Batch 170/210 | RMSE: 85.8520 | F1: 0.6667
+Val Epoch 46 | Batch 180/210 | RMSE: 0.9256 | F1: 1.0000
+Val Epoch 46 | Batch 190/210 | RMSE: 2.9817 | F1: 0.8571
+Val Epoch 46 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 46 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.5792 │
+│ RMSE      │  8.4989 │
+│ Precision │  0.8107 │
+│ Recall    │  0.9952 │
+│ F1        │  0.8759 │
+│ Accuracy  │  0.8107 │
+╰───────────┴─────────╯
+Epoch 46 | Train Loss: 3.3745 | F1: 0.8759 | RMSE: 8.4989 | LR: 0.000114
+Val Epoch 47 | Batch 0/210 | RMSE: 1.6642 | F1: 0.8571
+Val Epoch 47 | Batch 10/210 | RMSE: 2.5665 | F1: 0.8571
+Val Epoch 47 | Batch 20/210 | RMSE: 1.2374 | F1: 1.0000
+Val Epoch 47 | Batch 30/210 | RMSE: 1.1339 | F1: 0.8571
+Val Epoch 47 | Batch 40/210 | RMSE: 2.5944 | F1: 0.8571
+Val Epoch 47 | Batch 50/210 | RMSE: 10.6507 | F1: 0.6667
+Val Epoch 47 | Batch 60/210 | RMSE: 1.8417 | F1: 0.6667
+Val Epoch 47 | Batch 70/210 | RMSE: 2.1020 | F1: 0.8571
+Val Epoch 47 | Batch 80/210 | RMSE: 1.5394 | F1: 1.0000
+Val Epoch 47 | Batch 90/210 | RMSE: 0.8536 | F1: 1.0000
+Val Epoch 47 | Batch 100/210 | RMSE: 0.5303 | F1: 1.0000
+Val Epoch 47 | Batch 110/210 | RMSE: 2.2064 | F1: 0.6667
+Val Epoch 47 | Batch 120/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 47 | Batch 130/210 | RMSE: 1.2803 | F1: 1.0000
+Val Epoch 47 | Batch 140/210 | RMSE: 1.3524 | F1: 1.0000
+Val Epoch 47 | Batch 150/210 | RMSE: 14.5671 | F1: 0.8571
+Val Epoch 47 | Batch 160/210 | RMSE: 1.8783 | F1: 0.8571
+Val Epoch 47 | Batch 170/210 | RMSE: 85.8520 | F1: 0.6667
+Val Epoch 47 | Batch 180/210 | RMSE: 1.1441 | F1: 1.0000
+Val Epoch 47 | Batch 190/210 | RMSE: 2.9084 | F1: 0.8571
+Val Epoch 47 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 47 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.6392 │
+│ RMSE      │  7.0137 │
+│ Precision │  0.8036 │
+│ Recall    │  0.9952 │
+│ F1        │  0.8712 │
+│ Accuracy  │  0.8036 │
+╰───────────┴─────────╯
+Epoch 47 | Train Loss: 3.3930 | F1: 0.8712 | RMSE: 7.0137 | LR: 0.000108
+Val Epoch 48 | Batch 0/210 | RMSE: 1.8095 | F1: 0.8571
+Val Epoch 48 | Batch 10/210 | RMSE: 2.8941 | F1: 0.8571
+Val Epoch 48 | Batch 20/210 | RMSE: 1.2374 | F1: 1.0000
+Val Epoch 48 | Batch 30/210 | RMSE: 1.3839 | F1: 0.8571
+Val Epoch 48 | Batch 40/210 | RMSE: 2.2806 | F1: 0.8571
+Val Epoch 48 | Batch 50/210 | RMSE: 1.9445 | F1: 0.8571
+Val Epoch 48 | Batch 60/210 | RMSE: 1.9322 | F1: 0.4000
+Val Epoch 48 | Batch 70/210 | RMSE: 1.9559 | F1: 0.8571
+Val Epoch 48 | Batch 80/210 | RMSE: 1.5811 | F1: 1.0000
+Val Epoch 48 | Batch 90/210 | RMSE: 0.7803 | F1: 1.0000
+Val Epoch 48 | Batch 100/210 | RMSE: 0.6036 | F1: 1.0000
+Val Epoch 48 | Batch 110/210 | RMSE: 1.8557 | F1: 0.6667
+Val Epoch 48 | Batch 120/210 | RMSE: 1.0303 | F1: 1.0000
+Val Epoch 48 | Batch 130/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 48 | Batch 140/210 | RMSE: 1.1024 | F1: 1.0000
+Val Epoch 48 | Batch 150/210 | RMSE: 0.5303 | F1: 1.0000
+Val Epoch 48 | Batch 160/210 | RMSE: 0.4268 | F1: 1.0000
+Val Epoch 48 | Batch 170/210 | RMSE: 54.7182 | F1: 0.6667
+Val Epoch 48 | Batch 180/210 | RMSE: 0.8221 | F1: 1.0000
+Val Epoch 48 | Batch 190/210 | RMSE: 0.9268 | F1: 1.0000
+Val Epoch 48 | Batch 200/210 | RMSE: 0.9256 | F1: 1.0000
+
+Val Epoch 48 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.6588 │
+│ RMSE      │  7.3171 │
+│ Precision │  0.806  │
+│ Recall    │  0.9952 │
+│ F1        │  0.871  │
+│ Accuracy  │  0.806  │
+╰───────────┴─────────╯
+Epoch 48 | Train Loss: 3.3983 | F1: 0.8710 | RMSE: 7.3171 | LR: 0.000104
+Val Epoch 49 | Batch 0/210 | RMSE: 1.7059 | F1: 0.8571
+Val Epoch 49 | Batch 10/210 | RMSE: 1.8232 | F1: 0.8571
+Val Epoch 49 | Batch 20/210 | RMSE: 1.3107 | F1: 1.0000
+Val Epoch 49 | Batch 30/210 | RMSE: 1.5213 | F1: 0.6667
+Val Epoch 49 | Batch 40/210 | RMSE: 1.8669 | F1: 0.8571
+Val Epoch 49 | Batch 50/210 | RMSE: 1.2948 | F1: 0.6667
+Val Epoch 49 | Batch 60/210 | RMSE: 1.6311 | F1: 0.8571
+Val Epoch 49 | Batch 70/210 | RMSE: 1.8827 | F1: 0.8571
+Val Epoch 49 | Batch 80/210 | RMSE: 1.3626 | F1: 1.0000
+Val Epoch 49 | Batch 90/210 | RMSE: 0.6036 | F1: 1.0000
+Val Epoch 49 | Batch 100/210 | RMSE: 0.5303 | F1: 1.0000
+Val Epoch 49 | Batch 110/210 | RMSE: 2.0296 | F1: 0.6667
+Val Epoch 49 | Batch 120/210 | RMSE: 0.9571 | F1: 1.0000
+Val Epoch 49 | Batch 130/210 | RMSE: 1.1756 | F1: 1.0000
+Val Epoch 49 | Batch 140/210 | RMSE: 1.3524 | F1: 1.0000
+Val Epoch 49 | Batch 150/210 | RMSE: 0.7071 | F1: 1.0000
+Val Epoch 49 | Batch 160/210 | RMSE: 0.6036 | F1: 1.0000
+Val Epoch 49 | Batch 170/210 | RMSE: 34.2221 | F1: 0.6667
+Val Epoch 49 | Batch 180/210 | RMSE: 0.6768 | F1: 1.0000
+Val Epoch 49 | Batch 190/210 | RMSE: 0.9268 | F1: 1.0000
+Val Epoch 49 | Batch 200/210 | RMSE: 1.1024 | F1: 1.0000
+
+Val Epoch 49 Results:
+╭───────────┬─────────╮
+│ Metric    │   Value │
+├───────────┼─────────┤
+│ Loss      │ 10.6741 │
+│ RMSE      │  6.1561 │
+│ Precision │  0.7988 │
+│ Recall    │  0.9905 │
+│ F1        │  0.8666 │
+│ Accuracy  │  0.7988 │
+╰───────────┴─────────╯
+Epoch 49 | Train Loss: 3.3902 | F1: 0.8666 | RMSE: 6.1561 | LR: 0.000101
+Training complete. Best F1: 0.8783 | Best checkpoint: ../logs/TOTNet_TTA_(5)_Bidirect_(512,512)_BallMask_50epochs_WBCE[1,2,3,3]_bs_ch32/model_best.pth

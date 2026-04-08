@@ -1,6 +1,7 @@
 import copy
 import json
 import os
+import shutil
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -9,7 +10,9 @@ import cv2
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
+import torch
 from matplotlib.widgets import RectangleSelector
+from tqdm import tqdm
 
 from json_to_xml import write_xml_data
 
@@ -640,7 +643,7 @@ def read_image(path: str):
     return image
 
 
-def show_cropped_image(img, coord):
+def show_cropped_image(img, coord, save_path: Optional[str] = None):
     x1, y1, x2, y2 = coord
     cropped = img[y1:y2, x1:x2]
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))
@@ -656,7 +659,46 @@ def show_cropped_image(img, coord):
     axes[1].axis("off")
 
     plt.tight_layout()
+    if save_path is not None:
+        fig.savefig(save_path, dpi=150)
+        print(f"Saved ROI preview to {save_path}")
     plt.show()
+
+
+def save_table_points_preview(frame, points, save_path: str, title: str = "Selected table points"):
+    if frame is None or len(points) != 6:
+        raise ValueError("Expected a frame and 6 selected table points.")
+
+    img = frame[:, :, ::-1].copy() if (len(frame.shape) == 3 and frame.shape[2] == 3) else frame.copy()
+    point_labels = ["TL", "TR", "mid-left", "mid-right", "BL", "BR"]
+    colors = ["red", "blue", "green", "orange", "purple", "cyan"]
+
+    fig, ax = plt.subplots(1, 1, figsize=(14, 8))
+    ax.imshow(img)
+    ax.set_title(title)
+    ax.axis("off")
+
+    for (x, y), label, color in zip(points, point_labels, colors):
+        ax.plot(x, y, "o", color=color, markersize=10, zorder=5)
+        ax.text(
+            x + 8,
+            y - 8,
+            label,
+            color=color,
+            fontsize=10,
+            fontweight="bold",
+            zorder=6,
+            bbox=dict(facecolor="black", alpha=0.5, boxstyle="round,pad=0.2"),
+        )
+
+    tl, tr, ml, mr, bl, br = points
+    for start, end in [(tl, tr), (bl, br), (tl, bl), (tr, br), (ml, mr)]:
+        ax.plot([start[0], end[0]], [start[1], end[1]], "--", color="yellow", linewidth=1.5, alpha=0.8, zorder=4)
+
+    plt.tight_layout()
+    fig.savefig(save_path, dpi=150)
+    plt.close(fig)
+    print(f"Saved table point preview to {save_path}")
 
 
 def select_roi_jupyter(frame, title="Select ROI", existing=None, allow_cancel=True):
@@ -843,5 +885,482 @@ def reorganize_rallies_with_bounces_under_hits(grouped_rallies):
                 previous_non_bounce_event = event
 
         rally["events"] = reorganized_events
+
+    return grouped_rallies
+
+
+
+
+
+def filter_based_on_score_changes(pred_events, scoreboard_changes, fps_rate: float):
+    """
+    scoreboard_changes: a list of dicts, each dict has keys: 'frame', 'new' (which contains the new scores for close and far)
+    use scores to filter out those fake serves that does not change the score
+    So the logic is, we have the time when the score changes,
+    we look for the closest serve event (either close_table_serve or far_table_serve) 
+    that happens before the score change, we group it as a segment of the rally 
+    once all the events are grouped into rallies, we will remove all other serves or events that are not in 
+    """
+
+    grouped_rallies = []
+    rally_counter = 1
+
+    for score_change in scoreboard_changes:
+        frame_idx = score_change['frame']
+        old_score_close = score_change['old']['close']['score']
+        old_score_far = score_change['old']['far']['score']
+        new_score_close = score_change['new']['close']['score']
+        new_score_far = score_change['new']['far']['score']
+        closest_event = None
+
+        # find the closest serve event before the score change
+        for event_frame, event_info in pred_events.items():
+            if event_frame <= frame_idx and event_info['event_type'] in ['close_table_serve', 'far_table_serve']:
+                closest_event = event_frame
+            elif event_frame > frame_idx:
+                break
+        
+        if closest_event is not None:
+            print(f"Score change at frame {frame_idx} matched to serve event at frame {closest_event}, type: {pred_events[closest_event]['event_type']}")
+            # group events into rallies based on the closest serve event
+            rally_events = []
+            for event_frame, event_info in pred_events.items():
+                if event_frame >= closest_event and event_frame <= frame_idx:
+                    rally_events.append(event_info)
+            grouped_rallies.append({
+                'rally_id': rally_counter,
+                'old_score': {
+                    'close': old_score_close,
+                    'far': old_score_far
+                },
+                'new_score': {
+                    'close': new_score_close,
+                    'far': new_score_far
+                },
+                'score_change_frame': frame_idx,
+                'score_change_time': frame_idx / fps_rate,
+                'serve_event_frame': closest_event,
+                'serve_event_time': closest_event / fps_rate,
+                'duration': frame_idx / fps_rate - closest_event / fps_rate,
+                'events': rally_events
+            })
+            rally_counter += 1
+    
+    return grouped_rallies
+
+
+def _count_events_list(event_list, counts: dict):
+    for e in event_list:
+        if isinstance(e, dict):
+            et = e.get('event_type')
+            if et:
+                counts[et] = counts.get(et, 0) + 1
+
+            bounces = e.get('bounces', [])
+            if isinstance(bounces, list):
+                _count_events_list(bounces, counts)
+
+            nested_events = e.get('events', [])
+            if isinstance(nested_events, list):
+                _count_events_list(nested_events, counts)
+        elif isinstance(e, list):
+            _count_events_list(e, counts)
+
+
+def _iter_bounces(events):
+    for e in events:
+        if not isinstance(e, dict):
+            continue
+
+        et = str(e.get('event_type', ''))
+        if 'bounce' in et:
+            yield e
+
+        bounces = e.get('bounces', [])
+        if isinstance(bounces, list):
+            for b in bounces:
+                if isinstance(b, dict) and 'bounce' in str(b.get('event_type', '')):
+                    yield b
+
+
+def _is_invalid_bounce(b, split_w: float, split_l: float, table_w: float, table_h: float):
+    if isinstance(b.get('x2'), (int, float)) and isinstance(b.get('y2'), (int, float)):
+        x2, y2 = float(b['x2']), float(b['y2'])
+        return (x2 < 0) or (x2 > split_w) or (y2 < 0) or (y2 > split_l)
+
+    draw = b.get('draw_ball_location')
+    if isinstance(draw, dict) and isinstance(draw.get('x'), (int, float)) and isinstance(draw.get('y'), (int, float)):
+        x, y = float(draw['x']), float(draw['y'])
+        return (x < 0) or (x > table_w) or (y < 0) or (y > table_h)
+
+    return True
+
+
+def summarize_rallies_counts(grouped_rallies, split_w: float = 153.0, split_l: float = 137.0, table_w: float = 1525.0, table_h: float = 2740.0):
+    summaries = []
+    invalid_bounce_total = 0
+    bounce_total = 0
+
+    for r in grouped_rallies:
+        counts = {}
+        events = r.get('events', [])
+        _count_events_list(events, counts)
+
+        rally_bounces = list(_iter_bounces(events))
+        rally_invalid_bounces = sum(1 for b in rally_bounces if _is_invalid_bounce(b, split_w, split_l, table_w, table_h))
+
+        close_bounce = sum(1 for b in rally_bounces if str(b.get('event_type', '')).startswith('close_table'))
+        far_bounce = sum(1 for b in rally_bounces if str(b.get('event_type', '')).startswith('far_table'))
+
+        close_fore = counts.get('close_table_forehand', 0)
+        far_fore = counts.get('far_table_forehand', 0)
+        close_back = counts.get('close_table_backhand', 0)
+        far_back = counts.get('far_table_backhand', 0)
+
+        bounce_total += len(rally_bounces)
+        invalid_bounce_total += rally_invalid_bounces
+
+        summary = {
+            'rally_id': r.get('rally_id'),
+            'serve_event_frame': r.get('serve_event_frame'),
+            'score_change_frame': r.get('score_change_frame'),
+            'duration_s': r.get('duration'),
+            'close_bounce': int(close_bounce),
+            'far_bounce': int(far_bounce),
+            'close_forehand': int(close_fore),
+            'far_forehand': int(far_fore),
+            'close_backhand': int(close_back),
+            'far_backhand': int(far_back),
+            'total_forehand': int(close_fore + far_fore),
+            'total_backhand': int(close_back + far_back),
+            'total_bounces': int(close_bounce + far_bounce),
+            'invalid_bounces': int(rally_invalid_bounces),
+        }
+        summaries.append(summary)
+
+    return summaries, invalid_bounce_total, bounce_total
+
+
+def extract_frames_with_retry(video_path: str, extract_frames_fn):
+    frame_dir, fps_rate = extract_frames_fn(video_path)
+
+    frame_images = [
+        name for name in os.listdir(frame_dir)
+        if os.path.isfile(os.path.join(frame_dir, name)) and name.lower().endswith((".jpg", ".jpeg", ".png"))
+    ]
+    if len(frame_images) == 0:
+        print(f"Frame directory exists but is empty: {frame_dir}. Re-extracting frames...")
+        shutil.rmtree(frame_dir, ignore_errors=True)
+        frame_dir, fps_rate = extract_frames_fn(video_path)
+
+    return frame_dir, fps_rate
+
+
+def prepare_video_inputs(
+    video_path: str,
+    device: str,
+    extract_frames_fn,
+    read_image_fn=None,
+    rng=None,
+):
+    if read_image_fn is None:
+        read_image_fn = read_image
+    if rng is None:
+        rng = np.random
+
+    frame_dir, fps_rate = extract_frames_with_retry(video_path, extract_frames_fn)
+    game_name = os.path.basename(video_path).split(".")[0]
+    print(f"Extracted frames for {game_name} into {frame_dir}")
+
+    if device == "cuda" and torch.cuda.is_available():
+        print(f"Using CUDA device: {torch.cuda.get_device_name(0)}")
+    elif device == "mps" and torch.backends.mps.is_available():
+        print("Using Apple Silicon MPS device")
+    else:
+        print("Using CPU")
+
+    image_files = sorted(
+        name for name in os.listdir(frame_dir)
+        if os.path.isfile(os.path.join(frame_dir, name)) and name.lower().endswith((".jpg", ".jpeg", ".png"))
+    )
+    num_images = len(image_files)
+    print(f"Number of images in folder: {num_images}")
+
+    if num_images == 0:
+        raise RuntimeError(
+            f"No frame images found in {frame_dir}. Run the extract-frames cell first or check video_path/frame_dir."
+        )
+
+    random_image_name = rng.choice(image_files)
+    print(f"Selected image for region selection: {random_image_name}")
+
+    sample_image_path = os.path.join(frame_dir, random_image_name)
+    sample_frame = read_image_fn(sample_image_path)
+
+    return {
+        "frame_dir": frame_dir,
+        "fps_rate": fps_rate,
+        "game_name": game_name,
+        "image_files": image_files,
+        "sample_image_path": sample_image_path,
+        "sample_frame": sample_frame,
+    }
+
+
+def load_pipeline(
+    device: str,
+    event_detection_model_folder: str,
+    ball_tracking_model_dir_path: str,
+    mean: Optional[List[float]] = None,
+    std: Optional[List[float]] = None,
+):
+    from ball_tracking import BallTrackingModel
+    from ball_tracking.transform import CenterCropResizeFrame
+    from event_detection import get_model
+    from event_detection.utils import load_model_compiled
+    import torchvision.transforms as transforms
+
+    if mean is None:
+        mean = [0.485, 0.456, 0.406]
+    if std is None:
+        std = [0.229, 0.224, 0.225]
+
+    model_config_path = os.path.join(event_detection_model_folder, "model_config.json")
+    with open(model_config_path, "r", encoding="utf-8") as f:
+        config = json.load(f)
+    print(f"Model config loaded from {model_config_path}")
+
+    train_config_path = os.path.join(event_detection_model_folder, "train_config.json")
+    with open(train_config_path, "r", encoding="utf-8") as f:
+        train_config = json.load(f)
+    event_detection_model_selection = train_config.get("model_choice")
+
+    event_detection_model = get_model(event_detection_model_selection, config)
+    checkpoint_path = os.path.join(event_detection_model_folder, "best_model.pth")
+    event_detection_model = load_model_compiled(event_detection_model, checkpoint_path, device)
+    event_detection_model.eval()
+    print("Event Detection Model initialized successfully")
+
+    model_params_path = os.path.join(ball_tracking_model_dir_path, "model_params.json")
+    with open(model_params_path, "r", encoding="utf-8") as f:
+        model_params = json.load(f)
+
+    image_size = model_params.get("image_size")
+    num_frames = model_params.get("num_frames")
+    model_choice = model_params.get("model_choice")
+    model_channels = model_params.get("num_channels")
+    checkpoint_path = os.path.join(ball_tracking_model_dir_path, "model_best.pth")
+    checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
+
+    ball_tracking_model_loader = BallTrackingModel(
+        num_frames=num_frames,
+        image_size=image_size,
+        model_choice=model_choice,
+        totnet_channels=model_channels,
+    )
+    ball_tracking_model = ball_tracking_model_loader.load_model().to(device)
+    ball_tracking_model.load_state_dict(checkpoint["state_dict"])
+    ball_tracking_model = ball_tracking_model.to(device)
+    print("Ball Tracking Model initialized successfully")
+
+    event_transform = transforms.Compose([
+        transforms.Resize((224, 398)),
+        transforms.CenterCrop(size=(224, 224)),
+        transforms.Normalize(mean=mean, std=std),
+    ])
+    ball_transform = transforms.Compose([
+        CenterCropResizeFrame(size=(512, 512), crop_ratio=(1, 1)),
+        transforms.Normalize(mean=mean, std=std),
+    ])
+
+    return (
+        event_detection_model,
+        ball_tracking_model,
+        event_transform,
+        ball_transform,
+        mean,
+        std,
+    )
+
+
+def detect_scoreboard_changes(
+    frame_dir: str,
+    fps_rate: float,
+    device: str,
+    existing_close_coord,
+    existing_far_coord,
+    model_path: str = "best_score_classifier.pt",
+    conf_threshold: float = 0.9,
+    stride: int = 5,
+):
+    from scoreboard_detector import ResNetScoreboardChangeDetector
+
+    scoreboard_detector = ResNetScoreboardChangeDetector(
+        frames_folder=frame_dir,
+        video_fps=fps_rate,
+        model_path=model_path,
+        device=device,
+        existing_close_coord=existing_close_coord,
+        existing_far_coord=existing_far_coord,
+    )
+    changes, meta = scoreboard_detector.detect_changes(conf_threshold=conf_threshold, stride=stride)
+
+    if not changes:
+        raise RuntimeError("No scoreboard changes detected.")
+
+    final_score_close = changes[-1]["new"]["close"]["score"]
+    final_score_far = changes[-1]["new"]["far"]["score"]
+    print(f"In total {len(changes)} scoreboard changes detected at frames:")
+    print(f"Final score of the game - Close Table: {final_score_close}, Far Table: {final_score_far}")
+
+    return {
+        "changes": changes,
+        "meta": meta,
+        "final_score_close": final_score_close,
+        "final_score_far": final_score_far,
+    }
+
+
+def prepare_rallies(
+    frame_dir: str,
+    window_size: int,
+    stride: int,
+    event_transform,
+    ball_transform,
+    event_detection_model,
+    device: str,
+    fps_rate: float,
+    class_conversion: Dict[int, str],
+    scoreboard_changes,
+    threshold: float = 0.01,
+    event_windows: Optional[Dict[str, int]] = None,
+    batch_size: int = 1,
+    shuffle: bool = False,
+    num_workers: int = 4,
+):
+    from input_process import FrameClipDataset
+
+    dataset = FrameClipDataset(
+        frame_dir,
+        window_size=window_size,
+        stride=stride,
+        event_transform=event_transform,
+        ball_transform=ball_transform,
+    )
+    video_loader = torch.utils.data.DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=shuffle,
+        num_workers=num_workers,
+    )
+    print(f"Video Loader initialized with {len(dataset)} clips")
+
+    pred_events = generate_event_predictions(
+        video_loader=video_loader,
+        event_detection_model=event_detection_model,
+        device=device,
+        fps_rate=fps_rate,
+        class_conversion=class_conversion,
+        threshold=threshold,
+        event_windows=event_windows,
+    )
+    grouped_rallies = filter_based_on_score_changes(pred_events, scoreboard_changes, fps_rate)
+    print(f"Prepared {len(grouped_rallies)} rallies in memory.")
+
+    return {
+        "dataset": dataset,
+        "video_loader": video_loader,
+        "pred_events": pred_events,
+        "grouped_rallies": grouped_rallies,
+    }
+
+
+def generate_event_predictions(
+    video_loader,
+    event_detection_model,
+    device: str,
+    fps_rate: float,
+    class_conversion: Dict[int, str],
+    threshold: float = 0.01,
+    event_windows: Optional[Dict[str, int]] = None,
+    nms_on_dict_fn=None,
+):
+    pred_events = {}
+
+    for data in tqdm(video_loader, desc="Processing clips"):
+        clips = data['frames']
+        start_idx = data['start_idx']
+        clips = clips.to(device, dtype=torch.float32)
+
+        pred_results, pred_scores = event_detection_model.predict(clips, device=device)
+        pred_results = pred_results[0]
+        pred_scores = pred_scores[0]
+
+        for i, (_, pred_score_classes) in enumerate(zip(pred_results, pred_scores)):
+            current_id = (i + start_idx).item()
+            current_time = current_id / fps_rate
+            current_time_in_mins = f"{int(current_time // 60):02d}:{int(current_time % 60):02d}"
+
+            filtered_scores = pred_score_classes * (pred_score_classes >= threshold)
+            filtered_scores[0] = -1
+            best_class = filtered_scores.argmax()
+            best_score = filtered_scores[best_class]
+
+            if best_score == 0:
+                continue
+
+            pred_events[current_id] = {
+                'time': current_time,
+                'time_in_mins': current_time_in_mins,
+                'event_type': class_conversion.get(best_class.item(), 'unknown'),
+                'score': float(best_score),
+            }
+
+    if event_windows is None:
+        event_windows = {'close_table_serve': 150, 'far_table_serve': 150}
+
+    if nms_on_dict_fn is None:
+        from event_detection.utils import nms_on_dict as nms_on_dict_fn
+
+    pred_events = nms_on_dict_fn(pred_events, event_windows=event_windows)
+
+    return pred_events
+
+
+def add_ball_tracking_to_rallies(grouped_rallies, dataset, ball_tracking_model, table_detector, device: str):
+    for rally in tqdm(grouped_rallies, desc="Ball tracking"):
+        events = rally.get('events', [])
+        for event in events:
+            if not isinstance(event, dict):
+                continue
+
+            event_type = event.get('event_type')
+            frame_idx = event.get('frame_index')
+
+            if event_type not in ['far_table_bounce', 'close_table_bounce'] or frame_idx is None:
+                continue
+
+            ball_location_frames = dataset.get_surrounding_frames(frame_idx, radius=2, bidirectional=True)
+            ball_location_frames = ball_location_frames.to(device, dtype=torch.float32).unsqueeze(0)
+            extracted_coord, confidence = ball_tracking_model.predict(ball_location_frames)
+            x_pred, y_pred = extracted_coord[0]
+
+            x_pred = x_pred.cpu().numpy()
+            y_pred = y_pred.cpu().numpy()
+            event['ball_location'] = {
+                'x': float(x_pred),
+                'y': float(y_pred),
+            }
+
+            mapped_x, mapped_y = table_detector.transform_ball(x_pred, y_pred, blend_band_px=20)
+            event['mapped_ball_location'] = {
+                'x': float(mapped_x),
+                'y': float(mapped_y),
+            }
+            event['draw_ball_location'] = {
+                'x': float(mapped_x),
+                'y': float(mapped_y),
+            }
+            event['ball_coord_confidence'] = float(confidence)
 
     return grouped_rallies

@@ -1,0 +1,14 @@
+{
+    "base_model": "regnety_008",
+    "temporal_shift_mode": "hagsm",
+    "dilations": [
+        1,
+        2,
+        3
+    ],
+    "num_heads": 2,
+    "num_frames_clip": 100,
+    "num_classes": 9,
+    "cbam": false,
+    "gru_layers": 1
+}

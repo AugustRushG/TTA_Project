@@ -1,35 +1,29 @@
-from .TOTNet import build_motion_model_light as build_ball_tracking_model
-from .TOTNet_OF import build_motion_model_light_opticalflow
+from .TOTNet import TOTNet
+from .TrackNetV4 import TrackNetV4
+from .TOTNet_OF import TOTNetOF
 from .utils import load_pretrained_model as load_ball_tracking_model, extract_coords2d, extract_coords
+from .transform import CenterCropResizeFrame
 # from .wasb import build_wasb
 import torch
 
 class BallTrackingModel:
-    def __init__(self, model_choice, model_args, checkpoint_path):
+    def __init__(self, num_frames, image_size, model_choice, totnet_channels=64):
+        self.num_frames = num_frames
+        self.image_size = image_size
         self.model_choice = model_choice
-        if model_choice == 'wasb':
-            self.model = build_wasb(model_args)
-        elif model_choice == 'TOTNet_OF':
-            self.model = build_motion_model_light_opticalflow(model_args)
-        elif model_choice == 'TOTNet':
-            self.model = build_ball_tracking_model(model_args)
-        load_ball_tracking_model(self.model, checkpoint_path, device=model_args.device)
-        self.model.eval()
+        self.totnet_channels = totnet_channels
 
-    def predict(self, frames):
-        with torch.no_grad():
-            if self.model_choice in ['TOTNet', 'TOTNet_OF']:
-                outputs = self.model(frames)
-            else:
-                B, N, C, H, W = frames.shape
-                frames = frames.permute(0, 2, 1, 3, 4).contiguous()  # Shape: [B, C, N, H, W]
-                # Reshape to combine frames into the channel dimension
-                frames = frames.view(B, N * C, H, W)  # Shape: [B, N*C, H, W]
-                outputs = self.model(frames)
-        return outputs
+    def load_model(self):
+        if self.model_choice == 'tracknetv4':
+            print("Building TrackNetV4 model...")
+            model = TrackNetV4(in_channels=self.num_frames*3, out_channels=1)
+        elif self.model_choice == 'TOTNet':
+            print("Building Motion Light model...")
+            model = TOTNet(input_shape=self.image_size, spatial_channels=self.totnet_channels, num_frames=self.num_frames)
+        elif self.model_choice == 'TOTNet_OF':
+            print("Building Motion Light Optical Flow model...")
+            model = TOTNetOF(input_shape=self.image_size, spatial_channels=self.totnet_channels, num_frames=self.num_frames)
+        else:
+            raise ValueError(f"Unknown model choice: {self.configs.model_choice}")
 
-    def extract_coordinates(self, outputs):
-        return extract_coords(outputs)
-    
-    def extract_coordinates_2d(self, outputs, H, W):
-        return extract_coords2d(outputs, H, W)
+        return model

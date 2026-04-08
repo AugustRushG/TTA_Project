@@ -250,9 +250,9 @@ class ClassificationHead(nn.Module):
         return self.network(x)
 
 
-class TemporalConvNet(nn.Module):
+class TOTNetOF(nn.Module):
     def __init__(self, input_shape=(288, 512), spatial_channels=64, num_frames=5):
-        super(TemporalConvNet, self).__init__()
+        super(TOTNetOF, self).__init__()
 
         self.spatial_channels = spatial_channels
         self.convblock1_out_channels = spatial_channels * 2
@@ -375,8 +375,3 @@ class TemporalConvNet(nn.Module):
         return heatmap, conf
 
 
-
-def build_motion_model_light_opticalflow(args):
-    # motion_model = MotionModel()
-    model = TemporalConvNet(input_shape=args.img_size, spatial_channels=64, num_frames=args.num_frames).to(args.device)
-    return model

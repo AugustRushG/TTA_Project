@@ -222,9 +222,9 @@ class ClassificationHead(nn.Module):
     def forward(self, x):
         return self.network(x)
 
-class TemporalConvNet(nn.Module):
+class TOTNet(nn.Module):
     def __init__(self, input_shape=(288, 512), spatial_channels=64, num_frames=5):
-        super(TemporalConvNet, self).__init__()
+        super(TOTNet, self).__init__()
 
         self.spatial_channels = spatial_channels
         self.num_frames = num_frames
@@ -232,6 +232,7 @@ class TemporalConvNet(nn.Module):
         self.convblock2_out_channels = spatial_channels * 4
         self.convblock3_out_channels = spatial_channels * 8
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.input_shape = input_shape
         self.softmax = nn.Softmax(dim=-1)
 
         size = (num_frames, input_shape[0], input_shape[1])  # Keep original shape
@@ -333,30 +334,62 @@ class TemporalConvNet(nn.Module):
         heatmap = out.view(B, H*W) # Reshape to [B, H*W] for softmax
         heatmap = self.softmax(heatmap)  # Apply softmax to the heatmap
 
-        conf = heatmap.max(dim=1)[0]
+        return heatmap
+    
 
-        return heatmap, conf
+    def extract_coords2d(self, pred_heatmap):
+        """
+        Extract (x, y) coordinates from a flattened heatmap.
+
+        Args:
+            pred_heatmap (Tensor): [B, H*W]
+            height (int): heatmap height
+            width (int): heatmap width
+
+        Returns:
+            Tensor: [B, 2] with (x, y)
+        """
+        height = self.input_shape[0]
+        width = self.input_shape[1]
+        B, HW = pred_heatmap.shape
+        assert HW == height * width, f"Expected {height*width}, got {HW}"
+
+        flat_idx = pred_heatmap.argmax(dim=1)   # [B]
+
+        x_pred = (flat_idx % width).float()
+        y_pred = (flat_idx // width).float()
+
+        return torch.stack([x_pred, y_pred], dim=1)
 
 
+    def predict(self, x, convert_to_coordinates=True):
+        """
+        Args:
+            x: [B, N, C, H, W]
+            convert_to_coordinates: if True, return coords + confidence + heatmap
 
+        Returns:
+            If convert_to_coordinates=True:
+                coords: [B, 2]
+                confidence: [B]
+                heatmap: [B, H, W]
 
+            Else:
+                heatmap: [B, H, W]
+                confidence: [B]
+        """
+        self.eval()
+        with torch.no_grad():
+            heatmap = self.forward(x)   # [B, H, W]
 
-def build_motion_model_light(args):
-    # motion_model = MotionModel()
-    model = TemporalConvNet(input_shape=args.img_size, spatial_channels=64, num_frames=args.num_frames).to(args.device)
-    return model
+        flat = heatmap.view(heatmap.shape[0], -1)   # [B, H*W]
+        confidence = flat.max(dim=1).values         # [B]
 
+        if convert_to_coordinates:
+            coords = self.extract_coords2d(heatmap)
+            return coords, confidence
+        else:
+            return heatmap, confidence
+        
 
-
-if __name__ == '__main__':
-    from .utils import load_pretrained_model
-    # img_size = (224, 224)
-    img_size = (288, 512)
-
-    model = build_motion_model_light(args=type('', (), {'img_size': img_size, 'num_frames': 5, 'device': 'cpu'})())
-    load_pretrained_model(model, f'ball_tracking/checkpoints/TOTNet_TTA_(5)_(288,512)_best.pth', 'cpu')
-    x = torch.randn(2, 5, 3, img_size[0], img_size[1])  # [B, N, C, H, W]
-    out = model(x)
-    print(out[0][0].shape, out[0][1].shape)  # Should print shapes of the heatmaps
-    print(out[1])  # Should be None
 
