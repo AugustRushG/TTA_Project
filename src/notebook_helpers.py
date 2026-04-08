@@ -2,6 +2,7 @@ import copy
 import json
 import os
 import shutil
+import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -701,6 +702,148 @@ def save_table_points_preview(frame, points, save_path: str, title: str = "Selec
     print(f"Saved table point preview to {save_path}")
 
 
+def _is_colab_environment() -> bool:
+    return "google.colab" in sys.modules or bool(os.environ.get("COLAB_RELEASE_TAG"))
+
+
+def _show_selection_reference(frame, title: str, existing=None, points=None, point_labels=None, colors=None):
+    fig, ax = plt.subplots(1, 1, figsize=(12, 8))
+    ax.imshow(frame)
+    ax.set_title(title)
+
+    height, width = frame.shape[:2]
+    step = max(50, min(height, width) // 8)
+    ax.set_xticks(np.arange(0, width + 1, step))
+    ax.set_yticks(np.arange(0, height + 1, step))
+    ax.grid(color="white", alpha=0.35, linewidth=0.8)
+
+    if existing is not None:
+        x1, y1, x2, y2 = map(int, existing)
+        rect = patches.Rectangle(
+            (x1, y1),
+            x2 - x1,
+            y2 - y1,
+            linewidth=2,
+            edgecolor="green",
+            facecolor="none",
+        )
+        ax.add_patch(rect)
+
+    if points:
+        if point_labels is None:
+            point_labels = [str(idx + 1) for idx in range(len(points))]
+        if colors is None:
+            colors = ["red"] * len(points)
+
+        for (x, y), label, color in zip(points, point_labels, colors):
+            ax.plot(x, y, "o", color=color, markersize=10, zorder=5)
+            ax.text(
+                x + 8,
+                y - 8,
+                label,
+                color=color,
+                fontsize=10,
+                fontweight="bold",
+                zorder=6,
+                bbox=dict(facecolor="black", alpha=0.5, boxstyle="round,pad=0.2"),
+            )
+
+    plt.tight_layout()
+    plt.show()
+
+
+def _prompt_for_int_values(prompt: str, expected_count: int, allow_blank: bool = False):
+    while True:
+        raw = input(prompt).strip()
+        if not raw:
+            if allow_blank:
+                return None
+            print("Input cannot be blank.")
+            continue
+
+        parts = [part.strip() for part in raw.replace(";", ",").split(",") if part.strip()]
+        if len(parts) != expected_count:
+            print(f"Expected {expected_count} comma-separated values.")
+            continue
+
+        try:
+            return [int(round(float(part))) for part in parts]
+        except ValueError:
+            print("Please enter numeric values only.")
+
+
+def _select_roi_colab(frame, title="Select ROI", existing=None, allow_cancel=True):
+    _show_selection_reference(
+        frame,
+        f"{title}\nColab fallback: inspect the image and enter x1,y1,x2,y2 below.",
+        existing=existing,
+    )
+
+    height, width = frame.shape[:2]
+    print(f"Image size: width={width}, height={height}")
+    if existing is not None:
+        print(f"Existing ROI: {tuple(map(int, existing))}")
+
+    values = _prompt_for_int_values(
+        "Enter ROI as x1,y1,x2,y2. Leave blank to keep existing ROI or cancel: ",
+        4,
+        allow_blank=True,
+    )
+
+    if values is None:
+        if existing is not None:
+            x1, y1, x2, y2 = map(int, existing)
+            return {"x1": x1, "y1": y1, "x2": x2, "y2": y2, "done": True}
+        return {"x1": None, "y1": None, "x2": None, "y2": None, "done": False}
+
+    x1, y1, x2, y2 = values
+    x1 = min(max(0, x1), width - 1)
+    x2 = min(max(0, x2), width - 1)
+    y1 = min(max(0, y1), height - 1)
+    y2 = min(max(0, y2), height - 1)
+    x1, x2 = sorted((x1, x2))
+    y1, y2 = sorted((y1, y2))
+
+    if x1 == x2 or y1 == y2:
+        if allow_cancel:
+            print("Invalid ROI. Returning no selection.")
+            return {"x1": None, "y1": None, "x2": None, "y2": None, "done": False}
+        raise RuntimeError("ROI selection cancelled / invalid.")
+
+    return {"x1": x1, "y1": y1, "x2": x2, "y2": y2, "done": True}
+
+
+def _click_6_points_colab(frame, title="Click 6 points: TL, TR, mid-left, mid-right, BL, BR"):
+    point_labels = ["TL", "TR", "mid-left", "mid-right", "BL", "BR"]
+    colors = ["red", "blue", "green", "orange", "purple", "cyan"]
+
+    while True:
+        _show_selection_reference(
+            frame,
+            f"{title}\nColab fallback: inspect the image and enter coordinates below.",
+        )
+        height, width = frame.shape[:2]
+        print(f"Image size: width={width}, height={height}")
+
+        points = []
+        for label in point_labels:
+            x, y = _prompt_for_int_values(f"Enter {label} as x,y: ", 2)
+            x = min(max(0, x), width - 1)
+            y = min(max(0, y), height - 1)
+            points.append((x, y))
+
+        _show_selection_reference(
+            frame,
+            "Review selected table points. Press Enter to accept or type 'r' to re-enter.",
+            points=points,
+            point_labels=point_labels,
+            colors=colors,
+        )
+        retry = input("Press Enter to accept these points, or type 'r' to re-enter: ").strip().lower()
+        if retry != "r":
+            return {"points": points, "done": True}
+
+
 def select_roi_jupyter(frame, title="Select ROI", existing=None, allow_cancel=True):
     if frame is None or frame.size == 0:
         raise ValueError("Empty frame provided to ROI selector.")
@@ -709,6 +852,9 @@ def select_roi_jupyter(frame, title="Select ROI", existing=None, allow_cancel=Tr
         img = frame[:, :, ::-1].copy()
     else:
         img = frame.copy()
+
+    if _is_colab_environment():
+        return _select_roi_colab(img, title=title, existing=existing, allow_cancel=allow_cancel)
 
     roi_coords = {"x1": None, "y1": None, "x2": None, "y2": None, "done": False}
 
@@ -771,6 +917,9 @@ def click_6_points_jupyter(frame, title="Click 6 points: TL, TR, mid-left, mid-r
         raise ValueError("Empty frame provided.")
 
     img = frame[:, :, ::-1].copy() if (len(frame.shape) == 3 and frame.shape[2] == 3) else frame.copy()
+
+    if _is_colab_environment():
+        return _click_6_points_colab(img, title=title)
 
     point_labels = ["TL", "TR", "mid-left", "mid-right", "BL", "BR"]
     colors = ["red", "blue", "green", "orange", "purple", "cyan"]
