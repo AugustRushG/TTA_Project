@@ -1,9 +1,14 @@
+import base64
 import copy
+import html
 import json
 import os
 import shutil
 import sys
+import threading
+import uuid
 from datetime import datetime, timedelta
+from io import BytesIO
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -13,6 +18,7 @@ import matplotlib.patches as patches
 import numpy as np
 import torch
 from matplotlib.widgets import RectangleSelector
+from PIL import Image
 from tqdm import tqdm
 
 from json_to_xml import write_xml_data
@@ -752,6 +758,304 @@ def _show_selection_reference(frame, title: str, existing=None, points=None, poi
     plt.show()
 
 
+def _frame_to_data_url(frame: np.ndarray) -> str:
+    image = Image.fromarray(frame.astype(np.uint8))
+    buffer = BytesIO()
+    image.save(buffer, format="PNG")
+    encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
+    return f"data:image/png;base64,{encoded}"
+
+
+def _wait_for_colab_selection(html_content: str, callback_name: str, timeout: int = 3600):
+    from IPython.display import HTML, display
+
+    output = __import__("google.colab.output", fromlist=["output"])
+
+    result: Dict[str, Any] = {"value": None}
+    selection_ready = threading.Event()
+
+    def _callback(payload):
+        result["value"] = payload
+        selection_ready.set()
+
+    output.register_callback(callback_name, _callback)
+    display(HTML(html_content))
+
+    if not selection_ready.wait(timeout=timeout):
+        raise TimeoutError("Timed out waiting for Colab interactive selection.")
+
+    return result["value"]
+
+
+def _select_roi_colab_interactive(frame, title="Select ROI", existing=None):
+        callback_name = f"notebook_helpers_roi_{uuid.uuid4().hex}"
+        container_id = f"roi_container_{uuid.uuid4().hex}"
+        canvas_id = f"roi_canvas_{uuid.uuid4().hex}"
+        data_url = _frame_to_data_url(frame)
+        existing_json = json.dumps(
+                None if existing is None else {
+                        "x1": int(existing[0]),
+                        "y1": int(existing[1]),
+                        "x2": int(existing[2]),
+                        "y2": int(existing[3]),
+                }
+        )
+
+        html_content = f"""
+<div id=\"{container_id}\" style=\"font-family: sans-serif;\">
+    <div style=\"font-weight: 600; margin-bottom: 8px;\">{html.escape(title)}</div>
+    <div style=\"margin-bottom: 8px;\">Drag on the image to draw the ROI, then click Confirm ROI.</div>
+    <canvas id=\"{canvas_id}\" style=\"max-width: 100%; border: 1px solid #ccc; cursor: crosshair;\"></canvas>
+    <div style=\"margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;\">
+        <button id=\"{canvas_id}_confirm\">Confirm ROI</button>
+        <button id=\"{canvas_id}_clear\">Clear</button>
+        <button id=\"{canvas_id}_existing\">Use Existing</button>
+        <button id=\"{canvas_id}_cancel\">Cancel</button>
+    </div>
+    <div id=\"{canvas_id}_status\" style=\"margin-top: 8px; color: #444;\"></div>
+</div>
+<script>
+(() => {{
+    const callbackName = {json.dumps(callback_name)};
+    const imageSrc = {json.dumps(data_url)};
+    const existing = {existing_json};
+    const root = document.getElementById({json.dumps(container_id)});
+    const canvas = document.getElementById({json.dumps(canvas_id)});
+    const ctx = canvas.getContext('2d');
+    const status = document.getElementById({json.dumps(canvas_id + '_status')});
+    const image = new Image();
+    let dragging = false;
+    let start = null;
+    let currentRect = existing ? {{...existing}} : null;
+
+    function disableButtons() {{
+        root.querySelectorAll('button').forEach((button) => {{
+            button.disabled = true;
+        }});
+    }}
+
+    function sendSelection(payload) {{
+        disableButtons();
+        google.colab.kernel.invokeFunction(callbackName, [payload], {{}});
+    }}
+
+    function getMousePosition(event) {{
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        return {{
+            x: Math.max(0, Math.min(canvas.width - 1, Math.round((event.clientX - rect.left) * scaleX))),
+            y: Math.max(0, Math.min(canvas.height - 1, Math.round((event.clientY - rect.top) * scaleY))),
+        }};
+    }}
+
+    function normalizeRect(rect) {{
+        const x1 = Math.min(rect.x1, rect.x2);
+        const y1 = Math.min(rect.y1, rect.y2);
+        const x2 = Math.max(rect.x1, rect.x2);
+        const y2 = Math.max(rect.y1, rect.y2);
+        return {{x1, y1, x2, y2}};
+    }}
+
+    function draw() {{
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(image, 0, 0);
+        if (!currentRect) {{
+            status.textContent = 'No ROI selected yet.';
+            return;
+        }}
+        const rect = normalizeRect(currentRect);
+        ctx.strokeStyle = '#00b300';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(rect.x1, rect.y1, rect.x2 - rect.x1, rect.y2 - rect.y1);
+        status.textContent = `ROI: (${{rect.x1}}, ${{rect.y1}}) -> (${{rect.x2}}, ${{rect.y2}})`;
+    }}
+
+    image.onload = () => {{
+        canvas.width = image.width;
+        canvas.height = image.height;
+        draw();
+    }};
+    image.src = imageSrc;
+
+    canvas.addEventListener('mousedown', (event) => {{
+        const point = getMousePosition(event);
+        start = point;
+        currentRect = {{x1: point.x, y1: point.y, x2: point.x, y2: point.y}};
+        dragging = true;
+        draw();
+    }});
+
+    canvas.addEventListener('mousemove', (event) => {{
+        if (!dragging || !start) return;
+        const point = getMousePosition(event);
+        currentRect = {{x1: start.x, y1: start.y, x2: point.x, y2: point.y}};
+        draw();
+    }});
+
+    window.addEventListener('mouseup', () => {{
+        dragging = false;
+    }});
+
+    document.getElementById({json.dumps(canvas_id + '_confirm')}).onclick = () => {{
+        if (!currentRect) {{
+            status.textContent = 'Draw an ROI first.';
+            return;
+        }}
+        const rect = normalizeRect(currentRect);
+        if (rect.x1 === rect.x2 || rect.y1 === rect.y2) {{
+            status.textContent = 'ROI must have non-zero width and height.';
+            return;
+        }}
+        sendSelection({{...rect, done: true}});
+    }};
+
+    document.getElementById({json.dumps(canvas_id + '_clear')}).onclick = () => {{
+        currentRect = null;
+        draw();
+    }};
+
+    document.getElementById({json.dumps(canvas_id + '_existing')}).onclick = () => {{
+        if (!existing) {{
+            status.textContent = 'No existing ROI available.';
+            return;
+        }}
+        currentRect = {{...existing}};
+        draw();
+    }};
+
+    document.getElementById({json.dumps(canvas_id + '_cancel')}).onclick = () => {{
+        sendSelection({{x1: null, y1: null, x2: null, y2: null, done: false}});
+    }};
+}})();
+</script>
+"""
+
+        return _wait_for_colab_selection(html_content, callback_name)
+
+
+def _click_6_points_colab_interactive(frame, title="Click 6 points: TL, TR, mid-left, mid-right, BL, BR"):
+        callback_name = f"notebook_helpers_points_{uuid.uuid4().hex}"
+        container_id = f"points_container_{uuid.uuid4().hex}"
+        canvas_id = f"points_canvas_{uuid.uuid4().hex}"
+        data_url = _frame_to_data_url(frame)
+        point_labels = ["TL", "TR", "mid-left", "mid-right", "BL", "BR"]
+        point_labels_json = json.dumps(point_labels)
+        colors_json = json.dumps(["red", "blue", "green", "orange", "purple", "cyan"])
+
+        html_content = f"""
+<div id=\"{container_id}\" style=\"font-family: sans-serif;\">
+    <div style=\"font-weight: 600; margin-bottom: 8px;\">{html.escape(title)}</div>
+    <div style=\"margin-bottom: 8px;\">Click the six table points in order, then click Confirm Points.</div>
+    <canvas id=\"{canvas_id}\" style=\"max-width: 100%; border: 1px solid #ccc; cursor: crosshair;\"></canvas>
+    <div style=\"margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;\">
+        <button id=\"{canvas_id}_confirm\">Confirm Points</button>
+        <button id=\"{canvas_id}_undo\">Undo</button>
+        <button id=\"{canvas_id}_reset\">Reset</button>
+        <button id=\"{canvas_id}_cancel\">Cancel</button>
+    </div>
+    <div id=\"{canvas_id}_status\" style=\"margin-top: 8px; color: #444;\"></div>
+</div>
+<script>
+(() => {{
+    const callbackName = {json.dumps(callback_name)};
+    const imageSrc = {json.dumps(data_url)};
+    const labels = {point_labels_json};
+    const colors = {colors_json};
+    const root = document.getElementById({json.dumps(container_id)});
+    const canvas = document.getElementById({json.dumps(canvas_id)});
+    const ctx = canvas.getContext('2d');
+    const status = document.getElementById({json.dumps(canvas_id + '_status')});
+    const image = new Image();
+    const points = [];
+
+    function disableButtons() {{
+        root.querySelectorAll('button').forEach((button) => {{
+            button.disabled = true;
+        }});
+    }}
+
+    function sendSelection(payload) {{
+        disableButtons();
+        google.colab.kernel.invokeFunction(callbackName, [payload], {{}});
+    }}
+
+    function getMousePosition(event) {{
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        return {{
+            x: Math.max(0, Math.min(canvas.width - 1, Math.round((event.clientX - rect.left) * scaleX))),
+            y: Math.max(0, Math.min(canvas.height - 1, Math.round((event.clientY - rect.top) * scaleY))),
+        }};
+    }}
+
+    function draw() {{
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(image, 0, 0);
+        points.forEach((point, index) => {{
+            ctx.fillStyle = colors[index];
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, 6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = colors[index];
+            ctx.font = '16px sans-serif';
+            ctx.fillText(labels[index], point.x + 8, point.y - 8);
+        }});
+        if (points.length > 0) {{
+            status.textContent = `Selected ${{points.length}} / 6 points. Next: ${{labels[Math.min(points.length, 5)]}}`;
+        }} else {{
+            status.textContent = `Selected 0 / 6 points. Next: ${{labels[0]}}`;
+        }}
+        if (points.length === 6) {{
+            status.textContent = 'All 6 points selected. Click Confirm Points.';
+        }}
+    }}
+
+    image.onload = () => {{
+        canvas.width = image.width;
+        canvas.height = image.height;
+        draw();
+    }};
+    image.src = imageSrc;
+
+    canvas.addEventListener('click', (event) => {{
+        if (points.length >= 6) return;
+        const point = getMousePosition(event);
+        points.push(point);
+        draw();
+    }});
+
+    document.getElementById({json.dumps(canvas_id + '_undo')}).onclick = () => {{
+        if (points.length > 0) {{
+            points.pop();
+            draw();
+        }}
+    }};
+
+    document.getElementById({json.dumps(canvas_id + '_reset')}).onclick = () => {{
+        points.length = 0;
+        draw();
+    }};
+
+    document.getElementById({json.dumps(canvas_id + '_confirm')}).onclick = () => {{
+        if (points.length !== 6) {{
+            status.textContent = 'Select all 6 points before confirming.';
+            return;
+        }}
+        sendSelection({{points, done: true}});
+    }};
+
+    document.getElementById({json.dumps(canvas_id + '_cancel')}).onclick = () => {{
+        sendSelection({{points: [], done: false}});
+    }};
+}})();
+</script>
+"""
+
+        return _wait_for_colab_selection(html_content, callback_name)
+
+
 def _prompt_for_int_values(prompt: str, expected_count: int, allow_blank: bool = False):
     while True:
         raw = input(prompt).strip()
@@ -773,75 +1077,32 @@ def _prompt_for_int_values(prompt: str, expected_count: int, allow_blank: bool =
 
 
 def _select_roi_colab(frame, title="Select ROI", existing=None, allow_cancel=True):
-    _show_selection_reference(
-        frame,
-        f"{title}\nColab fallback: inspect the image and enter x1,y1,x2,y2 below.",
-        existing=existing,
-    )
+    try:
+        selection = _select_roi_colab_interactive(frame, title=title, existing=existing)
+        if selection is not None:
+            return selection
+    except Exception as exc:
+        raise RuntimeError(
+            "Colab interactive ROI selection is unavailable. Ensure you are running in the Colab browser frontend "
+            "with JavaScript enabled, then rerun the cell. Manual coordinate fallback has been disabled."
+        ) from exc
 
-    height, width = frame.shape[:2]
-    print(f"Image size: width={width}, height={height}")
-    if existing is not None:
-        print(f"Existing ROI: {tuple(map(int, existing))}")
-
-    values = _prompt_for_int_values(
-        "Enter ROI as x1,y1,x2,y2. Leave blank to keep existing ROI or cancel: ",
-        4,
-        allow_blank=True,
-    )
-
-    if values is None:
-        if existing is not None:
-            x1, y1, x2, y2 = map(int, existing)
-            return {"x1": x1, "y1": y1, "x2": x2, "y2": y2, "done": True}
-        return {"x1": None, "y1": None, "x2": None, "y2": None, "done": False}
-
-    x1, y1, x2, y2 = values
-    x1 = min(max(0, x1), width - 1)
-    x2 = min(max(0, x2), width - 1)
-    y1 = min(max(0, y1), height - 1)
-    y2 = min(max(0, y2), height - 1)
-    x1, x2 = sorted((x1, x2))
-    y1, y2 = sorted((y1, y2))
-
-    if x1 == x2 or y1 == y2:
-        if allow_cancel:
-            print("Invalid ROI. Returning no selection.")
-            return {"x1": None, "y1": None, "x2": None, "y2": None, "done": False}
-        raise RuntimeError("ROI selection cancelled / invalid.")
-
-    return {"x1": x1, "y1": y1, "x2": x2, "y2": y2, "done": True}
+    raise RuntimeError("Colab interactive ROI selection did not return a result.")
 
 
 def _click_6_points_colab(frame, title="Click 6 points: TL, TR, mid-left, mid-right, BL, BR"):
-    point_labels = ["TL", "TR", "mid-left", "mid-right", "BL", "BR"]
-    colors = ["red", "blue", "green", "orange", "purple", "cyan"]
+    try:
+        selection = _click_6_points_colab_interactive(frame, title=title)
+        if selection is not None:
+            points = [tuple(map(int, point)) for point in selection.get("points", [])]
+            return {"points": points, "done": bool(selection.get("done", False))}
+    except Exception as exc:
+        raise RuntimeError(
+            "Colab interactive table-point selection is unavailable. Ensure you are running in the Colab browser frontend "
+            "with JavaScript enabled, then rerun the cell. Manual coordinate fallback has been disabled."
+        ) from exc
 
-    while True:
-        _show_selection_reference(
-            frame,
-            f"{title}\nColab fallback: inspect the image and enter coordinates below.",
-        )
-        height, width = frame.shape[:2]
-        print(f"Image size: width={width}, height={height}")
-
-        points = []
-        for label in point_labels:
-            x, y = _prompt_for_int_values(f"Enter {label} as x,y: ", 2)
-            x = min(max(0, x), width - 1)
-            y = min(max(0, y), height - 1)
-            points.append((x, y))
-
-        _show_selection_reference(
-            frame,
-            "Review selected table points. Press Enter to accept or type 'r' to re-enter.",
-            points=points,
-            point_labels=point_labels,
-            colors=colors,
-        )
-        retry = input("Press Enter to accept these points, or type 'r' to re-enter: ").strip().lower()
-        if retry != "r":
-            return {"points": points, "done": True}
+    raise RuntimeError("Colab interactive table-point selection did not return a result.")
 
 
 def select_roi_jupyter(frame, title="Select ROI", existing=None, allow_cancel=True):
@@ -852,9 +1113,6 @@ def select_roi_jupyter(frame, title="Select ROI", existing=None, allow_cancel=Tr
         img = frame[:, :, ::-1].copy()
     else:
         img = frame.copy()
-
-    if _is_colab_environment():
-        return _select_roi_colab(img, title=title, existing=existing, allow_cancel=allow_cancel)
 
     roi_coords = {"x1": None, "y1": None, "x2": None, "y2": None, "done": False}
 
@@ -917,9 +1175,6 @@ def click_6_points_jupyter(frame, title="Click 6 points: TL, TR, mid-left, mid-r
         raise ValueError("Empty frame provided.")
 
     img = frame[:, :, ::-1].copy() if (len(frame.shape) == 3 and frame.shape[2] == 3) else frame.copy()
-
-    if _is_colab_environment():
-        return _click_6_points_colab(img, title=title)
 
     point_labels = ["TL", "TR", "mid-left", "mid-right", "BL", "BR"]
     colors = ["red", "blue", "green", "orange", "purple", "cyan"]
