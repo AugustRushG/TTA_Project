@@ -1,27 +1,52 @@
 import os
 os.environ["TORCH_CPP_LOG_LEVEL"] = "ERROR"
 
+import argparse
+import copy
+import json
+import random
+from datetime import datetime
+from pathlib import Path
+
+import matplotlib
+matplotlib.use("TkAgg")  # or Qt5Agg
+import numpy as np
+import torch
+import torchvision.transforms as transforms
+from PIL import Image
+from tqdm import tqdm
+
+# Import notebook helpers - these encapsulate the same logic as the notebook cells
+import notebook_helpers as nh
+from notebook_helpers import (
+    reorganize_rallies_with_bounces_under_hits,
+    update_split_draw_coordinates,
+    load_pipeline,
+    prepare_video_inputs,
+    detect_scoreboard_changes,
+    prepare_rallies,
+    add_ball_tracking_to_rallies,
+    build_final_output_paths,
+    export_final_artifacts,
+    summarize_rallies_counts,
+    read_json,
+    save_json,
+    select_roi_jupyter,
+    get_roi_result,
+    click_6_points_jupyter,
+    show_cropped_image,
+    save_table_points_preview,
+)
+
+# Also import base components for direct usage when needed
 from input_process import FrameClipDataset, extract_frames
 from event_detection import create_model, nms_on_dict
 from ball_tracking import BallTrackingModel
 from table_detector import TableDetector
-from scoreboard_detector import ScoreboardChangeDetector, ResNetScoreboardChangeDetector
-from utils.visualization import draw_bounces_on_split_table, draw_bounces_on_table
-from analysis import AnalysisUtils
+from scoreboard_detector import ResNetScoreboardChangeDetector
+from utils.visualization import draw_bounces_on_split_table
 from convert_grouped_rallies_to_output import convert_grouped_rallies
 from json_to_xml import write_xml_data
-import torch
-import torchvision.transforms as transforms
-import json
-import argparse
-import random
-import copy
-from tqdm import tqdm
-from PIL import Image
-import numpy as np
-import matplotlib
-matplotlib.use("TkAgg")  # or Qt5Agg
-from notebook_helpers import reorganize_rallies_with_bounces_under_hits, update_split_draw_coordinates
 
 
 
@@ -53,239 +78,226 @@ def parse_args():
     parser.add_argument('--close-player', type=str, default='Close Player', help='Close side player display name.')
     parser.add_argument('--far-player', type=str, default='Far Player', help='Far side player display name.')
     parser.add_argument('--include-bounces', action='store_true', help='Include nested bounce entries in XML-ready output.')
+    parser.add_argument('--output-dir', type=str, default='outputs', help='Base output directory for results.')
+    
+    # Optional: Model paths (if not using default locations)
+    parser.add_argument('--event-model-folder', type=str, default=None, help='Path to event detection model folder.')
+    parser.add_argument('--ball-tracking-model-dir', type=str, default=None, help='Path to ball tracking model directory.')
+    
     return parser.parse_args()
 
 
 
 def main(args):
-    # Initialize video loader
-    event_transform = transforms.Compose([
-        transforms.Resize((224, 398)),
-        transforms.CenterCrop(size=(224, 224)),
-        transforms.Normalize(mean=MEAN, std=STD),
-    ])
-    ball_transform = transforms.Compose([
-        transforms.Resize((288, 512)),
-        transforms.Normalize(mean=MEAN, std=STD),
-    ])
-    frame_dir, fps_rate = extract_frames(args.video_path) # dont resize 
-
-    game_name = os.path.basename(args.video_path).split('.')[0]
-    print(f'Extracted frames for {game_name} into {frame_dir}')
-
+    # Runtime configuration matching notebook defaults
+    window_size = args.window_size
+    stride = args.stride
+    device = args.device
     
-    # print GPU information
-    if args.device == 'cuda' and torch.cuda.is_available():
+    # Model paths - use args or defaults
+    event_detection_model_folder = args.event_model_folder or 'event_detection/checkpoints'
+    ball_tracking_model_dir_path = args.ball_tracking_model_dir or 'ball_tracking/checkpoints'
+    
+    # Event detection threshold and windows
+    EVENT_DETECTION_THRESHOLD = 0.05
+    EVENT_WINDOWS = {
+        "close_table_serve": 20,
+        "far_table_serve": 20,
+    }
+
+    # Print GPU information
+    if device == 'cuda' and torch.cuda.is_available():
         print(f"Using CUDA device: {torch.cuda.get_device_name(0)}")
-    elif args.device == 'mps' and torch.backends.mps.is_available():
+    elif device == 'mps' and torch.backends.mps.is_available():
         print("Using Apple Silicon MPS device")
     else:
         print("Using CPU")
- 
-    scoreboard_detector = ResNetScoreboardChangeDetector(frames_folder=frame_dir, video_fps=fps_rate, 
-                                                    model_path="/home/august/github/TTA_Project/src/best_score_classifier.pt", 
-                                                    device=args.device)
-    changes, _ = scoreboard_detector.detect_changes(conf_threshold=0.9)
+
+    # Load models and transforms using notebook helper
+    (
+        event_detection_model,
+        ball_tracking_model,
+        event_transform,
+        ball_transform,
+        _,
+        _,
+    ) = load_pipeline(
+        device=device,
+        event_detection_model_folder=event_detection_model_folder,
+        ball_tracking_model_dir_path=ball_tracking_model_dir_path,
+    )
+
+    # Prepare video inputs (extract frames)
+    video_inputs = prepare_video_inputs(
+        video_path=args.video_path,
+        device=device,
+        extract_frames_fn=extract_frames,
+        read_image_fn=Image.open,
+    )
+
+    frame_dir = video_inputs["frame_dir"]
+    fps_rate = video_inputs["fps_rate"]
+    game_name = video_inputs["game_name"]
+    sample_frame = video_inputs["sample_frame"]
+
+    print(f'Extracted frames for {game_name} into {frame_dir}')
+
+    # Create output directory early (before interactive selections)
+    RUN_ID = datetime.now().strftime("%Y%m%d_%H%M%S")
+    OUTPUT_DIR = Path(args.output_dir or f'outputs/{game_name}/{RUN_ID}')
+    VISUALS_DIR = OUTPUT_DIR / "visuals"
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    VISUALS_DIR.mkdir(parents=True, exist_ok=True)
+
+    print(f"Output directory: {OUTPUT_DIR}")
+
+    # ===== Interactive ROI Selection for Scoreboard =====
+    print("\n" + "="*60)
+    print("STEP 1: Select Close Scoreboard ROI")
+    print("="*60)
+    close_roi_coords = select_roi_jupyter(
+        sample_frame,
+        title="Select Close Scoreboard ROI",
+    )
+    existing_close_coord = get_roi_result(close_roi_coords)
+    print(f"Close ROI: {existing_close_coord}")
+    show_cropped_image(
+        np.array(sample_frame),
+        existing_close_coord,
+        save_path=str(VISUALS_DIR / "scoreboard_close_roi.png"),
+    )
+
+    print("\n" + "="*60)
+    print("STEP 2: Select Far Scoreboard ROI")
+    print("="*60)
+    far_roi_coords = select_roi_jupyter(
+        sample_frame,
+        title="Select Far Scoreboard ROI",
+    )
+    existing_far_coord = get_roi_result(far_roi_coords)
+    print(f"Far ROI: {existing_far_coord}")
+    show_cropped_image(
+        np.array(sample_frame),
+        existing_far_coord,
+        save_path=str(VISUALS_DIR / "scoreboard_far_roi.png"),
+    )
+
+    # Detect scoreboard changes using selected ROIs
+    scoreboard_result = detect_scoreboard_changes(
+        frame_dir=frame_dir,
+        fps_rate=fps_rate,
+        device=device,
+        existing_close_coord=existing_close_coord,
+        existing_far_coord=existing_far_coord,
+    )
+    changes = scoreboard_result["changes"]
+    final_score_close = scoreboard_result["final_score_close"]
+    final_score_far = scoreboard_result["final_score_far"]
+
     print(f"In total {len(changes)} scoreboard changes detected at frames:")
-    final_score_close = changes[-1]['new']['close']['score']
-    final_score_far = changes[-1]['new']['far']['score']
     print(f"Final score of the game - Close Table: {final_score_close}, Far Table: {final_score_far}")
 
-    dataset = FrameClipDataset(frame_dir, window_size=args.window_size, stride=args.stride, event_transform=event_transform, ball_transform=ball_transform)
-    video_loader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False, num_workers=4)
+    # Prepare rallies using notebook helper
+    rally_result = prepare_rallies(
+        frame_dir=frame_dir,
+        window_size=window_size,
+        stride=stride,
+        event_transform=event_transform,
+        ball_transform=ball_transform,
+        event_detection_model=event_detection_model,
+        device=device,
+        fps_rate=fps_rate,
+        class_conversion=CLASS_CONVERSION,
+        scoreboard_changes=changes,
+        threshold=EVENT_DETECTION_THRESHOLD,
+        event_windows=EVENT_WINDOWS,
+    )
+
+    dataset = rally_result["dataset"]
+    video_loader = rally_result["video_loader"]
+    pred_events = rally_result["pred_events"]
+    grouped_rallies = rally_result["grouped_rallies"]
+
     print(f'Video Loader initialized with {len(dataset)} clips')
 
-    # Load event detection model configuration
-    event_model = create_model(model_type='astrm', model_config_path='event_detection/model_configs/ASTRM.json',
-                               device=args.device, model_checkpoint_path='event_detection/checkpoints/ASTRM_TTAV3.pth')
-
-    print(f'Event Detection Model initialized successfully')
-
-    # Initialize ball tracking model
-    ball_tracking_model = BallTrackingModel(
-        model_choice='TOTNet',
-        model_args=type('', (), {'img_size': (288, 512), 'num_frames': 5, 'device': args.device})(),
-        checkpoint_path='ball_tracking/checkpoints/TOTNet_TTA_(5)_(288,512)_30epochs_best.pth'
-    )
-
-    # ball_tracking_model = BallTrackingModel(
-    #     model_choice='TOTNet',
-    #     model_args=type('', (), {'img_size': (288, 512), 'num_frames': 5, 'device': args.device})(),
-    #     checkpoint_path='ball_tracking/checkpoints/TOTNet_TTA_(5)_(288,512)_bidirect_30epochs_best.pth'
-    # )
-    TOTNet_OF = BallTrackingModel(
-        model_choice='TOTNet_OF',
-        model_args=type('', (), {'img_size': (288, 512), 'num_frames': 5, 'device': args.device})(),
-        checkpoint_path='ball_tracking/checkpoints/TOTNet_OF_TTA_(5)_(288,512)_30epochs_best.pth'
-    )
-
-    print(f'Ball Tracking Model initialized successfully')
+    # ===== Interactive Table Points Selection =====
+    print("\n" + "="*60)
+    print("STEP 3: Select 6 Table Reference Points")
+    print("="*60)
+    sample_image_path = video_inputs["sample_image_path"]
+    img = Image.open(sample_image_path).convert("RGB")
+    img_np = np.array(img)
     
-    # Generate predictions
-    pred_events = {}
-    threshold = 0.05  # threshold for event detection scores, can be adjusted
-
-    grouped_rallies = None
-
-    if grouped_rallies is None:
-        # generating event predictions
-        for data in tqdm(video_loader, desc="Processing clips"):
-            clips = data['frames']
-            start_idx = data['start_idx']
-            end_idx = data['end_idx']
-            clips = clips.to(args.device, dtype=torch.float32)
-            # Process clips with event detection model
-            pred_results, pred_scores = event_model.predict(clips, device=args.device)  # pred_results: [B, T], pred_scores: [B, T, C]
-
-            pred_results = pred_results[0] # batch = 1, so we can take the first element
-            pred_scores = pred_scores[0]  # batch = 1, so we can take the first element
-
-            for i, (pred_event, pred_score_classes) in enumerate(zip(pred_results, pred_scores)):
-                current_id = (i + start_idx).item()
-                current_time = current_id / fps_rate
-                current_time_in_mins = f"{int(current_time // 60):02d}:{int(current_time % 60):02d}"
-
-                filtered_scores = pred_score_classes * (pred_score_classes >= threshold)
-
-                filtered_scores[0] = -1
-                best_class = filtered_scores.argmax()
-                best_score = filtered_scores[best_class]
-
-                if best_score == 0:
-                    continue
-
-                pred_events[current_id] = {
-                    'time': current_time,
-                    'time_in_mins': current_time_in_mins,
-                    'event_type': CLASS_CONVERSION.get(best_class.item(), 'unknown'),
-                    'score': float(best_score)
-                }
-
-        event_windows = {'close_table_serve': 20, 'far_table_serve': 20}
-        pred_events = nms_on_dict(pred_events, event_windows=event_windows)  # Apply NMS to the predictions
-
-        grouped_rallies = filter_based_on_score_changes(pred_events, changes)
-
-    frame_indices = [
-        dataset.num_frames // 2 - random.randint(0, 100),
-        # dataset.num_frames // 2 - random.randint(0, 100),
-        # dataset.num_frames // 2 + random.randint(0, 100),
-        dataset.num_frames // 2 + random.randint(0, 100),
-    ]
-
-    converted_img_paths = []
-
-    for i, idx in enumerate(frame_indices):
-        filename = f"{idx:06d}.jpg"
-        img_path = os.path.join(frame_dir, filename)
-
-        img = Image.open(img_path).convert("RGB")
-        # img_trans = transforms.CenterCrop(size=(224,224))
-        img_trans = transforms.Resize((288, 512))
-        converted_img = img_trans(img)
-
-        os.makedirs('./result', exist_ok=True)
-        converted_img_path = os.path.join('./result', f'converted_{i}.jpg')
-        converted_img.save(converted_img_path)
-        converted_img_paths.append(converted_img_path)
+    # Resize for display
+    img_trans = transforms.Resize((512, 512))
+    converted_img = img_trans(img)
+    converted_img_np = np.array(converted_img)
     
-    # img_path = "/home/s224705071/github/TTA_Project/src/result/converted_0.jpg"
-    img_path = converted_img_paths[0]
-    table_detector = TableDetector(image_path=img_path, topdown_width=1525, topdown_height=2740)
-    table_detector.compute_homographies()
-                
-    #generate ball locations in the grouped rallies
-    for rally in tqdm(grouped_rallies, desc="Ball tracking"):
-        events = rally['events']
-        for event in events:
-            event_type = event['event_type']
-            score = event['score']
-            frame_idx = event['frame_index']
+    table_points_state = click_6_points_jupyter(
+        converted_img_np,
+        title="Click 6 points: TL, TR, mid-left, mid-right, BL, BR",
+    )
+    table_points = table_points_state["points"]
+    print(f"Selected table points: {table_points}")
+    
+    save_table_points_preview(
+        converted_img_np,
+        table_points,
+        str(VISUALS_DIR / "table_points_selection.png"),
+    )
+    
+    # Initialize table detector with selected points
+    table_detector = TableDetector(image_path=sample_image_path, topdown_width=1525, topdown_height=2740)
+    table_detector.compute_homographies(corners6=table_points)
 
-            if event_type in ['far_table_bounce', 'close_table_bounce']:
-                ball_location_frames = dataset.get_surrounding_frames(frame_idx, radius=2)
+    print(f'Table Detector initialized successfully')
 
-                ball_location_frames = ball_location_frames.to(args.device, dtype=torch.float32)
-                ball_location_frames = ball_location_frames.unsqueeze(0)
-                ball_location_result, confidence = ball_tracking_model.predict(ball_location_frames)
-                extracted_coord = ball_tracking_model.extract_coordinates_2d(ball_location_result, H=288, W=512)[0]
-                x_pred, y_pred = extracted_coord[0], extracted_coord[1]
+    # Add ball tracking to rallies using notebook helper
+    grouped_rallies = add_ball_tracking_to_rallies(
+        grouped_rallies=grouped_rallies,
+        dataset=dataset,
+        ball_tracking_model=ball_tracking_model,
+        table_detector=table_detector,
+        device=device,
+    )
+    print(f"Ball tracking complete for {len(grouped_rallies)} rallies")
 
-                # to numpy 
-                x_pred = x_pred.cpu().numpy()
-                y_pred = y_pred.cpu().numpy()
-                event['ball_location'] = {
-                    'x': float(x_pred),
-                    'y': float(y_pred)
-                }
+    # Table dimensions
+    TABLE_W, TABLE_H = 1525.0, 2740.0
+    SPLIT_W, SPLIT_L = 153.0, 137.0
 
-                # map the coordinates to the top-down view
-                mapped_x, mapped_y = table_detector.transform_ball(x_pred, y_pred, blend_band_px=20)
-                event['mapped_ball_location'] = {
-                    'x': float(mapped_x),
-                    'y': float(mapped_y)
-                }
+    # Summarize rallies
+    summaries, invalid_bounce_total, bounce_total = summarize_rallies_counts(
+        grouped_rallies, SPLIT_W, SPLIT_L, TABLE_W, TABLE_H
+    )
+    for s in summaries:
+        print(f"Rally {s['rally_id']}: bounces(close/far)={s['close_bounce']}/{s['far_bounce']}, "
+              f"forehand={s['total_forehand']}, backhand={s['total_backhand']}, invalid_bounces={s['invalid_bounces']}")
+    print(f"Invalid bounces: {invalid_bounce_total}/{bounce_total}")
 
-                event['ball_coord_confidence'] = float(confidence)
+    # Build output paths
+    OUTPUT_PATHS = build_final_output_paths(game_name, output_dir=str(OUTPUT_DIR))
+    
+    # Use provided paths or defaults
+    summary_output_path = args.summary_output or OUTPUT_PATHS.get("summary_path", f'final_rally_summary_{game_name}.json')
+    json_output_path = args.json_output or OUTPUT_PATHS.get("xml_ready_json_path", f'xml_ready_{game_name}.json')
+    xml_output_path = args.xml_output or OUTPUT_PATHS.get("xml_path", f'xml_ready_{game_name}.xml')
 
-                # event[frame_idx]['draw_ball_location'] = {
-                #     'x': float(mapped_x),
-                #     'y': float(mapped_y)
-                # }
-
-                if confidence < 0.5:
-                    print(f"Low confidence ({confidence}) for frame {frame_idx}, trying Optical Flow model")
-                    ball_location_result_OF, confidence_OF = TOTNet_OF.predict(ball_location_frames)
-                    extracted_coord_OF = TOTNet_OF.extract_coordinates_2d(ball_location_result_OF, H=288, W=512)[0]
-                    x_pred_OF, y_pred_OF = extracted_coord_OF[0], extracted_coord_OF[1]
-                    # to numpy
-                    x_pred_OF = x_pred_OF.cpu().numpy()
-                    y_pred_OF = y_pred_OF.cpu().numpy()
-                    print(f"Using Optical Flow model for frame {frame_idx} with confidence {confidence_OF}")
-                    event['ball_coord_confidence_of'] = float(confidence_OF)
-                    event['ball_location_of'] = {
-                        'x': float(x_pred_OF),
-                        'y': float(y_pred_OF)
-                    }
-                    mapped_x_OF, mapped_y_OF = table_detector.transform_ball(x_pred_OF, y_pred_OF, blend_band_px=20 )
-                    event['mapped_ball_location_of'] = {
-                        'x': float(mapped_x_OF),
-                        'y': float(mapped_y_OF)
-                    }
-                    if mapped_x <0 or mapped_y < 0:
-                        if mapped_x_OF > 0 and mapped_y_OF > 0:
-                            event['draw_ball_location'] = {
-                                'x': float(mapped_x_OF),
-                                'y': float(mapped_y_OF)
-                            }
-                        else:
-                            event['draw_ball_location'] = {
-                                'x': float(mapped_x),
-                                'y': float(mapped_y)
-                            }
-                    else:
-                        event['draw_ball_location'] = {
-                            'x': float(mapped_x),
-                            'y': float(mapped_y)
-                        }
-
-    summary_output_path = args.summary_output or f'final_rally_summary_{game_name}.json'
-    json_output_path = args.json_output or f'xml_ready_{game_name}.json'
-    xml_output_path = args.xml_output or f'xml_ready_{game_name}.xml'
-
+    # Prepare output with reorganized rallies
     summary_grouped = copy.deepcopy(grouped_rallies)
     summary_grouped = reorganize_rallies_with_bounces_under_hits(summary_grouped)
     summary_grouped, _ = update_split_draw_coordinates(
         grouped_rallies=summary_grouped,
-        table_w=1525.0,
-        table_h=2740.0,
-        split_w=153.0,
-        split_l=137.0,
+        table_w=TABLE_W,
+        table_h=TABLE_H,
+        split_w=SPLIT_W,
+        split_l=SPLIT_L,
     )
 
-    with open(summary_output_path, 'w', encoding='utf-8') as f:
-        json.dump(summary_grouped, f, indent=4, ensure_ascii=False)
+    # Save summary
+    save_json(summary_output_path, summary_grouped)
 
+    # Convert to XML-ready format
     output_payload = convert_grouped_rallies(
         grouped_rallies=grouped_rallies,
         fps=fps_rate,
@@ -295,15 +307,13 @@ def main(args):
         include_bounces=args.include_bounces,
     )
 
-    with open(json_output_path, 'w', encoding='utf-8') as f:
-        json.dump(output_payload, f, indent=4, ensure_ascii=False)
-
+    save_json(json_output_path, output_payload)
     write_xml_data(output_payload, xml_output_path)
 
     print(f"Saved final rally summary: {summary_output_path}")
     print(f"Saved XML-ready JSON: {json_output_path}")
     print(f"Saved XML: {xml_output_path}")
-
+    print(f"Run output directory: {OUTPUT_DIR}")
 
     return grouped_rallies
 
@@ -345,58 +355,8 @@ def calculate_points_score_pred(scoreboard_changes, pred_events):
 
 
 
-def filter_based_on_score_changes(pred_events, scoreboard_changes):
-    """
-    scoreboard_changes: a list of dicts, each dict has keys: 'frame', 'new' (which contains the new scores for close and far)
-    use scores to filter out those fake serves that does not change the score
-    So the logic is, we have the time when the score changes,
-    we look for the closest serve event (either close_table_serve or far_table_serve) 
-    that happens before the score change, we group it as a segment of the rally 
-    once all the events are grouped into rallies, we will remove all other serves or events that are not in 
-    """
-
-    grouped_rallies = []
-    rally_counter = 1
-
-    for score_change in scoreboard_changes:
-        frame_idx = score_change['frame']
-        old_score_close = score_change['old']['close']['score']
-        old_score_far = score_change['old']['far']['score']
-        new_score_close = score_change['new']['close']['score']
-        new_score_far = score_change['new']['far']['score']
-        closest_event = None
-
-        # find the closest serve event before the score change
-        for event_frame, event_info in pred_events.items():
-            if event_frame <= frame_idx and event_info['event_type'] in ['close_table_serve', 'far_table_serve']:
-                closest_event = event_frame
-            elif event_frame > frame_idx:
-                break
-        
-        if closest_event is not None:
-            print(f"Score change at frame {frame_idx} matched to serve event at frame {closest_event}, type: {pred_events[closest_event]['event_type']}")
-            # group events into rallies based on the closest serve event
-            rally_events = []
-            for event_frame, event_info in pred_events.items():
-                if event_frame >= closest_event and event_frame <= frame_idx:
-                    rally_events.append(event_info)
-            grouped_rallies.append({
-                'rally_id': rally_counter,
-                'old_score': {
-                    'close': old_score_close,
-                    'far': old_score_far
-                },
-                'new_score': {
-                    'close': new_score_close,
-                    'far': new_score_far
-                },
-                'score_change_frame': frame_idx,
-                'serve_event_frame': closest_event,
-                'events': rally_events
-            })
-            rally_counter += 1
-    
-    return grouped_rallies
+# filter_based_on_score_changes is now imported from notebook_helpers
+# The logic is encapsulated in prepare_rallies() function
     
             
    

@@ -5,3 +5,6 @@ einops
 easydict
 matplotlib
 ptflops
+jupyterlab
+ipympl
+ipywidgets
